@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Channels</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; font-size: 14px; }
+        .container { max-width: 800px; margin: auto; background: #f4f4f4; padding: 20px; border-radius: 5px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold;}
+        input[type="text"], input[type="url"], input[type="password"], button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; border-radius: 3px; }
+        button:hover { background-color: #0056b3; }
+        button.delete { background-color: #dc3545; }
+        button.delete:hover { background-color: #c82333; }
+        .message { padding: 10px; margin-bottom: 15px; border-radius: 3px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .channel-list table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .channel-list th, .channel-list td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        .channel-list th { background-color: #e9ecef; }
+        .channel-list td span.channel-id { font-weight: bold; }
+        .channel-list td .url { word-break: break-all; font-size: 0.9em; }
+        .channel-list td form { display: inline; }
+        .form-section { margin-bottom: 30px; padding: 15px; background-color: #fff; border: 1px solid #ddd; border-radius: 4px;}
+        h2, h3 { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Admin Panel - Manage Channels</h2>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="form-section">
+            {% if not session.get('logged_in') %}
+                <h3>Login</h3>
+                <form method="post" action="{{ url_for('admin_login') }}">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                    <button type="submit">Login</button>
+                </form>
+            {% else %}
+                 <p>You are logged in.</p>
+                 <form method="post" action="{{ url_for('admin_logout') }}">
+                     <button type="submit" style="background-color: #6c757d; width: auto; padding: 8px 15px;">Logout</button>
+                 </form>
+            {% endif %}
+        </div>
+
+
+        {% if session.get('logged_in') %}
+            <div class="form-section">
+                <h3>Add New Channel</h3>
+                <form method="post" action="{{ url_for('add_channel') }}">
+                    <div>
+                        <label for="channel_id">Channel ID (lowercase, no spaces):</label>
+                        <input type="text" id="channel_id" name="channel_id" pattern="[a-z0-9]+" title="Only lowercase letters and numbers allowed." required>
+                    </div>
+                    <div>
+                        <label for="source_url">Source M3U8 URL:</label>
+                        <input type="url" id="source_url" name="source_url" placeholder="https://example.com/stream.m3u8" required>
+                    </div>
+                    <button type="submit">Add Channel</button>
+                </form>
+            </div>
+
+            <div class="channel-list form-section">
+                <h3>Existing Channels</h3>
+                {% if channels %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Channel ID</th>
+                                <th>Source M3U8 URL</th>
+                                <th>Proxy URL</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for id, info in channels.items() %}
+                            <tr>
+                                <td><span class="channel-id">{{ id }}</span></td>
+                                <td><span class="url">{{ info.source_url }}</span></td>
+                                <td><code>/live/{{ id }}.m3u8</code></td>
+                                <td>
+                                    <form method="post" action="{{ url_for('delete_channel', channel_id=id) }}" onsubmit="return confirm('Are you sure you want to delete channel \'{{ id }}\'?');">
+                                        <button type="submit" class="delete">Delete</button>
+                                    </form>
+                                    </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No channels configured yet.</p>
+                {% endif %}
+            </div>
+        {% endif %} {# End of logged_in check #}
+    </div>
+</body>
+</html>
