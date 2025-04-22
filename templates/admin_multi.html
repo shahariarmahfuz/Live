@@ -3,106 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Multi Channel Configuration</title>
+    <title>Admin Panel - Multi Channel Proxy</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; background-color: #f0f0f0; }
-        .container { max-width: 800px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        h2, h3 { color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 20px;}
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #555;}
-        input[type="text"], input[type="url"], input[type="password"], button {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        button { background-color: #007bff; color: white; border: none; cursor: pointer; font-size: 16px; }
+        body { font-family: sans-serif; margin: 20px; background-color: #f9f9f9; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1, h2 { text-align: center; color: #333; }
+        .flash-messages { list-style: none; padding: 0; margin-bottom: 15px; }
+        .flash-messages li { padding: 10px 15px; margin-bottom: 10px; border-radius: 4px; }
+        .flash-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .flash-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        form { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #fefefe; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="password"], input[type="url"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; }
         button:hover { background-color: #0056b3; }
-        button.delete-btn { background-color: #dc3545; font-size: 14px; padding: 8px 12px; width: auto; display: inline-block; margin-left: 10px;}
+        button.delete-btn { background-color: #dc3545; margin-left: 10px; }
         button.delete-btn:hover { background-color: #c82333; }
-        .message { padding: 15px; margin-bottom: 20px; border-radius: 5px; border: 1px solid transparent; }
-        .success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
-        .error { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
-        .channel-list { margin-top: 30px; }
-        .channel-item { background: #f9f9f9; padding: 15px; border: 1px solid #eee; border-radius: 4px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; word-wrap: break-word; overflow-wrap: break-word; }
-        .channel-info { flex-grow: 1; margin-right: 15px; }
-        .channel-info strong { display: block; margin-bottom: 5px; color: #333;}
-        .channel-info span { color: #555; font-size: 0.9em; display: block; word-break: break-all;}
-        .channel-actions { flex-shrink: 0; }
-         .logout-form button { background-color: #6c757d; margin-top: 20px; }
-         .logout-form button:hover { background-color: #5a6268; }
-         .login-container { text-align: center; }
-         .login-container button { max-width: 200px; margin: 20px auto 0; display: block;}
-         .form-section { margin-bottom: 30px; padding: 20px; background-color: #fdfdfd; border: 1px solid #eee; border-radius: 5px;}
-
+        button.logout-btn { background-color: #6c757d; float: right;}
+        button.logout-btn:hover { background-color: #5a6268;}
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; word-break: break-all; }
+        th { background-color: #f2f2f2; }
+        td form { margin-bottom: 0; padding: 0; border: none; background: none; display: inline;}
+        .login-form { max-width: 400px; margin: 30px auto; }
+        .actions { white-space: nowrap; }
+        .home-link { display: block; text-align: center; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Admin Panel - Multi Channel Configuration</h2>
+        <h1>IPTV Multi Channel Proxy Admin</h1>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
+                <ul class="flash-messages">
                 {% for category, message in messages %}
-                    <div class="message {{ category }}">{{ message }}</div>
+                    <li class="flash-{{ category }}">{{ message }}</li>
                 {% endfor %}
+                </ul>
             {% endif %}
         {% endwith %}
 
-        {% if not session.get('logged_in') %}
-            <div class="login-container">
-                <h3>Login Required</h3>
-                <form method="post" action="{{ url_for('admin_login') }}">
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" required>
-                    <button type="submit">Login</button>
-                </form>
-            </div>
-        {% else %}
-            <p>You are logged in.</p>
+        {% if session.logged_in %}
+            <form action="{{ url_for('admin_logout') }}" method="post" style="display: inline;">
+                 <button type="submit" class="logout-btn">Logout</button>
+            </form>
+            <h2>Manage Channels</h2>
 
-             <div class="form-section">
-                <h3>Add or Update Channel</h3>
-                <form method="post" action="{{ url_for('add_or_update_channel') }}">
-                     <label for="channel_id">Channel ID (lowercase letters/numbers only, e.g., 'channel1'):</label>
-                     <input type="text" id="channel_id" name="channel_id" pattern="[a-z0-9]+" title="Only lowercase letters and numbers allowed, no spaces." placeholder="mychannel" required>
+            <form action="{{ url_for('add_or_update_channel') }}" method="post">
+                 <input type="hidden" name="action" id="form_action" value="add"> <label for="channel_id">Channel ID (only letters/numbers, no spaces):</label>
+                 <input type="text" id="channel_id" name="channel_id" pattern="[a-zA-Z0-9]+" title="Only letters and numbers allowed." required>
 
-                    <label for="source_url">Source M3U8 URL:</label>
-                    <input type="url" id="source_url" name="source_url" placeholder="https://example.com/stream.m3u8" required>
+                 <label for="source_url">Source M3U8 URL:</label>
+                 <input type="url" id="source_url" name="source_url" placeholder="e.g., http://example.com/stream.m3u8" required>
 
-                    <button type="submit">Save Channel</button>
-                    <small style="display: block; margin-top: 5px; color: #666;">If the Channel ID already exists, its URL will be updated.</small>
-                </form>
-            </div>
-
-            <div class="channel-list form-section">
-                <h3>Current Channels</h3>
-                {% if channels %}
-                    {% for channel_id, info in channels.items()|sort %}
-                        <div class="channel-item">
-                            <div class="channel-info">
-                                <strong>ID:</strong> {{ channel_id }} <br>
-                                <strong>Source URL:</strong> <span>{{ info.source_url }}</span>
-                                <strong>Proxy URL:</strong> <span>{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}</span>
-                             </div>
-                             <div class="channel-actions">
-                                <form method="post" action="{{ url_for('delete_channel', channel_id=channel_id) }}" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel_id }}\'?');">
-                                     <button type="submit" class="delete-btn">Delete</button>
-                                </form>
-                             </div>
-                        </div>
-                    {% endfor %}
-                {% else %}
-                    <p><i>No channels configured yet. Add one using the form above.</i></p>
-                {% endif %}
-            </div>
-
-            <form method="post" action="{{ url_for('admin_logout') }}" class="logout-form">
-                 <button type="submit">Logout</button>
+                 <button type="submit" id="submit_button">Add Channel</button>
+                 <button type="button" onclick="resetForm()" style="margin-left: 10px; background-color: #ffc107;">Cancel Edit</button>
             </form>
 
+            <h2>Current Channels</h2>
+            {% if channels %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Channel ID</th>
+                            <th>Source URL</th>
+                            <th>Proxy URL</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for channel_id, info in channels.items()|sort %}
+                        <tr>
+                            <td>{{ channel_id }}</td>
+                            <td>{{ info.source_url }}</td>
+                            <td><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank">/live/{{ channel_id }}.m3u8</a></td>
+                            <td class="actions">
+                                <button type="button" onclick="editChannel('{{ channel_id }}', '{{ info.source_url }}')">Edit</button>
+                                <form action="{{ url_for('delete_channel', channel_id=channel_id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel_id }}\'?');">
+                                    <button type="submit" class="delete-btn">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No channels configured yet.</p>
+            {% endif %}
+
+            <script>
+                function editChannel(id, url) {
+                    document.getElementById('channel_id').value = id;
+                    document.getElementById('source_url').value = url;
+                    document.getElementById('form_action').value = 'update'; // অ্যাকশন পরিবর্তন করুন
+                    document.getElementById('submit_button').textContent = 'Update Channel';
+                    document.getElementById('channel_id').readOnly = true; // আইডি পরিবর্তন করতে দেবেন না
+                    window.scrollTo(0, 0); // ফর্মের শুরুতে স্ক্রল করুন
+                }
+
+                function resetForm() {
+                    document.getElementById('channel_id').value = '';
+                    document.getElementById('source_url').value = '';
+                    document.getElementById('form_action').value = 'add'; // অ্যাকশন রিসেট করুন
+                    document.getElementById('submit_button').textContent = 'Add Channel';
+                    document.getElementById('channel_id').readOnly = false; // আইডি আবার এডিট করা যাবে
+                }
+            </script>
+
+        {% else %}
+            <form action="{{ url_for('admin_login') }}" method="post" class="login-form">
+                 <h2>Admin Login</h2>
+                 <label for="password">Password:</label>
+                 <input type="password" id="password" name="password" required>
+                 <button type="submit">Login</button>
+             </form>
         {% endif %}
+         <p class="home-link">
+            <a href="{{ url_for('index') }}">View Available Channels</a>
+        </p>
     </div>
 </body>
 </html>
