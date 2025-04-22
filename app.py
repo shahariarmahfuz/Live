@@ -1,64 +1,88 @@
 import os
 import requests
+import json
 from flask import Flask, Response, abort, request, render_template, redirect, url_for, flash, session
 from urllib.parse import urljoin, urlparse
 
 app = Flask(__name__)
 
-# একটি সিক্রেট কী সেট করুন সেশন ম্যানেজমেন্টের জন্য (ফ্ল্যাশ মেসেজ)
-# প্রোডাকশনের জন্য এটি একটি শক্তিশালী এবং গোপন কী হওয়া উচিত, এনভায়রনমেন্ট ভেরিয়েবল থেকে লোড করা ভালো
-app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a_very_secret_key_for_development_only')
+# সিক্রেট কী (অ্যাডমিন পাসওয়ার্ডের মতই এনভায়রনমেন্ট ভেরিয়েবল থেকে নেওয়া ভালো)
+app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a_very_secret_key_for_multichannel')
 
-# অ্যাডমিন পাসওয়ার্ড (প্রোডাকশনের জন্য এনভায়রনমেন্ট ভেরিয়েবল বা কনফিগ ফাইল ব্যবহার করুন)
+# অ্যাডমিন পাসওয়ার্ড (এনভায়রনমেন্ট ভেরিয়েবল ব্যবহার করুন!)
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'password123') # এটি পরিবর্তন করুন!
 
-# যে ফাইলে স্ট্রিমের URL সংরক্ষণ করা হবে
-URL_STORAGE_FILE = "stream_url.txt"
+# যে JSON ফাইলে চ্যানেলগুলোর তথ্য (ID -> URL) সংরক্ষণ করা হবে
+CHANNELS_STORAGE_FILE = "channels.json"
 
 # --- Helper Functions ---
-def load_stream_url():
-    """ফাইল থেকে স্ট্রিমের URL লোড করে।"""
-    try:
-        if os.path.exists(URL_STORAGE_FILE):
-            with open(URL_STORAGE_FILE, 'r') as f:
-                url = f.read().strip()
-                return url if url else None
-    except Exception as e:
-        print(f"Error loading URL from file: {e}")
-    return None
 
-def save_stream_url(url):
-    """স্ট্রিমের URL ফাইলে সংরক্ষণ করে।"""
+def load_channels():
+    """JSON ফাইল থেকে চ্যানেল ডেটা লোড করে।"""
+    if not os.path.exists(CHANNELS_STORAGE_FILE):
+        return {} # ফাইল না থাকলে খালি ডিকশনারি রিটার্ন করুন
     try:
-        with open(URL_STORAGE_FILE, 'w') as f:
-            f.write(url)
+        with open(CHANNELS_STORAGE_FILE, 'r') as f:
+            data = json.load(f)
+            # নিশ্চিত করুন ডেটা সঠিক ফরম্যাটে আছে (dict of dicts)
+            if isinstance(data, dict):
+                # বেস ইউআরএল ক্যালকুলেট করে নিন যদি না থাকে (পুরাতন ফরম্যাট থেকে আপগ্রেড)
+                updated_data = {}
+                for channel_id, info in data.items():
+                    if isinstance(info, str): # পুরাতন ফরম্যাট (শুধু URL স্ট্রিং)
+                         source_url = info
+                         try:
+                             base_url = urljoin(source_url, '.')
+                             updated_data[channel_id] = {'source_url': source_url, 'base_url': base_url}
+                         except ValueError:
+                             print(f"Warning: Invalid source URL '{source_url}' for channel '{channel_id}'. Skipping.")
+                             continue # অবৈধ হলে বাদ দিন
+                    elif isinstance(info, dict) and 'source_url' in info:
+                        # নতুন ফরম্যাট, শুধু নিশ্চিত করুন base_url আছে
+                        if 'base_url' not in info:
+                             try:
+                                 info['base_url'] = urljoin(info['source_url'], '.')
+                             except ValueError:
+                                 print(f"Warning: Invalid source URL '{info['source_url']}' for channel '{channel_id}'. Skipping base_url.")
+                        updated_data[channel_id] = info
+                    else:
+                         print(f"Warning: Invalid data format for channel '{channel_id}'. Skipping.")
+
+                if updated_data != data:
+                    save_channels(updated_data) # যদি কোনো পরিবর্তন হয়ে থাকে তবে সেভ করুন
+                return updated_data
+            else:
+                print("Warning: channels.json is not a valid dictionary. Starting fresh.")
+                return {}
+    except json.JSONDecodeError:
+        print(f"Error decoding JSON from {CHANNELS_STORAGE_FILE}. Starting fresh.")
+        return {}
+    except Exception as e:
+        print(f"Error loading channels from file: {e}")
+        return {} # ত্রুটি হলে খালি ডিকশনারি
+
+def save_channels(channels_data):
+    """চ্যানেল ডেটা JSON ফাইলে সংরক্ষণ করে।"""
+    try:
+        with open(CHANNELS_STORAGE_FILE, 'w') as f:
+            json.dump(channels_data, f, indent=4) # সুন্দর ফরম্যাটিং এর জন্য indent ব্যবহার করুন
         return True
     except Exception as e:
-        print(f"Error saving URL to file: {e}")
+        print(f"Error saving channels to file: {e}")
         return False
 
 # --- Global State ---
-# অ্যাপ্লিকেশন শুরু হওয়ার সময় URL লোড করুন
-current_stream_url = load_stream_url()
-current_base_url = None
-if current_stream_url:
-    try:
-        current_base_url = urljoin(current_stream_url, '.') # বেস ইউআরএল ক্যালকুলেট করুন
-    except ValueError:
-        print(f"Warning: Loaded URL '{current_stream_url}' seems invalid.")
-        current_stream_url = None # অবৈধ হলে রিসেট করুন
+# অ্যাপ্লিকেশন শুরু হওয়ার সময় চ্যানেল ডেটা লোড করুন
+channels_data = load_channels()
 
 # --- Admin Routes ---
-@app.route('/admin')
+@app.route('/admin', methods=['GET'])
 def admin_panel():
     """অ্যাডমিন পেজ রেন্ডার করে।"""
-    global current_stream_url
-    # লগইন করা না থাকলে লগইন পেজ দেখান
     if not session.get('logged_in'):
-        return render_template('admin.html')
-
-    # লগইন করা থাকলে URL আপডেট ফর্ম এবং বর্তমান URL দেখান
-    return render_template('admin.html', current_url=current_stream_url)
+        return render_template('admin_multi.html') # নতুন টেমপ্লেট ব্যবহার করুন
+    # লগইন করা থাকলে চ্যানেল লিস্ট সহ অ্যাডমিন পেজ দেখান
+    return render_template('admin_multi.html', channels=channels_data)
 
 @app.route('/admin/login', methods=['POST'])
 def admin_login():
@@ -67,10 +91,10 @@ def admin_login():
     if password_attempt == ADMIN_PASSWORD:
         session['logged_in'] = True
         flash('Login successful!', 'success')
-        return redirect(url_for('admin_panel'))
     else:
+        session.pop('logged_in', None) # নিশ্চিত করুন ভুল পাসওয়ার্ড দিলে লগইন অবস্থা রিমুভ হয়
         flash('Incorrect password.', 'error')
-        return redirect(url_for('admin_panel'))
+    return redirect(url_for('admin_panel'))
 
 @app.route('/admin/logout', methods=['POST'])
 def admin_logout():
@@ -79,144 +103,158 @@ def admin_logout():
     flash('You have been logged out.', 'success')
     return redirect(url_for('admin_panel'))
 
-@app.route('/admin/update', methods=['POST'])
-def admin_update():
-    """অ্যাডমিন দ্বারা স্ট্রিম URL আপডেট হ্যান্ডেল করে।"""
-    global current_stream_url, current_base_url
-
+@app.route('/admin/channels', methods=['POST'])
+def add_channel():
+    """নতুন চ্যানেল যোগ করে।"""
+    global channels_data
     if not session.get('logged_in'):
-        flash('You must be logged in to perform this action.', 'error')
+        abort(403) # Forbidden
+
+    channel_id = request.form.get('channel_id', '').strip().lower() # আইডি কে লোয়ারকেস করুন
+    source_url = request.form.get('source_url', '').strip()
+
+    # বেসিক ভ্যালিডেশন
+    if not channel_id or not source_url:
+        flash('Channel ID and Source URL cannot be empty.', 'error')
         return redirect(url_for('admin_panel'))
 
-    new_url = request.form.get('stream_url', '').strip()
+    if not channel_id.isalnum() or ' ' in channel_id: # আইডি তে শুধু অক্ষর ও সংখ্যা রাখুন
+         flash('Channel ID should only contain letters and numbers (no spaces).', 'error')
+         return redirect(url_for('admin_panel'))
 
-    if not new_url:
-        flash('Stream URL cannot be empty.', 'error')
+    if channel_id in channels_data:
+        flash(f'Channel ID "{channel_id}" already exists.', 'error')
         return redirect(url_for('admin_panel'))
 
-    # সাধারণ URL ভ্যালিডেশন (খুব বেসিক)
     try:
-        parsed_url = urlparse(new_url)
+        parsed_url = urlparse(source_url)
         if not all([parsed_url.scheme, parsed_url.netloc]):
             raise ValueError("Invalid URL format")
-        # নতুন বেস ইউআরএল ক্যালকুলেট করুন
-        new_base_url = urljoin(new_url, '.')
+        base_url = urljoin(source_url, '.') # বেস ইউআরএল ক্যালকুলেট করুন
     except ValueError as e:
-        flash(f'Invalid URL format: {e}. Please enter a valid M3U8 URL (e.g., http://.../playlist.m3u8)', 'error')
+        flash(f'Invalid Source URL format: {e}.', 'error')
         return redirect(url_for('admin_panel'))
 
-    if save_stream_url(new_url):
-        current_stream_url = new_url
-        current_base_url = new_base_url
-        flash(f'Stream URL updated successfully to: {new_url}', 'success')
+    # ডেটা আপডেট করুন
+    channels_data[channel_id] = {'source_url': source_url, 'base_url': base_url}
+    if save_channels(channels_data):
+        flash(f'Channel "{channel_id}" added successfully.', 'success')
     else:
-        flash('Failed to save the new stream URL. Check server logs.', 'error')
+        # ডেটা রোলব্যাক করুন যদি সেভ না হয়
+        channels_data.pop(channel_id, None)
+        flash('Failed to save channel data. Check server logs.', 'error')
 
     return redirect(url_for('admin_panel'))
 
+@app.route('/admin/channels/delete/<channel_id>', methods=['POST'])
+def delete_channel(channel_id):
+    """নির্দিষ্ট চ্যানেল মুছে ফেলে।"""
+    global channels_data
+    if not session.get('logged_in'):
+        abort(403)
 
-# --- Stream Proxy Routes ---
-PROXY_PREFIX = "/stream" # সেগমেন্ট ফাইলের জন্য পাথ প্রিফিক্স
+    channel_id = channel_id.lower() # নিশ্চিত করুন আইডি লোয়ারকেস আছে
+    if channel_id in channels_data:
+        removed_data = channels_data.pop(channel_id) # ডিকশনারি থেকে রিমুভ করুন
+        if save_channels(channels_data):
+            flash(f'Channel "{channel_id}" deleted successfully.', 'success')
+        else:
+            # রোলব্যাক: যদি সেভ ফেইল করে, ডেটা ফেরত আনুন
+            channels_data[channel_id] = removed_data
+            flash('Failed to save changes after deletion. Check server logs.', 'error')
+    else:
+        flash(f'Channel ID "{channel_id}" not found.', 'error')
 
-@app.route('/jamuna.m3u8')
-def serve_m3u8():
-    """ক্লায়েন্টের কাছে পরিবর্তিত M3U8 ফাইল পরিবেশন করে।"""
-    global current_stream_url, current_base_url
+    return redirect(url_for('admin_panel'))
 
-    if not current_stream_url:
-        # return "Stream URL is not configured by the admin yet.", 503 # 503 Service Unavailable
-        abort(503, description="Stream URL is not configured by the admin yet.")
+# --- Stream Proxy Routes (Dynamic) ---
 
+# M3U8 Manifest Route
+@app.route('/live/<channel_id>.m3u8')
+def serve_m3u8(channel_id):
+    """নির্দিষ্ট চ্যানেলের জন্য পরিবর্তিত M3U8 ফাইল পরিবেশন করে।"""
+    channel_id = channel_id.lower()
+    if channel_id not in channels_data:
+        abort(404, description=f"Channel '{channel_id}' not found.")
+
+    channel_info = channels_data[channel_id]
+    source_url = channel_info['source_url']
+    # Base URL লাগবে না এখানে, কিন্তু সেগমেন্ট রুটে লাগবে
 
     try:
-        # Use a reasonable timeout
-        response = requests.get(current_stream_url, timeout=10)
-        response.raise_for_status() # Check for HTTP errors (like 404, 500)
+        response = requests.get(source_url, timeout=10)
+        response.raise_for_status()
 
         original_m3u8_content = response.text
         modified_lines = []
+        # সেগমেন্ট পাথ এর জন্য চ্যানেলের আইডি সহ নতুন প্রিফিক্স
+        segment_proxy_prefix = f"/stream/{channel_id}"
 
         for line in original_m3u8_content.splitlines():
             line = line.strip()
             if not line:
                 continue
-            # If the line is a URI (not starting with #)
             if not line.startswith('#'):
-                # Make the URL relative to our proxy segment handler
-                # Handle both relative paths and absolute URLs in the original M3U8
-                if line.startswith('http://') or line.startswith('https://'):
-                    # If it's an absolute URL, extract the path part maybe?
-                    # Or maybe just proxy it as is? Proxying seems safer.
-                    # For simplicity, let's assume segments are relative or just filenames
-                    # If absolute URLs for segments are needed, this needs more logic.
-                    # Here we assume relative path or filename
-                    segment_path = line.split('/')[-1] # Get filename/last part
-                    modified_line = f"{PROXY_PREFIX}/{segment_path}"
-                else:
-                     # Assuming it's a relative path or just filename
-                    modified_line = f"{PROXY_PREFIX}/{line}"
+                # URI লাইন: এটিকে আমাদের প্রক্সি সেগমেন্ট হ্যান্ডলারের দিকে পয়েন্ট করান
+                # এখানেও ধরে নিচ্ছি সেগমেন্ট পাথ relativo বা filename
+                segment_name = line.split('/')[-1] # শুধু শেষ অংশ বা ফাইলের নাম নিন
+                modified_line = f"{segment_proxy_prefix}/{segment_name}"
                 modified_lines.append(modified_line)
             else:
-                # Keep comment or tag lines as they are
+                # কমেন্ট বা ট্যাগ লাইন அப்படியே রাখুন
                 modified_lines.append(line)
 
         modified_m3u8_content = "\n".join(modified_lines)
-
-        # Send the response with the correct content type
         return Response(modified_m3u8_content, mimetype='application/vnd.apple.mpegurl')
 
     except requests.exceptions.Timeout:
-        abort(504, description=f"Timeout while fetching the original stream manifest from {current_stream_url}")
+        abort(504, description=f"Timeout fetching manifest for channel '{channel_id}' from {source_url}")
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching original M3U8 ({current_stream_url}): {e}")
-        # Maybe notify admin or retry? For now, return error.
-        abort(502, description=f"Could not fetch the original stream manifest. Error: {e}") # 502 Bad Gateway
+        print(f"Error fetching original M3U8 for channel '{channel_id}' ({source_url}): {e}")
+        abort(502, description=f"Could not fetch manifest for channel '{channel_id}'. Error: {e}")
     except Exception as e:
-        print(f"An unexpected error occurred: {e}")
-        abort(500, description="An internal error occurred while processing the manifest.")
+        print(f"Unexpected error processing manifest for channel '{channel_id}': {e}")
+        abort(500, description="Internal error processing manifest.")
+
+# Segment Route
+@app.route('/stream/<channel_id>/<path:segment>')
+def serve_segment(channel_id, segment):
+    """নির্দিষ্ট চ্যানেলের জন্য সেগমেন্ট ফাইল রিলে করে।"""
+    channel_id = channel_id.lower()
+    if channel_id not in channels_data:
+        abort(404, description=f"Channel '{channel_id}' not found for segment request.")
+
+    channel_info = channels_data[channel_id]
+    # এখন চ্যানেলের নিজস্ব বেস ইউআরএল ব্যবহার করুন
+    base_url = channel_info.get('base_url') # লোড করার সময় ক্যালকুলেট করা হয়েছে
+
+    if not base_url:
+         # যদি কোনো কারণে বেস ইউআরএল না থাকে (যেমন অবৈধ সোর্স ইউআরএল)
+         print(f"Error: Base URL not found for channel '{channel_id}'")
+         abort(500, description=f"Configuration error: Base URL missing for channel '{channel_id}'.")
 
 
-@app.route(f'{PROXY_PREFIX}/<path:segment>')
-def serve_segment(segment):
-    """আসল সার্ভার থেকে সেগমেন্ট ফাইল এনে ক্লায়েন্টকে পরিবেশন করে।"""
-    global current_base_url
-
-    if not current_base_url:
-        abort(503, description="Stream URL is not configured, cannot determine base URL for segments.")
-
-    # Construct the original segment URL using the dynamically determined base URL
-    original_segment_url = urljoin(current_base_url, segment)
-    print(f"Attempting to fetch segment: {original_segment_url}") # Logging for debug
+    # Use urljoin to correctly handle relative paths in segment names if any
+    original_segment_url = urljoin(base_url, segment)
+    print(f"Channel '{channel_id}': Fetching segment {segment} from {original_segment_url}") # Debug log
 
     try:
-        # Use stream=True to stream the data efficiently
-        response = requests.get(original_segment_url, stream=True, timeout=10) # Timeout for segment fetch
-        response.raise_for_status() # Check for errors (404 etc.)
-
-        # Stream the content back to the client
-        # iter_content() allows sending data in chunks
-        return Response(response.iter_content(chunk_size=1024*1024), # 1MB chunks
-                        content_type=response.headers.get('Content-Type', 'video/MP2T')) # Use original content type or default
+        response = requests.get(original_segment_url, stream=True, timeout=10)
+        response.raise_for_status()
+        return Response(response.iter_content(chunk_size=1024*1024),
+                        content_type=response.headers.get('Content-Type', 'video/MP2T'))
 
     except requests.exceptions.Timeout:
-         print(f"Timeout fetching segment {segment} from {original_segment_url}")
-         abort(504, description=f"Timeout while fetching segment: {segment}")
+        print(f"Timeout fetching segment {segment} for channel '{channel_id}' from {original_segment_url}")
+        abort(504, description=f"Timeout fetching segment: {segment}")
     except requests.exceptions.RequestException as e:
-        print(f"Error fetching segment {segment} from {original_segment_url}: {e}")
-        if e.response is not None:
-             print(f"Original server response status: {e.response.status_code}")
-             # Pass through the original error code if possible?
-             if e.response.status_code == 404:
-                 abort(404, description=f"Segment not found on original server: {segment}")
-             else:
-                 abort(502, description=f"Failed to fetch segment {segment} from origin. Status: {e.response.status_code}")
-        else:
-            abort(502, description=f"Failed to fetch segment {segment} from origin. Error: {e}") # 502 Bad Gateway
+        status_code = e.response.status_code if e.response is not None else 502
+        print(f"Error fetching segment {segment} for channel '{channel_id}' from {original_segment_url}. Status: {status_code}. Error: {e}")
+        abort(status_code if status_code == 404 else 502, description=f"Failed to fetch segment '{segment}' for channel '{channel_id}'. Origin error: {status_code}")
     except Exception as e:
-        print(f"An unexpected error occurred while serving segment {segment}: {e}")
-        abort(500, description="An internal error occurred while fetching the segment.")
+        print(f"Unexpected error serving segment {segment} for channel '{channel_id}': {e}")
+        abort(500, description="Internal error fetching segment.")
+
 
 if __name__ == '__main__':
-    # Run on 0.0.0.0 to be accessible within Docker, specify a port
-    # Use port 5000 or change as needed
-    app.run(host='0.0.0.0', port=5000)                                          
+    app.run(host='0.0.0.0', port=5000)
