@@ -9,11 +9,13 @@
         .container { max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
         h1 { text-align: center; color: #333; }
         ul { list-style: none; padding: 0; }
-        li { background: #eee; margin-bottom: 10px; padding: 15px; border-radius: 4px; }
-        li strong { color: #0056b3; }
-        li a { color: #1a73e8; text-decoration: none; display: block; margin-top: 5px; word-break: break-all; }
-        li a:hover { text-decoration: underline; }
+        li { background: #eee; margin-bottom: 10px; padding: 15px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;}
+        li strong { color: #0056b3; margin-right: 10px; }
+        li span { word-break: break-all; } /* Channel ID র জন্য */
+        li a { color: #1a73e8; text-decoration: none; display: inline-block; margin-top: 5px; word-break: break-all; background-color: #e9f5ff; padding: 5px 10px; border-radius: 3px; border: 1px solid #b3d7ff;}
+        li a:hover { text-decoration: underline; background-color: #d0e7ff;}
         p.no-channels { text-align: center; color: #777; }
+        .admin-link { text-align: center; margin-top: 30px; font-size: 0.9em; }
     </style>
 </head>
 <body>
@@ -23,7 +25,7 @@
             <ul>
                 {% for channel_id, proxy_url in available_channels.items()|sort %}
                     <li>
-                        <strong>Channel ID:</strong> {{ channel_id }} <br>
+                        <span><strong>Channel ID:</strong> {{ channel_id }}</span>
                         <a href="{{ proxy_url }}" target="_blank" rel="noopener noreferrer">Proxy M3U8 Link</a>
                     </li>
                 {% endfor %}
@@ -31,7 +33,7 @@
         {% else %}
             <p class="no-channels">No channels are currently configured.</p>
         {% endif %}
-         <p style="text-align: center; margin-top: 20px; font-size: 0.9em;">
+         <p class="admin-link">
             <a href="{{ url_for('admin_panel') }}">Admin Panel</a>
         </p>
     </div>
