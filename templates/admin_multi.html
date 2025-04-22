@@ -1,39 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn"> {# Language set to Bengali #}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Manage Channels</title>
+    <title>অ্যাডমিন - চ্যানেল পরিচালনা</title> {# Title in Bengali #}
     <style>
-        body { font-family: sans-serif; padding: 20px; font-size: 14px; }
-        .container { max-width: 800px; margin: auto; background: #f4f4f4; padding: 20px; border-radius: 5px; }
-        label { display: block; margin-bottom: 5px; font-weight: bold;}
+        body { font-family: sans-serif; padding: 20px; font-size: 14px; background-color: #f8f9fa; color: #212529; }
+        .container { max-width: 900px; margin: auto; background: #ffffff; padding: 25px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.1); }
+        label { display: block; margin-bottom: 6px; font-weight: bold; color: #495057;}
         input[type="text"], input[type="url"], input[type="password"], button {
             width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
+            padding: 12px;
+            margin-bottom: 12px;
             box-sizing: border-box;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 1em;
         }
-        button { background-color: #007bff; color: white; border: none; cursor: pointer; border-radius: 3px; }
+        input:focus { border-color: #80bdff; outline: none; box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); }
+        button { background-color: #007bff; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; transition: background-color 0.2s ease; }
         button:hover { background-color: #0056b3; }
         button.delete { background-color: #dc3545; }
         button.delete:hover { background-color: #c82333; }
-        .message { padding: 10px; margin-bottom: 15px; border-radius: 3px; }
-        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        .channel-list table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .channel-list th, .channel-list td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        .channel-list th { background-color: #e9ecef; }
-        .channel-list td span.channel-id { font-weight: bold; }
-        .channel-list td .url { word-break: break-all; font-size: 0.9em; }
-        .channel-list td form { display: inline; }
-        .form-section { margin-bottom: 30px; padding: 15px; background-color: #fff; border: 1px solid #ddd; border-radius: 4px;}
-        h2, h3 { border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 15px;}
+        button.logout { background-color: #6c757d; width: auto; padding: 8px 15px; }
+        button.logout:hover { background-color: #5a6268; }
+        .message { padding: 12px; margin-bottom: 18px; border-radius: 4px; border: 1px solid transparent; }
+        .success { background-color: #d4edda; color: #155724; border-color: #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+        .channel-list table { width: 100%; border-collapse: collapse; margin-top: 25px; }
+        .channel-list th, .channel-list td { border: 1px solid #dee2e6; padding: 10px 12px; text-align: left; vertical-align: middle; }
+        .channel-list th { background-color: #e9ecef; font-weight: bold; }
+        .channel-list td span.channel-id { font-weight: bold; color: #0056b3; }
+        .channel-list td .url { word-break: break-all; font-size: 0.9em; color: #495057; }
+        .channel-list td .proxy-url code { background-color: #e9ecef; padding: 3px 6px; border-radius: 3px; font-size: 0.95em; }
+        .channel-list td form { display: inline; margin: 0; }
+        .channel-list td .delete { padding: 5px 10px; font-size: 0.9em; }
+        .form-section { margin-bottom: 30px; padding: 20px; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px;}
+        h2, h3 { border-bottom: 2px solid #dee2e6; padding-bottom: 8px; margin-top: 0; margin-bottom: 20px; color: #343a40;}
     </style>
 </head>
 <body>
     <div class="container">
-        <h2>Admin Panel - Manage Channels</h2>
+        <h2>অ্যাডমিন প্যানেল - চ্যানেল পরিচালনা করুন</h2> {# Heading in Bengali #}
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -45,16 +53,16 @@
 
         <div class="form-section">
             {% if not session.get('logged_in') %}
-                <h3>Login</h3>
+                <h3>লগইন করুন</h3> {# Heading in Bengali #}
                 <form method="post" action="{{ url_for('admin_login') }}">
-                    <label for="password">Password:</label>
+                    <label for="password">পাসওয়ার্ড:</label> {# Label in Bengali #}
                     <input type="password" id="password" name="password" required>
-                    <button type="submit">Login</button>
+                    <button type="submit">লগইন</button> {# Button text in Bengali #}
                 </form>
             {% else %}
-                 <p>You are logged in.</p>
+                 <p>আপনি লগইন অবস্থায় আছেন।</p> {# Text in Bengali #}
                  <form method="post" action="{{ url_for('admin_logout') }}">
-                     <button type="submit" style="background-color: #6c757d; width: auto; padding: 8px 15px;">Logout</button>
+                     <button type="submit" class="logout">লগআউট</button> {# Button text in Bengali #}
                  </form>
             {% endif %}
         </div>
@@ -62,41 +70,43 @@
 
         {% if session.get('logged_in') %}
             <div class="form-section">
-                <h3>Add New Channel</h3>
+                <h3>নতুন চ্যানেল যোগ করুন</h3> {# Heading in Bengali #}
                 <form method="post" action="{{ url_for('add_channel') }}">
                     <div>
-                        <label for="channel_id">Channel ID (lowercase, no spaces):</label>
-                        <input type="text" id="channel_id" name="channel_id" pattern="[a-z0-9]+" title="Only lowercase letters and numbers allowed." required>
+                        <label for="channel_id">চ্যানেল আইডি (ছোট হাতের অক্ষর, সংখ্যা, হাইফেন):</label> {# Label in Bengali #}
+                        <input type="text" id="channel_id" name="channel_id" pattern="[a-z0-9\-]+" title="শুধুমাত্র ছোট হাতের অক্ষর, সংখ্যা এবং হাইফেন (-) ব্যবহার করুন।" required>
                     </div>
                     <div>
-                        <label for="source_url">Source M3U8 URL:</label>
+                        <label for="source_url">সোর্স M3U8 URL:</label> {# Label in Bengali #}
                         <input type="url" id="source_url" name="source_url" placeholder="https://example.com/stream.m3u8" required>
                     </div>
-                    <button type="submit">Add Channel</button>
+                    <button type="submit">চ্যানেল যোগ করুন</button> {# Button text in Bengali #}
                 </form>
             </div>
 
             <div class="channel-list form-section">
-                <h3>Existing Channels</h3>
+                <h3>বর্তমান চ্যানেল তালিকা</h3> {# Heading in Bengali #}
                 {% if channels %}
                     <table>
                         <thead>
                             <tr>
-                                <th>Channel ID</th>
-                                <th>Source M3U8 URL</th>
-                                <th>Proxy URL</th>
-                                <th>Actions</th>
+                                <th>চ্যানেল আইডি</th>
+                                <th>সোর্স M3U8 URL</th>
+                                <th>প্রক্সি URL</th>
+                                <th>অ্যাকশন</th> {# Heading in Bengali #}
                             </tr>
                         </thead>
                         <tbody>
-                            {% for id, info in channels.items() %}
+                            {# Sort channels by ID for consistent display #}
+                            {% for id in channels.keys()|sort %}
+                            {% set info = channels[id] %}
                             <tr>
                                 <td><span class="channel-id">{{ id }}</span></td>
                                 <td><span class="url">{{ info.source_url }}</span></td>
-                                <td><code>/live/{{ id }}.m3u8</code></td>
+                                <td class="proxy-url"><code>/live/{{ id }}.m3u8</code></td>
                                 <td>
-                                    <form method="post" action="{{ url_for('delete_channel', channel_id=id) }}" onsubmit="return confirm('Are you sure you want to delete channel \'{{ id }}\'?');">
-                                        <button type="submit" class="delete">Delete</button>
+                                    <form method="post" action="{{ url_for('delete_channel', channel_id=id) }}" onsubmit="return confirm('আপনি কি নিশ্চিতভাবে \'{{ id }}\' চ্যানেলটি মুছে ফেলতে চান?');"> {# Confirmation in Bengali #}
+                                        <button type="submit" class="delete">মুছুন</button> {# Button text in Bengali #}
                                     </form>
                                     </td>
                             </tr>
@@ -104,7 +114,7 @@
                         </tbody>
                     </table>
                 {% else %}
-                    <p>No channels configured yet.</p>
+                    <p>এখনও কোনো চ্যানেল যোগ করা হয়নি।</p> {# Text in Bengali #}
                 {% endif %}
             </div>
         {% endif %} {# End of logged_in check #}
