@@ -5,7 +5,7 @@ from urllib.parse import urljoin, urlparse
 app = Flask(__name__)
 
 # আপনার আসল বা গোপন M3U8 লিঙ্ক
-ORIGINAL_M3U8_URL = "https://animetv.zapto.org/stream/stream.m3u8"
+ORIGINAL_M3U8_URL = "https://tvs1.aynaott.com/somoytv/tracks-v1/index.fmp4.m3u8?amp%3Bremote=no_check_ip&token=4894a5d455ddfc1cd0c740ebde3156faa50ce967-3f128356c076d2fdaef8614f7d112e2b-1745293867-1745292967&amp;remote=no_check_ip"
 # আসল লিঙ্কের বেস ইউআরএল (URL এর শেষ অংশ বাদে)
 BASE_URL = ORIGINAL_M3U8_URL.rsplit('/', 1)[0] + '/'
 
