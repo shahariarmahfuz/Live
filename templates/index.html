@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Channels</title>
+     <style>
+        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f4; }
+        .container { max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #333; }
+        ul { list-style: none; padding: 0; }
+        li { background: #eee; margin-bottom: 10px; padding: 15px; border-radius: 4px; }
+        li strong { color: #0056b3; }
+        li a { color: #1a73e8; text-decoration: none; display: block; margin-top: 5px; word-break: break-all; }
+        li a:hover { text-decoration: underline; }
+        p.no-channels { text-align: center; color: #777; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Available IPTV Channels</h1>
+        {% if available_channels %}
+            <ul>
+                {% for channel_id, proxy_url in available_channels.items()|sort %}
+                    <li>
+                        <strong>Channel ID:</strong> {{ channel_id }} <br>
+                        <a href="{{ proxy_url }}" target="_blank" rel="noopener noreferrer">Proxy M3U8 Link</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p class="no-channels">No channels are currently configured.</p>
+        {% endif %}
+         <p style="text-align: center; margin-top: 20px; font-size: 0.9em;">
+            <a href="{{ url_for('admin_panel') }}">Admin Panel</a>
+        </p>
+    </div>
+</body>
+</html>
