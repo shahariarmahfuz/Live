@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="bn"> {# Changed lang to bn for Bengali context #}
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>অ্যাডমিন প্যানেল - মাল্টি চ্যানেল প্রক্সি</title> {# Title in Bengali #}
+    <title>অ্যাডমিন প্যানেল - মাল্টি চ্যানেল প্রক্সি</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -51,8 +51,8 @@
             -moz-osx-font-smoothing: grayscale;
         }
         .container {
-            max-width: 800px; /* Optimized width */
-            margin: 20px auto; /* Reduced top/bottom margin for mobile */
+            max-width: 800px;
+            margin: 20px auto;
             background: var(--card-bg);
             padding: 25px;
             border-radius: var(--border-radius);
@@ -61,7 +61,7 @@
         h1, h2 {
             text-align: center;
             color: var(--primary-color);
-            margin-bottom: 20px; /* Adjusted margin */
+            margin-bottom: 20px;
             font-weight: 700;
         }
         h1 { font-size: 1.8em; margin-top: 0; }
@@ -90,15 +90,15 @@
         }
         label { display: block; margin-bottom: 6px; font-weight: 500; font-size: 0.9em; color: var(--dark-gray); }
         input[type="text"], input[type="password"], input[type="url"], select {
-            width: 100%; /* Use 100% width */
+            width: 100%;
             padding: 10px 12px;
             margin-bottom: 15px;
             border: 1px solid var(--medium-gray);
             border-radius: 6px;
             font-size: 1em;
-            font-family: inherit; /* Inherit body font */
+            font-family: inherit;
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
-            box-sizing: border-box; /* Include padding in width */
+            box-sizing: border-box;
         }
         input:focus, select:focus {
             border-color: var(--primary-color);
@@ -109,25 +109,23 @@
 
         /* --- Buttons --- */
         button {
-            padding: 9px 18px; /* Slightly adjusted padding */
+            padding: 9px 18px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.95em; /* Adjusted size */
+            font-size: 0.95em;
             font-weight: 500;
             font-family: inherit;
             transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 6px; /* Smaller gap for icons */
-            line-height: 1.4; /* Ensure text aligns well with icons */
+            gap: 6px;
+            line-height: 1.4;
             box-shadow: var(--shadow-sm);
         }
         button:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         button:active { transform: translateY(0); box-shadow: var(--shadow-sm); }
-
-        /* Specific Button Styles */
         button[type="submit"], .edit-btn { background-color: var(--primary-color); color: white; }
         button[type="submit"]:hover, .edit-btn:hover { background-color: var(--primary-hover); }
         .delete-btn { background-color: var(--danger-color); color: white; }
@@ -136,15 +134,13 @@
         .logout-btn:hover { background-color: var(--secondary-hover);}
         .cancel-btn { background-color: var(--light-gray); color: var(--dark-gray); border: 1px solid var(--medium-gray); margin-left: 8px; box-shadow: none;}
         .cancel-btn:hover { background-color: var(--medium-gray);}
-
-        /* Button Icons */
         button svg { width: 1em; height: 1em; vertical-align: middle; }
 
         /* --- Channel List Styles --- */
         .channel-list { list-style: none; padding: 0; margin-top: 15px; }
-        .category-header {
+        .category-header { /* This is the style for the header shown ONCE per category */
             color: var(--primary-color);
-            font-weight: 600; /* Slightly bolder */
+            font-weight: 600;
             font-size: 1.1em;
             padding: 20px 0 8px 0;
             margin-top: 10px;
@@ -153,39 +149,33 @@
         }
         .channel-item {
             background-color: var(--card-bg);
-            margin-bottom: 8px; /* Reduced space */
+            margin-bottom: 8px;
             border-radius: var(--border-radius);
             box-shadow: var(--shadow-sm);
             border: 1px solid var(--medium-gray);
             transition: box-shadow 0.2s ease, border-color 0.2s ease;
-            overflow: hidden; /* Clip details section */
+            overflow: hidden;
         }
-        .channel-item:hover {
-             /* border-color: var(--primary-light); */
-             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
-        }
-        .channel-item.active { /* Style when details are open */
-             border-color: var(--primary-color);
-             box-shadow: 0 0 0 1px var(--primary-color);
-        }
+        .channel-item:hover { box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); }
+        .channel-item.active { border-color: var(--primary-color); box-shadow: 0 0 0 1px var(--primary-color); }
 
         /* Preview Row */
         .preview-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px; /* Optimized padding */
+            padding: 12px 15px;
             cursor: pointer;
             transition: background-color 0.2s ease;
-            user-select: none; /* Prevent text selection on click */
-            min-height: 48px; /* Ensure minimum touch height */
+            user-select: none;
+            min-height: 48px;
         }
         .preview-row:hover { background-color: var(--light-gray); }
         .preview-name {
-            font-weight: 500; /* Medium weight */
+            font-weight: 500;
             color: var(--text-color);
             font-size: 1em;
-            margin-right: 10px; /* Space between name and ID */
+            margin-right: 10px;
         }
         .preview-id {
             font-size: 0.85em;
@@ -194,7 +184,7 @@
             padding: 2px 6px;
             border-radius: 4px;
             font-weight: 500;
-            flex-shrink: 0; /* Prevent ID from shrinking */
+            flex-shrink: 0;
         }
 
         /* Details Section */
@@ -202,32 +192,32 @@
             max-height: 0;
             overflow: hidden;
             transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
-            padding: 0 15px; /* Horizontal padding for transition */
-            background-color: var(--primary-light); /* Light primary background */
+            padding: 0 15px;
+            background-color: var(--primary-light);
             border-top: 1px solid var(--medium-gray);
         }
         .details-section.visible {
-            max-height: 700px; /* Ensure enough height */
-            padding: 15px; /* Vertical padding when visible */
+            max-height: 700px;
+            padding: 15px;
         }
 
         /* Inner Table for Details */
         .channel-details-table { width: 100%; border-collapse: collapse; }
         .channel-details-table th,
         .channel-details-table td {
-            padding: 8px 5px; /* Reduced padding */
+            padding: 8px 5px;
             text-align: left;
             border-bottom: 1px solid var(--medium-gray);
-            font-size: 0.9em; /* Slightly smaller font in details */
+            font-size: 0.9em;
             vertical-align: top;
         }
         .channel-details-table tr:last-child th,
         .channel-details-table tr:last-child td { border-bottom: none; }
         .channel-details-table th {
-            font-weight: 500; /* Medium weight label */
+            font-weight: 500;
             color: var(--dark-gray);
-            width: 100px; /* Fixed width */
-            white-space: nowrap; /* Prevent label wrapping */
+            width: 100px;
+            white-space: nowrap;
         }
         .channel-details-table td { color: var(--text-color); word-break: break-all; }
         .channel-details-table td a { color: var(--primary-color); text-decoration: none; font-weight: 500; }
@@ -235,7 +225,7 @@
         .channel-details-table .actions td { padding-top: 12px; }
         .channel-details-table .actions button { font-size: 0.85em; padding: 6px 12px; }
         .channel-details-table .actions form { display: inline-block; margin-left: 5px; }
-         .channel-details-table .actions form:first-of-type { margin-left: 0; } /* No margin for first button */
+         .channel-details-table .actions form:first-of-type { margin-left: 0; }
 
 
         /* --- Login Form --- */
@@ -269,35 +259,32 @@
                  width: 100%;
                  box-sizing: border-box;
                  border-bottom: none;
-                 padding: 4px 0; /* Adjusted padding */
+                 padding: 4px 0;
             }
             .channel-details-table th {
                  font-size: 0.8em;
                  color: var(--text-muted);
                  font-weight: 500;
-                 margin-bottom: 2px; /* Space between label and value */
-                 width: auto; /* Reset fixed width */
+                 margin-bottom: 2px;
+                 width: auto;
             }
             .channel-details-table td {
-                 margin-bottom: 8px; /* Space between detail items */
+                 margin-bottom: 8px;
                  font-size: 0.9em;
             }
-             /* Add border below each value group on mobile */
             .channel-details-table tr:not(:last-child) td {
                  border-bottom: 1px solid var(--medium-gray);
                  padding-bottom: 8px;
             }
-
             .channel-details-table .actions td { padding-top: 10px; }
-             /* Make action buttons take full width */
              .channel-details-table .actions button,
              .channel-details-table .actions form {
                   display: block;
                   width: 100%;
-                  margin: 0 0 8px 0; /* Add space below each button */
+                  margin: 0 0 8px 0;
                   text-align: center;
              }
-              .delete-btn { margin-left: 0; } /* Remove margin */
+              .delete-btn { margin-left: 0; }
               .cancel-btn { margin-left: 0; }
         }
          @media (max-width: 480px) {
@@ -313,7 +300,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>IPTV অ্যাডমিন প্যানেল</h1> {# Updated Title #}
+        <h1>IPTV অ্যাডমিন প্যানেল</h1>
 
         {# --- Flash messages section --- #}
         {% with messages = get_flashed_messages(with_categories=true) %}
@@ -330,13 +317,11 @@
             {# --- Logout button --- #}
             <form action="{{ url_for('admin_logout') }}" method="post" style="border:none; background: none; padding: 0; margin: 0;">
                  <button type="submit" class="logout-btn">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.1em; height:1.1em; margin-right: 4px;">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.1em; height:1.1em; margin-right: 4px;"> <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" /> </svg>
                      Logout
                  </button>
             </form>
-            <h2>চ্যানেল ম্যানেজ করুন</h2> {# Updated Title #}
+            <h2>চ্যানেল ম্যানেজ করুন</h2>
 
             {# --- Add/Update Channel Form --- #}
             <form id="channel-form" action="{{ url_for('add_or_update_channel') }}" method="post" class="admin-form">
@@ -360,46 +345,54 @@
                  <input type="url" id="source_url" name="source_url" placeholder="যেমন: http://example.com/stream.m3u8" required>
 
                  <button type="submit" id="submit_button">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.2em; height:1.2em;">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.2em; height:1.2em;"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /> </svg>
                      চ্যানেল যোগ করুন
                  </button>
                  <button type="button" onclick="resetForm()" class="cancel-btn">বাতিল</button>
             </form>
 
-            <h2>বর্তমান চ্যানেলসমূহ</h2> {# Updated Title #}
+            <h2>বর্তমান চ্যানেলসমূহ</h2>
             {% if channels %}
                 <ul class="channel-list">
                     {# --- Sorting Logic --- #}
                     {% set channel_list = [] %}
                     {% for id, info in channels.items() %}
+                        {# Ensure ID conversion happens correctly, handle potential errors if needed #}
                         {% set _ = channel_list.append((id|int, info)) %}
                     {% endfor %}
+                    {# Sort by category first, then by integer ID #}
                     {% set sorted_channels = channel_list|sort(attribute='1.category')|sort(attribute='0') %}
 
-                    {% set current_category = '' %}
-                    {% for channel_id, info in sorted_channels %}
-                        {# --- Category Header --- #}
-                        {% if info.get('category', 'N/A') != current_category %}
-                            {% set current_category = info.get('category', 'N/A') %}
+                    {# --- Variable to track the current category being displayed --- #}
+                    {% set current_category = None %} {# Use None to handle the very first check reliably #}
+
+                    {% for channel_id, info in sorted_channels %} {# Loop through the correctly sorted list #}
+
+                        {# --- Category Header Logic --- #}
+                        {# Check if the category for the current channel is different from the last one shown #}
+                        {% set item_category = info.get('category', 'N/A') %}
+                        {% if item_category != current_category %}
+                            {# If different, update the tracker and display the header ONCE #}
+                            {% set current_category = item_category %}
                             <li class="category-header">{{ current_category }}</li>
                         {% endif %}
+                        {# --- End of Category Header Logic --- #}
 
-                        {# --- Channel Item --- #}
+
+                        {# --- Channel Item (li) --- #}
                         <li class="channel-item">
-                            {# --- Preview Row --- #}
+                            {# --- Preview Row (div) --- #}
                             <div class="preview-row" onclick="toggleDetails('details-{{ channel_id }}', this)">
                                 <span class="preview-name">{{ info.get('name', 'N/A') }}</span>
                                 <span class="preview-id">{{ channel_id }}</span>
                             </div>
 
-                            {# --- Details Section (Hidden) --- #}
+                            {# --- Details Section (div, hidden initially) --- #}
                             <div class="details-section" id="details-{{ channel_id }}">
                                 <table class="channel-details-table">
                                     <tr><th>নাম</th><td>{{ info.get('name', 'N/A') }}</td></tr>
                                     <tr><th>আইডি</th><td>{{ channel_id }}</td></tr>
-                                    <tr><th>ক্যাটেগরি</th><td>{{ info.get('category', 'N/A') }}</td></tr>
+                                    <tr><th>ক্যাটেগরি</th><td>{{ info.get('category', 'N/A') }}</td></tr> {# Category shown in details is normal #}
                                     <tr><th>সোর্স ইউআরএল</th><td>{{ info.source_url }}</td></tr>
                                     <tr><th>প্রক্সি ইউআরএল</th><td><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank">/live/{{ channel_id }}.m3u8</a></td></tr>
                                     <tr class="actions">
@@ -410,10 +403,7 @@
                                                     data-id="{{ channel_id }}" data-name="{{ info.get('name', '')|escape }}"
                                                     data-category="{{ info.get('category', '')|escape }}" data-url="{{ info.source_url|escape }}"
                                                     onclick="event.stopPropagation(); editChannel(this)">
-                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path d="M17.414 2.586a2 2 0 0 0-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 0 0 0-2.828Z" />
-                                                    <path fill-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h4a1 1 0 0 1 0 2H4v10h10v-4a1 1 0 1 1 2 0v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Z" clip-rule="evenodd" />
-                                                </svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:1.1em; height:1.1em;"><path d="M17.414 2.586a2 2 0 0 0-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 0 0 0-2.828Z" /><path fill-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h4a1 1 0 0 1 0 2H4v10h10v-4a1 1 0 1 1 2 0v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Z" clip-rule="evenodd" /></svg>
                                                 Edit
                                             </button>
                                             {# Delete Button Form with Icon #}
@@ -421,35 +411,31 @@
                                                   onsubmit="return confirm('আপনি কি নিশ্চিত চ্যানেল \'{{ channel_id }}\' ({{ info.get('name', 'N/A') }}) মুছে ফেলতে চান?');"
                                                   style="display: inline;" onclick="event.stopPropagation();">
                                                 <button type="submit" class="delete-btn">
-                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                        <path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.58.22-2.365.498a.75.75 0 0 0-.5.707v1.49a.75.75 0 0 0 .5.707c.786.278 1.57.421 2.365.498v.443A2.75 2.75 0 0 0 8.75 10h2.5A2.75 2.75 0 0 0 14 7.25v-.443c.795-.077 1.58-.22 2.365-.498a.75.75 0 0 0 .5-.707V4.11a.75.75 0 0 0-.5-.707A18.89 18.89 0 0 0 14 3.307v-.443A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.573.023 2.312.068a.75.75 0 0 0 .688-.746V3.11a.75.75 0 0 0-.688-.746C11.573 2.323 10.84 2.3 10 2.3s-1.573.023-2.312.068a.75.75 0 0 0-.688.746v.208a.75.75 0 0 0 .688.746C8.427 3.977 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" clip-rule="evenodd" />
-                                                    </svg>
+                                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:1.1em; height:1.1em;"><path fill-rule="evenodd" d="M8.75 1A2.75 2.75 0 0 0 6 3.75v.443c-.795.077-1.58.22-2.365.498a.75.75 0 0 0-.5.707v1.49a.75.75 0 0 0 .5.707c.786.278 1.57.421 2.365.498v.443A2.75 2.75 0 0 0 8.75 10h2.5A2.75 2.75 0 0 0 14 7.25v-.443c.795-.077 1.58-.22 2.365-.498a.75.75 0 0 0 .5-.707V4.11a.75.75 0 0 0-.5-.707A18.89 18.89 0 0 0 14 3.307v-.443A2.75 2.75 0 0 0 11.25 1h-2.5ZM10 4c.84 0 1.573.023 2.312.068a.75.75 0 0 0 .688-.746V3.11a.75.75 0 0 0-.688-.746C11.573 2.323 10.84 2.3 10 2.3s-1.573.023-2.312.068a.75.75 0 0 0-.688.746v.208a.75.75 0 0 0 .688.746C8.427 3.977 9.16 4 10 4ZM8.58 7.72a.75.75 0 0 0-1.5.06l.3 7.5a.75.75 0 1 0 1.5-.06l-.3-7.5Zm4.34.06a.75.75 0 1 0-1.5-.06l-.3 7.5a.75.75 0 1 0 1.5.06l.3-7.5Z" clip-rule="evenodd" /></svg>
                                                     Delete
                                                 </button>
                                             </form>
                                         </td>
                                     </tr>
                                 </table>
-                            </div>
-                        </li>
-                    {% endfor %}
+                            </div> {# End details-section #}
+                        </li> {# End channel-item #}
+                    {% endfor %} {# End channel loop #}
                 </ul>
             {% else %}
-                <p style="text-align: center; color: var(--text-muted); margin-top: 30px;">এখনও কোন চ্যানেল যোগ করা হয়নি।</p> {# Updated Text #}
+                <p style="text-align: center; color: var(--text-muted); margin-top: 30px;">এখনও কোন চ্যানেল যোগ করা হয়নি।</p>
             {% endif %}
 
-            {# --- JavaScript --- #}
+            {# --- JavaScript (No changes needed from previous version) --- #}
             <script>
-                // Function to toggle visibility of details section
-                function toggleDetails(detailsId, previewElement) {
+                 function toggleDetails(detailsId, previewElement) {
                     const detailsSection = document.getElementById(detailsId);
                     const channelItem = previewElement.closest('.channel-item');
 
-                    if (!detailsSection || !channelItem) return; // Exit if elements not found
+                    if (!detailsSection || !channelItem) return;
 
                     const isVisible = detailsSection.classList.contains('visible');
 
-                    // Hide any other open details sections first
                     document.querySelectorAll('.details-section.visible').forEach(openSection => {
                         if (openSection.id !== detailsId) {
                             openSection.classList.remove('visible');
@@ -458,39 +444,30 @@
                         }
                     });
 
-                    // Toggle the current one
                     detailsSection.classList.toggle('visible', !isVisible);
                     channelItem.classList.toggle('active', !isVisible);
                 }
 
-                // Function to populate form for editing
-                function editChannel(buttonElement) {
+                 function editChannel(buttonElement) {
                     const id = buttonElement.getAttribute('data-id');
                     const name = buttonElement.getAttribute('data-name');
                     const category = buttonElement.getAttribute('data-category');
                     const url = buttonElement.getAttribute('data-url');
 
-                    // Populate form fields
                     document.getElementById('channel_id').value = id || '';
                     document.getElementById('channel_name').value = name || '';
                     document.getElementById('category').value = category || '';
                     document.getElementById('source_url').value = url || '';
 
-                    // Update form state for editing
                     document.getElementById('submit_button').innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:1.1em; height:1.1em;">
-                          <path d="M17.414 2.586a2 2 0 0 0-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 0 0 0-2.828Z" />
-                          <path fill-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h4a1 1 0 0 1 0 2H4v10h10v-4a1 1 0 1 1 2 0v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Z" clip-rule="evenodd" />
-                        </svg> আপডেট করুন`; // Update button text/icon
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:1.1em; height:1.1em;"> <path d="M17.414 2.586a2 2 0 0 0-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 0 0 0-2.828Z" /> <path fill-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h4a1 1 0 0 1 0 2H4v10h10v-4a1 1 0 1 1 2 0v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Z" clip-rule="evenodd" /> </svg> আপডেট করুন`;
                     const channelIdInput = document.getElementById('channel_id');
                     channelIdInput.readOnly = true;
                     channelIdInput.style.backgroundColor = 'var(--light-gray)';
                     channelIdInput.style.cursor = 'not-allowed';
 
-                    // Scroll to form
                     document.getElementById('channel-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                    // Close the details section if open
                     const detailsSectionId = `details-${id}`;
                     const detailsSection = document.getElementById(detailsSectionId);
                     if (detailsSection && detailsSection.classList.contains('visible')) {
@@ -500,23 +477,18 @@
                     }
                 }
 
-                // Function to reset the form
-                function resetForm() {
+                 function resetForm() {
                     const form = document.getElementById('channel-form');
-                    form.reset(); // Reset native form elements
+                    form.reset();
 
-                    // Reset custom states
                     document.getElementById('submit_button').innerHTML = `
-                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.2em; height:1.2em;">
-                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                         </svg> চ্যানেল যোগ করুন`; // Reset button text/icon
+                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.2em; height:1.2em;"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /> </svg> চ্যানেল যোগ করুন`;
                     const channelIdInput = document.getElementById('channel_id');
                     channelIdInput.readOnly = false;
                     channelIdInput.style.backgroundColor = '';
                     channelIdInput.style.cursor = '';
-                    document.getElementById('category').value = ""; // Ensure select resets correctly
+                    document.getElementById('category').value = "";
 
-                    // Close any open details sections
                     document.querySelectorAll('.details-section.visible').forEach(section => {
                         section.classList.remove('visible');
                         const channelItem = section.closest('.channel-item');
@@ -528,7 +500,7 @@
         {% else %}
             {# --- Login Form --- #}
             <form action="{{ url_for('admin_login') }}" method="post" class="login-form admin-form">
-                 <h2>অ্যাডমিন লগইন</h2> {# Updated Title #}
+                 <h2>অ্যাডমিন লগইন</h2>
                  <label for="password">পাসওয়ার্ড:</label>
                  <input type="password" id="password" name="password" required>
                  <button type="submit">লগইন</button>
@@ -537,7 +509,7 @@
 
          {# --- Home Link --- #}
          <p class="home-link">
-            <a href="{{ url_for('index') }}">সকল উপলব্ধ চ্যানেল দেখুন</a> {# Updated Text #}
+            <a href="{{ url_for('index') }}">সকল উপলব্ধ চ্যানেল দেখুন</a>
         </p>
     </div>
 </body>
