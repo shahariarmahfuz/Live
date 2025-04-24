@@ -42,7 +42,7 @@
             line-height: 1.6;
         }
         .container {
-            max-width: 1000px;
+            max-width: 800px; /* Slightly narrower for compact view */
             margin: 30px auto;
             background: var(--card-bg);
             padding: 30px 35px;
@@ -65,13 +65,13 @@
             color: var(--dark-gray);
         }
 
-        /* Flash Messages */
+        /* Flash Messages - unchanged */
         .flash-messages { list-style: none; padding: 0; margin-bottom: 25px; }
         .flash-messages li { padding: 14px 20px; margin-bottom: 12px; border-radius: var(--border-radius); border: 1px solid transparent; font-size: 0.95em; }
         .flash-success { background-color: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
         .flash-error { background-color: var(--error-bg); color: var(--error-text); border-color: var(--error-border); }
 
-        /* Forms */
+        /* Forms - unchanged */
         form { margin-bottom: 30px; }
         .admin-form { padding: 25px; border: 1px solid var(--medium-gray); border-radius: var(--border-radius); background-color: #fff; }
         label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9em; color: var(--dark-gray); }
@@ -91,239 +91,159 @@
         }
         input[readonly] { background-color: var(--light-gray); cursor: not-allowed; }
 
-        /* Buttons */
-        button {
-            padding: 10px 24px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 500;
-            transition: background-color 0.2s ease, transform 0.1s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px; /* Space for potential icons */
-        }
+        /* Buttons - unchanged */
+        button { padding: 10px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 1em; font-weight: 500; transition: background-color 0.2s ease, transform 0.1s ease; display: inline-flex; align-items: center; gap: 8px; }
         button:hover { transform: translateY(-1px); }
         button:active { transform: translateY(0); }
-
         button[type="submit"], .edit-btn { background-color: var(--primary-color); color: white; }
         button[type="submit"]:hover, .edit-btn:hover { background-color: var(--primary-hover); }
-
         .delete-btn { background-color: var(--danger-color); color: white; margin-left: 8px; }
         .delete-btn:hover { background-color: var(--danger-hover); }
-
         .logout-btn { background-color: var(--secondary-color); color: white; float: right; margin-bottom: 15px; }
         .logout-btn:hover { background-color: var(--secondary-hover);}
-
         .cancel-btn { background-color: var(--warning-color); color: var(--dark-gray); margin-left: 8px;}
         .cancel-btn:hover { background-color: var(--warning-hover);}
 
-        /* Table Styles */
-        table {
-            width: 100%;
-            border-collapse: separate; /* Use separate for spacing */
-            border-spacing: 0 10px; /* Vertical spacing between rows */
-            margin-top: 20px;
+        /* Compact List/Table Styles */
+        .channel-list {
+             list-style: none;
+             padding: 0;
+             margin-top: 20px;
         }
-        th, td { text-align: left; padding: 12px 15px; }
-        th {
-            background-color: var(--light-gray);
-            color: var(--dark-gray);
-            font-weight: 600;
-            font-size: 0.85em;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 2px solid var(--medium-gray);
-            /* Apply border-radius only to top corners */
-            border-top-left-radius: var(--border-radius);
-            border-top-right-radius: var(--border-radius);
-        }
-        thead tr { background-color: transparent !important; } /* Override nth-child */
-
-        tr.channel-row {
-            background-color: var(--card-bg);
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-            border-radius: var(--border-radius);
-            cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            overflow: hidden; /* Needed for radius on children */
-        }
-        tr.channel-row:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--box-shadow);
-        }
-        tr.channel-row td {
-             border: none; /* Remove individual cell borders */
-             border-bottom: 1px solid var(--medium-gray); /* Separator line */
-             font-size: 0.95em;
-        }
-        tr.channel-row td:first-child { border-top-left-radius: var(--border-radius); border-bottom-left-radius: var(--border-radius); }
-        tr.channel-row td:last-child { border-top-right-radius: var(--border-radius); border-bottom-right-radius: var(--border-radius); }
-         tr.channel-row:last-of-type td { border-bottom: none; } /* Remove border for last row */
-
-
-        /* Category Header */
-        .category-header td {
-            background-color: transparent; /* No background */
+        .category-header {
             color: var(--primary-color);
             font-weight: 700;
             font-size: 1.2em;
-            padding: 25px 0 5px 0; /* More space above */
-            border: none;
-            border-radius: 0;
-            box-shadow: none;
+            padding: 25px 0 10px 0; /* Space above category */
+            margin-top: 15px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        .channel-item {
+            background-color: var(--card-bg);
+            margin-bottom: 8px; /* Space between items */
+            border-radius: var(--border-radius);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            transition: box-shadow 0.2s ease;
+        }
+         .channel-item:hover {
+             box-shadow: 0 3px 5px rgba(0,0,0,0.08);
+         }
+
+        /* Preview Row */
+        .preview-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px; /* Compact padding */
+            cursor: pointer;
+            border-radius: var(--border-radius); /* Apply radius here */
+            transition: background-color 0.2s ease;
+        }
+        .preview-row:hover {
+             background-color: var(--light-gray);
+        }
+         .preview-row.active { /* Style when details are open */
+             background-color: #E0E7FF; /* Light Indigo background */
+             border-bottom-left-radius: 0; /* Remove bottom radius when open */
+             border-bottom-right-radius: 0;
+         }
+        .preview-name {
+            font-weight: 500;
+            color: var(--text-color);
+            flex-grow: 1; /* Allow name to take available space */
+            margin-right: 15px; /* Space between name and ID */
+            overflow: hidden; /* Prevent long names breaking layout */
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .preview-id {
+            font-size: 0.9em;
+            font-weight: 500;
+            color: var(--secondary-color);
+            background-color: var(--light-gray);
+            padding: 3px 8px;
+            border-radius: 4px;
+            white-space: nowrap; /* Ensure ID doesn't wrap */
         }
 
-        /* Details Row Styles */
-        .details-row {
+        /* Details Section Styles */
+        .details-section {
             display: none; /* Hidden by default */
-            overflow: hidden; /* For transition */
-            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
-            max-height: 0; /* Collapsed state for transition */
-        }
-         .details-row.visible {
-            display: table-row; /* Make visible */
-            max-height: 500px; /* Set a max-height large enough for content */
-        }
-        .details-row td {
+            overflow: hidden;
+            max-height: 0;
+            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out, border 0.4s ease-in-out;
             background-color: var(--light-gray);
-            padding: 20px 25px; /* More padding for details */
-            border-radius: var(--border-radius);
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
-            border-top: 3px solid var(--primary-color); /* Accent line */
-            border-bottom-left-radius: var(--border-radius);
+            border-bottom-left-radius: var(--border-radius); /* Apply radius here */
             border-bottom-right-radius: var(--border-radius);
+             border-top: 1px solid var(--medium-gray); /* Separator from preview */
         }
-        .details-content {
+         .details-section.visible {
+            display: block; /* Make visible */
+            max-height: 500px; /* Set a max-height large enough for content */
+            padding: 20px 25px; /* Padding when visible */
+         }
+        /* Table-like layout for details */
+        .details-table {
             display: grid;
-            grid-template-columns: 150px 1fr; /* Label and Value */
+            grid-template-columns: 120px 1fr; /* Label width fixed */
             gap: 12px 15px;
             align-items: center;
         }
-        .details-content strong {
+        .details-table strong {
             font-weight: 600;
             color: var(--dark-gray);
             text-align: right;
             font-size: 0.9em;
         }
-        .details-content span, .details-content a {
+        .details-table span, .details-table a {
             font-size: 0.95em;
             word-break: break-all;
             color: var(--text-color);
         }
-        .details-content a {
+        .details-table a {
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
         }
-        .details-content a:hover { text-decoration: underline; }
-        .details-content .actions {
+        .details-table a:hover { text-decoration: underline; }
+        .details-actions {
             grid-column: 1 / -1; /* Span both columns */
             margin-top: 15px;
             padding-top: 15px;
             border-top: 1px solid var(--medium-gray);
-            text-align: left; /* Align buttons left */
+            text-align: left;
         }
-        .details-content .actions button { font-size: 0.9em; padding: 8px 18px; }
+        .details-actions button { font-size: 0.9em; padding: 8px 18px; }
 
-        /* Login Form */
-        .login-form {
-            max-width: 400px;
-            margin: 60px auto;
-            padding: 35px;
-        }
+        /* Login Form - unchanged */
+        .login-form { max-width: 400px; margin: 60px auto; padding: 35px; }
         .login-form h2 { margin-top: 0; color: var(--dark-gray);}
 
-        /* Home Link */
-        .home-link {
-            display: block;
-            text-align: center;
-            margin-top: 40px;
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 500;
-        }
+        /* Home Link - unchanged */
+        .home-link { display: block; text-align: center; margin-top: 40px; color: var(--primary-color); text-decoration: none; font-weight: 500; }
         .home-link:hover { text-decoration: underline; }
 
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
-            .container { padding: 20px; margin: 15px; }
-            h1 { font-size: 1.8em; }
+            .container { padding: 15px; margin: 10px; max-width: 100%; }
+            h1 { font-size: 1.7em; }
             h2 { font-size: 1.3em; }
-            th, td { padding: 10px 12px; font-size: 0.9em;}
-            button { padding: 10px 18px; font-size: 0.95em; }
-            input[type="text"], input[type="password"], input[type="url"], select { padding: 10px; }
-            .logout-btn { float: none; display: block; width: 100%; margin: 15px auto 10px; text-align: center; }
-            .details-content { grid-template-columns: 1fr; } /* Stack details */
-            .details-content strong { text-align: left; margin-bottom: -5px;}
-             .details-content .actions { text-align: center; }
-             .details-content .actions button { display: block; width: 80%; margin: 8px auto; }
-             .details-content .actions form { display: block; margin: 0 auto; }
+            button { padding: 10px 16px; font-size: 0.95em; }
+            .logout-btn { float: none; display: block; width: calc(100% - 40px); margin: 15px auto 10px; text-align: center; }
+
+            .preview-row { padding: 10px 12px; }
+            .preview-name { font-size: 0.95em; }
+            .preview-id { font-size: 0.85em; padding: 2px 6px; }
+
+            .details-section.visible { padding: 15px; }
+            .details-table { grid-template-columns: 1fr; } /* Stack details */
+            .details-table strong { text-align: left; margin-bottom: -5px; font-size: 0.85em; }
+            .details-table span, .details-table a { font-size: 0.9em; }
+             .details-actions { text-align: center; }
+             .details-actions button { display: block; width: 80%; margin: 8px auto; }
+             .details-actions form { display: block; margin: 0 auto; }
              .delete-btn { margin-left: 0; }
              .cancel-btn { margin-left: 0; }
-
-            /* Mobile Table - Still using block display for structure */
-            table, thead, tbody, th, td, tr { display: block; }
-            thead tr { position: absolute; top: -9999px; left: -9999px; }
-            tr { border: none; margin-bottom: 0; } /* Remove border from tr */
-            tr.channel-row {
-                 margin-bottom: 10px; /* Space between channel items */
-                 border: 1px solid var(--medium-gray);
-                 border-radius: var(--border-radius);
-                 box-shadow: none; /* Simpler shadow on mobile */
-            }
-            tr.category-header td { padding: 15px 10px; text-align: center; }
-            tr.channel-row td {
-                border: none;
-                border-bottom: 1px solid var(--light-gray);
-                position: relative;
-                padding-left: 45%;
-                min-height: 40px;
-                display: flex;
-                align-items: center;
-                background: none; /* Remove background from td */
-                border-radius: 0; /* Remove radius from td */
-            }
-             tr.channel-row td:last-child { border-bottom: none; } /* No border on last cell */
-
-            td:before {
-                position: absolute;
-                top: 50%;
-                transform: translateY(-50%);
-                left: 10px;
-                width: 40%;
-                padding-right: 10px;
-                white-space: nowrap;
-                text-align: left;
-                font-weight: 600;
-                content: attr(data-label);
-                font-size: 0.85em;
-                color: var(--dark-gray);
-            }
-             /* Labels for Mobile Table */
-            td[data-label="ID"]:before { content: "ID"; }
-            td[data-label="Name"]:before { content: "Name"; }
-            td[data-label="Category"]:before { content: "Category"; }
-
-            /* Details Row on Mobile */
-            .details-row { max-height: 0; } /* Start collapsed */
-            .details-row.visible { max-height: 600px; /* Adjust as needed */ }
-            .details-row td {
-                border: none;
-                border-top: 1px solid var(--medium-gray); /* Separator line */
-                padding: 15px;
-                border-radius: 0;
-                box-shadow: none;
-                background-color: var(--light-gray);
-                border-bottom-left-radius: var(--border-radius); /* Keep bottom radius */
-                 border-bottom-right-radius: var(--border-radius);
-            }
-            .details-row td:before { display: none; } /* Hide labels in details */
-            .details-content strong { margin-bottom: 2px; }
-             .details-content .actions button { width: auto; display: inline-block; margin: 5px; }
-             .details-content .actions form { display: inline-block; }
-             .details-content .actions { text-align: left; }
         }
 
     </style>
@@ -332,7 +252,7 @@
     <div class="container">
         <h1>IPTV Multi Channel Proxy Admin</h1>
 
-        {# Flash messages section #}
+        {# Flash messages #}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <ul class="flash-messages">
@@ -350,14 +270,12 @@
             </form>
             <h2>Manage Channels</h2>
 
-            {# Add/Update Channel Form #}
+            {# Add/Update Channel Form - unchanged #}
             <form id="channel-form" action="{{ url_for('add_or_update_channel') }}" method="post" class="admin-form">
                  <label for="channel_id">Channel ID (only numbers):</label>
                  <input type="text" id="channel_id" name="channel_id" pattern="[0-9]+" title="Only numbers allowed." required>
-
                  <label for="channel_name">Channel Name:</label>
                  <input type="text" id="channel_name" name="channel_name" required>
-
                  <label for="category">Category:</label>
                  <select id="category" name="category" required>
                      <option value="" disabled selected>-- Select Category --</option>
@@ -367,50 +285,46 @@
                          {% endfor %}
                      {% endif %}
                  </select>
-
                  <label for="source_url">Source M3U8 URL:</label>
                  <input type="url" id="source_url" name="source_url" placeholder="e.g., http://example.com/stream.m3u8" required>
-
                  <button type="submit" id="submit_button">Add Channel</button>
                  <button type="button" onclick="resetForm()" class="cancel-btn">Cancel Edit</button>
             </form>
 
             <h2>Current Channels</h2>
             {% if channels %}
-                <table>
-                    {# Removed thead as we use category headers and card-like rows #}
-                    <tbody>
-                        {# Group channels by category #}
-                        {% set sorted_channels = channels.items()|sort(attribute='1.category')|sort(attribute='1.name') %}
-                        {% set current_category = '' %}
-                        {% for channel_id, info in sorted_channels %}
-                            {# Display category header #}
-                            {% if info.get('category', 'N/A') != current_category %}
-                                {% set current_category = info.get('category', 'N/A') %}
-                                <tr class="category-header">
-                                    {# Span across columns (relevant for desktop view if thead existed) #}
-                                    {# On mobile 'display:block' ignores colspan #}
-                                    <td colspan="3">{{ current_category }}</td>
-                                </tr>
-                            {% endif %}
+                <div class="channel-list-container">
+                    {# Group channels by category #}
+                    {% set sorted_channels = channels.items()|sort(attribute='1.category')|sort(attribute='1.name') %}
+                    {% set current_category = '' %}
+                    {% for channel_id, info in sorted_channels %}
+                        {# Display category header #}
+                        {% if info.get('category', 'N/A') != current_category %}
+                            {% set current_category = info.get('category', 'N/A') %}
+                            <div class="category-header">{{ current_category }}</div>
+                            <ul class="channel-list"> {# Start a new list for each category #}
+                        {% endif %}
 
-                            {# Main channel preview row (clickable) #}
-                            <tr class="channel-row" onclick="toggleDetails('details-{{ channel_id }}', this)">
-                                <td data-label="ID">{{ channel_id }}</td>
-                                <td data-label="Name">{{ info.get('name', 'N/A') }}</td>
-                                <td data-label="Category">{{ info.get('category', 'N/A') }}</td>
-                            </tr>
-                            {# Hidden details row #}
-                            <tr class="details-row" id="details-{{ channel_id }}">
-                                <td colspan="3"> {# Spans across all columns for layout #}
-                                    <div class="details-content">
+                            <li class="channel-item">
+                                {# Compact preview row (clickable) #}
+                                <div class="preview-row" onclick="toggleDetails('details-{{ channel_id }}', this)">
+                                    <span class="preview-name">{{ info.get('name', 'N/A') }}</span>
+                                    <span class="preview-id">{{ channel_id }}</span>
+                                </div>
+                                {# Hidden details section with table-like structure #}
+                                <div class="details-section" id="details-{{ channel_id }}">
+                                    <div class="details-table">
+                                        {# ADDED Category to details #}
+                                        <strong>Category:</strong>
+                                        <span>{{ info.get('category', 'N/A') }}</span>
+
                                         <strong>Source URL:</strong>
                                         <span>{{ info.source_url }}</span>
 
                                         <strong>Proxy URL:</strong>
-                                        <span><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank">/live/{{ channel_id }}.m3u8</a></span>
+                                        <span><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank" onclick="event.stopPropagation()">/live/{{ channel_id }}.m3u8</a></span>
 
-                                        <div class="actions">
+                                        <div class="details-actions">
                                             {# Edit Button #}
                                             <button type="button"
                                                     class="edit-btn"
@@ -427,34 +341,44 @@
                                             </form>
                                         </div>
                                     </div>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                                </div>
+                            </li>
+
+                        {# Close the list if it's the last item or category changes next #}
+                        {% set next_item = loop.index < loop.length %}
+                        {% if not next_item or (next_item and channels[loop.index].get('category', 'N/A') != current_category) %}
+                            </ul>
+                        {% endif %}
+
+                    {% endfor %}
+                </div>
             {% else %}
                 <p style="text-align: center; color: var(--secondary-color); margin-top: 30px;">No channels configured yet, or failed to load channels from the database API.</p>
             {% endif %}
 
             <script>
-                function toggleDetails(detailsId, rowElement) {
-                    const detailsRow = document.getElementById(detailsId);
-                    if (detailsRow) {
-                         // Optional: Hide other open details rows first
-                         document.querySelectorAll('.details-row.visible').forEach(openRow => {
-                             if (openRow.id !== detailsId) {
-                                 openRow.classList.remove('visible');
-                                 // Also remove active class from the corresponding channel row
-                                 openRow.previousElementSibling.classList.remove('active');
-                             }
-                         });
+                function toggleDetails(detailsId, previewRowElement) {
+                    const detailsSection = document.getElementById(detailsId);
+                    if (detailsSection) {
+                        // Hide other open details sections first
+                        document.querySelectorAll('.details-section.visible').forEach(openSection => {
+                            if (openSection.id !== detailsId) {
+                                openSection.classList.remove('visible');
+                                // Remove active class from the corresponding preview row
+                                const correspondingPreview = openSection.previousElementSibling;
+                                if (correspondingPreview && correspondingPreview.classList.contains('preview-row')) {
+                                    correspondingPreview.classList.remove('active');
+                                }
+                            }
+                        });
 
                         // Toggle visibility using class for transition
-                        detailsRow.classList.toggle('visible');
-                        // Optional: add an active class to the clicked row for styling
-                        if (rowElement) {
-                            rowElement.classList.toggle('active', detailsRow.classList.contains('visible'));
-                         }
+                        detailsSection.classList.toggle('visible');
+
+                        // Toggle active class on the clicked preview row
+                        if (previewRowElement) {
+                            previewRowElement.classList.toggle('active', detailsSection.classList.contains('visible'));
+                        }
                     }
                  }
 
@@ -470,18 +394,20 @@
                     document.getElementById('source_url').value = url || '';
 
                     document.getElementById('submit_button').textContent = 'Update Channel';
-                    document.getElementById('channel_id').readOnly = true;
-                    document.getElementById('channel_id').style.backgroundColor = 'var(--light-gray)';
-                    document.getElementById('channel_id').style.cursor = 'not-allowed';
+                    const channelIdInput = document.getElementById('channel_id');
+                    channelIdInput.readOnly = true;
+                    channelIdInput.style.backgroundColor = 'var(--light-gray)';
+                    channelIdInput.style.cursor = 'not-allowed';
 
                     document.getElementById('channel-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                    // Close the details row after clicking edit
-                    const detailsRow = document.getElementById(`details-${id}`);
-                    if (detailsRow && detailsRow.classList.contains('visible')) {
-                         detailsRow.classList.remove('visible');
-                         if (detailsRow.previousElementSibling) {
-                             detailsRow.previousElementSibling.classList.remove('active');
+                    // Find and close the details section after clicking edit
+                    const detailsSection = document.getElementById(`details-${id}`);
+                     if (detailsSection && detailsSection.classList.contains('visible')) {
+                         detailsSection.classList.remove('visible');
+                         const previewRow = detailsSection.previousElementSibling;
+                         if (previewRow && previewRow.classList.contains('preview-row')) {
+                            previewRow.classList.remove('active');
                          }
                     }
                  }
@@ -496,18 +422,19 @@
                     channelIdInput.style.cursor = '';
                     document.getElementById('category').value = "";
 
-                    // Hide all details rows
-                    document.querySelectorAll('.details-row.visible').forEach(row => {
-                         row.classList.remove('visible');
-                          if (row.previousElementSibling) {
-                             row.previousElementSibling.classList.remove('active');
+                    // Hide all details sections
+                    document.querySelectorAll('.details-section.visible').forEach(section => {
+                         section.classList.remove('visible');
+                         const previewRow = section.previousElementSibling;
+                         if (previewRow && previewRow.classList.contains('preview-row')) {
+                            previewRow.classList.remove('active');
                          }
                     });
                 }
             </script>
 
         {% else %}
-            {# Login Form #}
+            {# Login Form - unchanged #}
             <form action="{{ url_for('admin_login') }}" method="post" class="login-form admin-form">
                  <h2>Admin Login</h2>
                  <label for="password">Password:</label>
