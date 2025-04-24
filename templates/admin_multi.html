@@ -5,29 +5,99 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - Multi Channel Proxy</title>
     <style>
-        body { font-family: sans-serif; margin: 20px; background-color: #f9f9f9; }
-        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h1, h2 { text-align: center; color: #333; }
-        .flash-messages { list-style: none; padding: 0; margin-bottom: 15px; }
-        .flash-messages li { padding: 10px 15px; margin-bottom: 10px; border-radius: 4px; }
-        .flash-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .flash-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-        form { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #fefefe; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; }
-        input[type="text"], input[type="password"], input[type="url"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
-        button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f0f2f5; color: #333; }
+        .container { max-width: 900px; margin: 20px auto; background: #fff; padding: 25px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1, h2 { text-align: center; color: #1a73e8; margin-bottom: 20px; }
+        h2 { margin-top: 30px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .flash-messages { list-style: none; padding: 0; margin-bottom: 20px; }
+        .flash-messages li { padding: 12px 18px; margin-bottom: 10px; border-radius: 5px; border: 1px solid transparent; }
+        .flash-success { background-color: #e6f4ea; color: #155724; border-color: #c3e6cb; }
+        .flash-error { background-color: #f8d7da; color: #721c24; border-color: #f5c6cb; }
+        form { margin-bottom: 25px; padding: 20px; border: 1px solid #e0e0e0; border-radius: 6px; background-color: #fafafa; }
+        label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.95em; color: #555; }
+        input[type="text"], input[type="password"], input[type="url"], select {
+            width: calc(100% - 24px); /* padding এর জন্য জায়গা */
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            transition: border-color 0.2s ease;
+        }
+        input:focus, select:focus { border-color: #007bff; outline: none; box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2); }
+        button { padding: 10px 22px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; transition: background-color 0.2s ease; }
         button:hover { background-color: #0056b3; }
-        button.delete-btn { background-color: #dc3545; margin-left: 10px; }
+        button.delete-btn { background-color: #dc3545; margin-left: 8px; }
         button.delete-btn:hover { background-color: #c82333; }
-        button.logout-btn { background-color: #6c757d; float: right;}
+        button.logout-btn { background-color: #6c757d; float: right; margin-bottom: 15px; }
         button.logout-btn:hover { background-color: #5a6268;}
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; word-break: break-all; }
-        th { background-color: #f2f2f2; }
+        button.cancel-btn { background-color: #ffc107; color: #333; margin-left: 8px;}
+        button.cancel-btn:hover { background-color: #e0a800;}
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        th, td { border: 1px solid #e0e0e0; padding: 12px 15px; text-align: left; word-break: break-word; font-size: 0.9em;}
+        th { background-color: #f8f9fa; font-weight: 600; white-space: nowrap; }
+        tr:nth-child(even) { background-color: #fdfdfd; }
         td form { margin-bottom: 0; padding: 0; border: none; background: none; display: inline;}
-        .login-form { max-width: 400px; margin: 30px auto; }
-        .actions { white-space: nowrap; }
-        .home-link { display: block; text-align: center; margin-top: 20px; }
+        .login-form { max-width: 400px; margin: 40px auto; }
+        .actions { white-space: nowrap; text-align: center; }
+        .actions button { font-size: 0.9em; padding: 6px 12px;}
+        .home-link { display: block; text-align: center; margin-top: 30px; color: #007bff; text-decoration: none; }
+        .home-link:hover { text-decoration: underline; }
+
+        /* মোবাইল ডিভাইসের জন্য */
+        @media (max-width: 768px) {
+            .container { padding: 15px; }
+            th, td { padding: 8px 10px; font-size: 0.85em;}
+            button { padding: 8px 15px; font-size: 0.9em; }
+            .actions button { display: block; margin: 5px auto; width: 80%; }
+            button.delete-btn { margin-left: 0; }
+            button.cancel-btn { margin-left: 0; }
+             .logout-btn { float: none; display: block; width: calc(100% - 24px); margin: 10px auto; }
+             input[type="text"], input[type="password"], input[type="url"], select { width: calc(100% - 24px); }
+        }
+         @media (max-width: 480px) {
+             h1 { font-size: 1.5em; }
+             h2 { font-size: 1.2em; }
+             table, thead, tbody, th, td, tr {
+                display: block;
+            }
+             thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+             tr { border: 1px solid #ccc; margin-bottom: 10px; }
+             td {
+                border: none;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                padding-left: 50%;
+                white-space: normal;
+                text-align:left;
+            }
+            td:before {
+                position: absolute;
+                top: 6px;
+                left: 6px;
+                width: 45%;
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align:left;
+                font-weight: bold;
+                content: attr(data-label); /* ডেটা লেবেল ব্যবহার করুন */
+            }
+            /* টেবিল ডেটা লেবেল সেট করুন */
+            td[data-label="ID"], td[data-label="Name"], td[data-label="Category"], td[data-label="Source URL"], td[data-label="Proxy URL"], td[data-label="Actions"] { padding-left: 50%; }
+            td[data-label="ID"]:before { content: "ID"; }
+            td[data-label="Name"]:before { content: "Name"; }
+            td[data-label="Category"]:before { content: "Category"; }
+            td[data-label="Source URL"]:before { content: "Source URL"; }
+            td[data-label="Proxy URL"]:before { content: "Proxy URL"; }
+            td[data-label="Actions"]:before { content: "Actions"; }
+
+            .actions button { width: auto; display: inline-block; margin: 3px;} /* বাটনগুলো ইনলাইন রাখুন */
+         }
+
     </style>
 </head>
 <body>
@@ -45,20 +115,33 @@
         {% endwith %}
 
         {% if session.logged_in %}
-            <form action="{{ url_for('admin_logout') }}" method="post" style="display: inline;">
+            <form action="{{ url_for('admin_logout') }}" method="post" style="border:none; background: none; padding: 0; margin: 0;">
                  <button type="submit" class="logout-btn">Logout</button>
             </form>
             <h2>Manage Channels</h2>
 
-            <form action="{{ url_for('add_or_update_channel') }}" method="post">
-                 <input type="hidden" name="action" id="form_action" value="add"> <label for="channel_id">Channel ID (only letters/numbers, no spaces):</label>
+            <form id="channel-form" action="{{ url_for('add_or_update_channel') }}" method="post">
+                 <label for="channel_id">Channel ID (only letters/numbers, no spaces):</label>
                  <input type="text" id="channel_id" name="channel_id" pattern="[a-zA-Z0-9]+" title="Only letters and numbers allowed." required>
+
+                 <label for="channel_name">Channel Name:</label>
+                 <input type="text" id="channel_name" name="channel_name" required>
+
+                 <label for="category">Category:</label>
+                 <select id="category" name="category" required>
+                     <option value="" disabled selected>-- Select Category --</option>
+                     {% if categories %}
+                         {% for cat in categories %}
+                         <option value="{{ cat }}">{{ cat }}</option>
+                         {% endfor %}
+                     {% endif %}
+                 </select>
 
                  <label for="source_url">Source M3U8 URL:</label>
                  <input type="url" id="source_url" name="source_url" placeholder="e.g., http://example.com/stream.m3u8" required>
 
                  <button type="submit" id="submit_button">Add Channel</button>
-                 <button type="button" onclick="resetForm()" style="margin-left: 10px; background-color: #ffc107;">Cancel Edit</button>
+                 <button type="button" onclick="resetForm()" class="cancel-btn">Cancel Edit</button>
             </form>
 
             <h2>Current Channels</h2>
@@ -66,21 +149,26 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Channel ID</th>
-                            <th>Source URL</th>
+                            <th>ID</th>
+                            <th>Name</th> <th>Category</th> <th>Source URL</th>
                             <th>Proxy URL</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for channel_id, info in channels.items()|sort %}
+                        {# Sort by category, then by name for display #}
+                        {% for channel_id, info in channels.items()|sort(attribute='category')|sort(attribute='name') %}
                         <tr>
-                            <td>{{ channel_id }}</td>
-                            <td>{{ info.source_url }}</td>
-                            <td><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank">/live/{{ channel_id }}.m3u8</a></td>
-                            <td class="actions">
-                                <button type="button" onclick="editChannel('{{ channel_id }}', '{{ info.source_url }}')">Edit</button>
-                                <form action="{{ url_for('delete_channel', channel_id=channel_id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel_id }}\'?');">
+                            <td data-label="ID">{{ channel_id }}</td>
+                            <td data-label="Name">{{ info.get('name', 'N/A') }}</td> <td data-label="Category">{{ info.get('category', 'N/A') }}</td> <td data-label="Source URL">{{ info.source_url }}</td>
+                            <td data-label="Proxy URL"><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank">/live/{{ channel_id }}.m3u8</a></td>
+                            <td data-label="Actions" class="actions">
+                                {# Escape data properly for JavaScript using tojson filter #}
+                                <button type="button"
+                                        onclick="editChannel('{{ channel_id }}', {{ info.get('name', 'N/A')|tojson }}, {{ info.get('category', 'N/A')|tojson }}, {{ info.source_url|tojson }})">
+                                    Edit
+                                </button>
+                                <form action="{{ url_for('delete_channel', channel_id=channel_id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel_id }}\' ({{ info.get('name', 'N/A') }})?');">
                                     <button type="submit" class="delete-btn">Delete</button>
                                 </form>
                             </td>
@@ -89,29 +177,46 @@
                     </tbody>
                 </table>
             {% else %}
-                <p>No channels configured yet.</p>
+                <p>No channels configured yet, or failed to load channels from the database API.</p>
             {% endif %}
 
             <script>
-                function editChannel(id, url) {
-                    document.getElementById('channel_id').value = id;
-                    document.getElementById('source_url').value = url;
-                    document.getElementById('form_action').value = 'update'; // অ্যাকশন পরিবর্তন করুন
-                    document.getElementById('submit_button').textContent = 'Update Channel';
-                    document.getElementById('channel_id').readOnly = true; // আইডি পরিবর্তন করতে দেবেন না
-                    window.scrollTo(0, 0); // ফর্মের শুরুতে স্ক্রল করুন
+                function escapeHtml(unsafe) {
+                    if (unsafe === null || unsafe === undefined) return '';
+                    return unsafe
+                         .replace(/&/g, "&amp;")
+                         .replace(/</g, "&lt;")
+                         .replace(/>/g, "&gt;")
+                         .replace(/"/g, "&quot;")
+                         .replace(/'/g, "&#039;");
                 }
 
+                function editChannel(id, name, category, url) {
+                    document.getElementById('channel_id').value = id;
+                    // Use the raw values passed (already JSON decoded by tojson)
+                    document.getElementById('channel_name').value = name || ''; // Handle null/undefined
+                    document.getElementById('category').value = category || ''; // Handle null/undefined
+                    document.getElementById('source_url').value = url || '';   // Handle null/undefined
+
+                    document.getElementById('submit_button').textContent = 'Update Channel';
+                    document.getElementById('channel_id').readOnly = true; // আইডি পরিবর্তন করতে দেবেন না
+                    document.getElementById('channel_id').style.backgroundColor = '#eee'; // Indicate read-only
+
+                    // Scroll to the form
+                    document.getElementById('channel-form').scrollIntoView({ behavior: 'smooth' });
+                 }
+
                 function resetForm() {
-                    document.getElementById('channel_id').value = '';
-                    document.getElementById('source_url').value = '';
-                    document.getElementById('form_action').value = 'add'; // অ্যাকশন রিসেট করুন
+                    document.getElementById('channel-form').reset(); // রিসেট ফর্ম
                     document.getElementById('submit_button').textContent = 'Add Channel';
                     document.getElementById('channel_id').readOnly = false; // আইডি আবার এডিট করা যাবে
+                    document.getElementById('channel_id').style.backgroundColor = ''; // Reset background
+                    document.getElementById('category').value = ""; // Ensure category dropdown resets to default
                 }
             </script>
 
         {% else %}
+            {# Login Form remains the same #}
             <form action="{{ url_for('admin_login') }}" method="post" class="login-form">
                  <h2>Admin Login</h2>
                  <label for="password">Password:</label>
