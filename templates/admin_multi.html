@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* --- Root Variables (Same as before) --- */
         :root {
             --primary-color: #4F46E5; /* Indigo */
             --primary-hover: #4338CA;
@@ -33,6 +34,7 @@
             --box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
 
+        /* --- Basic Body Styles (Same as before) --- */
         body {
             font-family: 'Inter', sans-serif;
             margin: 0;
@@ -42,7 +44,7 @@
             line-height: 1.6;
         }
         .container {
-            max-width: 800px; /* Slightly narrower for compact view */
+            max-width: 900px; /* Adjusted width slightly */
             margin: 30px auto;
             background: var(--card-bg);
             padding: 30px 35px;
@@ -65,18 +67,18 @@
             color: var(--dark-gray);
         }
 
-        /* Flash Messages - unchanged */
+        /* --- Flash Messages (Same as before) --- */
         .flash-messages { list-style: none; padding: 0; margin-bottom: 25px; }
         .flash-messages li { padding: 14px 20px; margin-bottom: 12px; border-radius: var(--border-radius); border: 1px solid transparent; font-size: 0.95em; }
         .flash-success { background-color: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
         .flash-error { background-color: var(--error-bg); color: var(--error-text); border-color: var(--error-border); }
 
-        /* Forms - unchanged */
+        /* --- Forms (Same as before) --- */
         form { margin-bottom: 30px; }
-        .admin-form { padding: 25px; border: 1px solid var(--medium-gray); border-radius: var(--border-radius); background-color: #fff; }
+        .admin-form { padding: 25px; border: 1px solid var(--medium-gray); border-radius: var(--border-radius); background-color: #fff; margin-bottom: 40px; }
         label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 0.9em; color: var(--dark-gray); }
         input[type="text"], input[type="password"], input[type="url"], select {
-            width: calc(100% - 24px);
+            width: calc(100% - 26px); /* Adjust for padding */
             padding: 12px;
             margin-bottom: 18px;
             border: 1px solid var(--medium-gray);
@@ -91,8 +93,19 @@
         }
         input[readonly] { background-color: var(--light-gray); cursor: not-allowed; }
 
-        /* Buttons - unchanged */
-        button { padding: 10px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 1em; font-weight: 500; transition: background-color 0.2s ease, transform 0.1s ease; display: inline-flex; align-items: center; gap: 8px; }
+        /* --- Buttons (Same as before) --- */
+        button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
         button:hover { transform: translateY(-1px); }
         button:active { transform: translateY(0); }
         button[type="submit"], .edit-btn { background-color: var(--primary-color); color: white; }
@@ -104,146 +117,195 @@
         .cancel-btn { background-color: var(--warning-color); color: var(--dark-gray); margin-left: 8px;}
         .cancel-btn:hover { background-color: var(--warning-hover);}
 
-        /* Compact List/Table Styles */
+        /* --- List Structure (Replaces Table) --- */
         .channel-list {
-             list-style: none;
-             padding: 0;
-             margin-top: 20px;
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
         }
         .category-header {
             color: var(--primary-color);
             font-weight: 700;
             font-size: 1.2em;
-            padding: 25px 0 10px 0; /* Space above category */
+            padding: 25px 0 10px 0;
             margin-top: 15px;
             border-bottom: 1px solid var(--medium-gray);
+            margin-bottom: 10px;
         }
         .channel-item {
             background-color: var(--card-bg);
-            margin-bottom: 8px; /* Space between items */
+            margin-bottom: 10px;
             border-radius: var(--border-radius);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             transition: box-shadow 0.2s ease;
         }
-         .channel-item:hover {
-             box-shadow: 0 3px 5px rgba(0,0,0,0.08);
-         }
+        .channel-item:hover {
+             box-shadow: var(--box-shadow);
+        }
 
-        /* Preview Row */
+        /* Minimal Preview Row */
         .preview-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 15px; /* Compact padding */
+            padding: 15px 20px;
             cursor: pointer;
-            border-radius: var(--border-radius); /* Apply radius here */
+            border-radius: var(--border-radius); /* Rounded corners for the whole item */
             transition: background-color 0.2s ease;
         }
-        .preview-row:hover {
+         .preview-row:hover {
              background-color: var(--light-gray);
-        }
-         .preview-row.active { /* Style when details are open */
-             background-color: #E0E7FF; /* Light Indigo background */
-             border-bottom-left-radius: 0; /* Remove bottom radius when open */
-             border-bottom-right-radius: 0;
          }
         .preview-name {
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-color);
-            flex-grow: 1; /* Allow name to take available space */
-            margin-right: 15px; /* Space between name and ID */
-            overflow: hidden; /* Prevent long names breaking layout */
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            font-size: 1.05em;
         }
         .preview-id {
             font-size: 0.9em;
-            font-weight: 500;
             color: var(--secondary-color);
             background-color: var(--light-gray);
             padding: 3px 8px;
             border-radius: 4px;
-            white-space: nowrap; /* Ensure ID doesn't wrap */
+            font-weight: 500;
         }
 
-        /* Details Section Styles */
+        /* Details Section (Hidden by default) */
         .details-section {
-            display: none; /* Hidden by default */
-            overflow: hidden;
             max-height: 0;
-            transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out, border 0.4s ease-in-out;
-            background-color: var(--light-gray);
-            border-bottom-left-radius: var(--border-radius); /* Apply radius here */
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out;
+            padding: 0 20px; /* Padding transition */
+            background-color: var(--light-gray); /* Slight background difference */
+            border-bottom-left-radius: var(--border-radius); /* Match item radius */
             border-bottom-right-radius: var(--border-radius);
-             border-top: 1px solid var(--medium-gray); /* Separator from preview */
+            border-top: 1px solid var(--medium-gray); /* Separator line */
         }
-         .details-section.visible {
-            display: block; /* Make visible */
-            max-height: 500px; /* Set a max-height large enough for content */
-            padding: 20px 25px; /* Padding when visible */
+        .details-section.visible {
+            max-height: 700px; /* Adjust as needed */
+            padding: 20px; /* Add padding when visible */
+            border-bottom-left-radius: var(--border-radius);
+            border-bottom-right-radius: var(--border-radius);
+        }
+
+        /* Inner Table for Details */
+        .channel-details-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .channel-details-table th,
+        .channel-details-table td {
+            padding: 10px 5px; /* Reduced padding */
+            text-align: left;
+            border-bottom: 1px solid var(--medium-gray);
+            font-size: 0.95em;
+            vertical-align: top; /* Align top for long content */
+        }
+         .channel-details-table tr:last-child th,
+         .channel-details-table tr:last-child td {
+             border-bottom: none; /* No border on last row */
          }
-        /* Table-like layout for details */
-        .details-table {
-            display: grid;
-            grid-template-columns: 120px 1fr; /* Label width fixed */
-            gap: 12px 15px;
-            align-items: center;
-        }
-        .details-table strong {
+        .channel-details-table th {
             font-weight: 600;
             color: var(--dark-gray);
-            text-align: right;
-            font-size: 0.9em;
+            width: 120px; /* Fixed width for labels */
         }
-        .details-table span, .details-table a {
-            font-size: 0.95em;
-            word-break: break-all;
+        .channel-details-table td {
             color: var(--text-color);
+            word-break: break-all; /* Break long URLs */
         }
-        .details-table a {
+        .channel-details-table td a {
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
         }
-        .details-table a:hover { text-decoration: underline; }
-        .details-actions {
-            grid-column: 1 / -1; /* Span both columns */
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid var(--medium-gray);
-            text-align: left;
+        .channel-details-table td a:hover {
+            text-decoration: underline;
         }
-        .details-actions button { font-size: 0.9em; padding: 8px 18px; }
+        .channel-details-table .actions td {
+             padding-top: 15px;
+        }
+        .channel-details-table .actions button {
+            font-size: 0.9em;
+            padding: 8px 18px;
+        }
+         .channel-details-table .actions form {
+             display: inline-block; /* Keep buttons side-by-side */
+         }
 
-        /* Login Form - unchanged */
-        .login-form { max-width: 400px; margin: 60px auto; padding: 35px; }
+
+        /* --- Login Form (Same as before) --- */
+        .login-form {
+            max-width: 400px;
+            margin: 60px auto;
+            padding: 35px;
+        }
         .login-form h2 { margin-top: 0; color: var(--dark-gray);}
 
-        /* Home Link - unchanged */
-        .home-link { display: block; text-align: center; margin-top: 40px; color: var(--primary-color); text-decoration: none; font-weight: 500; }
+        /* --- Home Link (Same as before) --- */
+        .home-link {
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
         .home-link:hover { text-decoration: underline; }
 
-        /* Mobile Responsiveness */
+        /* --- Mobile Responsiveness --- */
         @media (max-width: 768px) {
-            .container { padding: 15px; margin: 10px; max-width: 100%; }
+            .container { padding: 15px; margin: 10px; }
             h1 { font-size: 1.7em; }
-            h2 { font-size: 1.3em; }
-            button { padding: 10px 16px; font-size: 0.95em; }
-            .logout-btn { float: none; display: block; width: calc(100% - 40px); margin: 15px auto 10px; text-align: center; }
+            h2 { font-size: 1.25em; }
+            .logout-btn { float: none; display: block; width: 95%; margin: 15px auto 10px; text-align: center; }
+            .admin-form { padding: 20px; }
+            input[type="text"], input[type="password"], input[type="url"], select { width: calc(100% - 24px); }
 
-            .preview-row { padding: 10px 12px; }
-            .preview-name { font-size: 0.95em; }
-            .preview-id { font-size: 0.85em; padding: 2px 6px; }
+            .preview-row { padding: 12px 15px; }
+            .preview-name { font-size: 1em; }
+            .preview-id { font-size: 0.8em; padding: 2px 6px; }
 
             .details-section.visible { padding: 15px; }
-            .details-table { grid-template-columns: 1fr; } /* Stack details */
-            .details-table strong { text-align: left; margin-bottom: -5px; font-size: 0.85em; }
-            .details-table span, .details-table a { font-size: 0.9em; }
-             .details-actions { text-align: center; }
-             .details-actions button { display: block; width: 80%; margin: 8px auto; }
-             .details-actions form { display: block; margin: 0 auto; }
-             .delete-btn { margin-left: 0; }
-             .cancel-btn { margin-left: 0; }
+
+            /* Stack table cells on mobile */
+            .channel-details-table th,
+            .channel-details-table td {
+                 display: block;
+                 width: 100%;
+                 box-sizing: border-box; /* Include padding in width */
+                 border-bottom: none; /* Remove bottom border between stacked cells */
+            }
+            .channel-details-table th {
+                 text-align: left;
+                 font-size: 0.85em;
+                 padding-bottom: 2px; /* Space below label */
+                 color: var(--secondary-color);
+                 font-weight: 500;
+                 background-color: transparent;
+            }
+            .channel-details-table td {
+                 padding-top: 0; /* Remove top padding */
+                 padding-left: 0; /* Remove left padding */
+                 margin-bottom: 10px; /* Space between stacked items */
+                 border-bottom: 1px solid var(--medium-gray); /* Add border below value */
+            }
+            .channel-details-table tr:last-child td {
+                 border-bottom: none; /* No border on very last item */
+                 margin-bottom: 0;
+            }
+
+            .channel-details-table .actions td { padding-top: 10px; }
+             .channel-details-table .actions button,
+             .channel-details-table .actions form {
+                  display: block; /* Stack buttons */
+                  width: 100%;
+                  margin-bottom: 8px;
+                  text-align: center;
+             }
+             .channel-details-table .actions form { margin-left: 0; }
+              .delete-btn { margin-left: 0; } /* Remove margin */
+
         }
 
     </style>
@@ -252,7 +314,7 @@
     <div class="container">
         <h1>IPTV Multi Channel Proxy Admin</h1>
 
-        {# Flash messages #}
+        {# --- Flash messages section --- #}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <ul class="flash-messages">
@@ -264,18 +326,20 @@
         {% endwith %}
 
         {% if session.logged_in %}
-            {# Logout button #}
+            {# --- Logout button --- #}
             <form action="{{ url_for('admin_logout') }}" method="post" style="border:none; background: none; padding: 0; margin: 0;">
                  <button type="submit" class="logout-btn">Logout</button>
             </form>
             <h2>Manage Channels</h2>
 
-            {# Add/Update Channel Form - unchanged #}
+            {# --- Add/Update Channel Form --- #}
             <form id="channel-form" action="{{ url_for('add_or_update_channel') }}" method="post" class="admin-form">
                  <label for="channel_id">Channel ID (only numbers):</label>
                  <input type="text" id="channel_id" name="channel_id" pattern="[0-9]+" title="Only numbers allowed." required>
+
                  <label for="channel_name">Channel Name:</label>
                  <input type="text" id="channel_name" name="channel_name" required>
+
                  <label for="category">Category:</label>
                  <select id="category" name="category" required>
                      <option value="" disabled selected>-- Select Category --</option>
@@ -285,15 +349,18 @@
                          {% endfor %}
                      {% endif %}
                  </select>
+
                  <label for="source_url">Source M3U8 URL:</label>
                  <input type="url" id="source_url" name="source_url" placeholder="e.g., http://example.com/stream.m3u8" required>
+
                  <button type="submit" id="submit_button">Add Channel</button>
                  <button type="button" onclick="resetForm()" class="cancel-btn">Cancel Edit</button>
             </form>
 
             <h2>Current Channels</h2>
             {% if channels %}
-                <div class="channel-list-container">
+                {# Use UL for list structure instead of table #}
+                <ul class="channel-list">
                     {# Group channels by category #}
                     {% set sorted_channels = channels.items()|sort(attribute='1.category')|sort(attribute='1.name') %}
                     {% set current_category = '' %}
@@ -301,30 +368,43 @@
                         {# Display category header #}
                         {% if info.get('category', 'N/A') != current_category %}
                             {% set current_category = info.get('category', 'N/A') %}
-                            <div class="category-header">{{ current_category }}</div>
-                            <ul class="channel-list"> {# Start a new list for each category #}
+                            <li class="category-header">{{ current_category }}</li>
                         {% endif %}
 
-                            <li class="channel-item">
-                                {# Compact preview row (clickable) #}
-                                <div class="preview-row" onclick="toggleDetails('details-{{ channel_id }}', this)">
-                                    <span class="preview-name">{{ info.get('name', 'N/A') }}</span>
-                                    <span class="preview-id">{{ channel_id }}</span>
-                                </div>
-                                {# Hidden details section with table-like structure #}
-                                <div class="details-section" id="details-{{ channel_id }}">
-                                    <div class="details-table">
-                                        {# ADDED Category to details #}
-                                        <strong>Category:</strong>
-                                        <span>{{ info.get('category', 'N/A') }}</span>
+                        {# Channel Item Wrapper #}
+                        <li class="channel-item">
+                            {# Minimal Preview Row (Clickable) #}
+                            <div class="preview-row" onclick="toggleDetails('details-{{ channel_id }}', this)">
+                                <span class="preview-name">{{ info.get('name', 'N/A') }}</span>
+                                <span class="preview-id">{{ channel_id }}</span>
+                            </div>
 
-                                        <strong>Source URL:</strong>
-                                        <span>{{ info.source_url }}</span>
-
-                                        <strong>Proxy URL:</strong>
-                                        <span><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank" onclick="event.stopPropagation()">/live/{{ channel_id }}.m3u8</a></span>
-
-                                        <div class="details-actions">
+                            {# Hidden Details Section #}
+                            <div class="details-section" id="details-{{ channel_id }}">
+                                <table class="channel-details-table">
+                                    <tr>
+                                        <th>Name</th>
+                                        <td>{{ info.get('name', 'N/A') }}</td>
+                                    </tr>
+                                     <tr>
+                                        <th>ID</th>
+                                        <td>{{ channel_id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Category</th>
+                                        <td>{{ info.get('category', 'N/A') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Source URL</th>
+                                        <td>{{ info.source_url }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Proxy URL</th>
+                                        <td><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank">/live/{{ channel_id }}.m3u8</a></td>
+                                    </tr>
+                                    <tr class="actions">
+                                        <th>Actions</th>
+                                        <td>
                                             {# Edit Button #}
                                             <button type="button"
                                                     class="edit-btn"
@@ -336,49 +416,41 @@
                                                 Edit
                                             </button>
                                             {# Delete Button Form #}
-                                            <form action="{{ url_for('delete_channel', channel_id=channel_id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel_id }}\' ({{ info.get('name', 'N/A') }})?');" style="display: inline;" onclick="event.stopPropagation();">
+                                            <form action="{{ url_for('delete_channel', channel_id=channel_id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel_id }}\' ({{ info.get('name', 'N/A') }})?');" onclick="event.stopPropagation();">
                                                 <button type="submit" class="delete-btn">Delete</button>
                                             </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-
-                        {# Close the list if it's the last item or category changes next #}
-                        {% set next_item = loop.index < loop.length %}
-                        {% if not next_item or (next_item and channels[loop.index].get('category', 'N/A') != current_category) %}
-                            </ul>
-                        {% endif %}
-
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </li>
                     {% endfor %}
-                </div>
+                </ul>
             {% else %}
-                <p style="text-align: center; color: var(--secondary-color); margin-top: 30px;">No channels configured yet, or failed to load channels from the database API.</p>
+                <p style="text-align: center; color: var(--secondary-color); margin-top: 30px;">No channels configured yet.</p>
             {% endif %}
 
+            {# --- JavaScript (Minor changes for context) --- #}
             <script>
-                function toggleDetails(detailsId, previewRowElement) {
+                function toggleDetails(detailsId, previewElement) {
                     const detailsSection = document.getElementById(detailsId);
-                    if (detailsSection) {
-                        // Hide other open details sections first
-                        document.querySelectorAll('.details-section.visible').forEach(openSection => {
-                            if (openSection.id !== detailsId) {
-                                openSection.classList.remove('visible');
-                                // Remove active class from the corresponding preview row
-                                const correspondingPreview = openSection.previousElementSibling;
-                                if (correspondingPreview && correspondingPreview.classList.contains('preview-row')) {
-                                    correspondingPreview.classList.remove('active');
-                                }
-                            }
-                        });
+                    const channelItem = previewElement.closest('.channel-item'); // Get parent li
+
+                    if (detailsSection && channelItem) {
+                         // Hide other open details sections first
+                         document.querySelectorAll('.details-section.visible').forEach(openSection => {
+                             if (openSection.id !== detailsId) {
+                                 openSection.classList.remove('visible');
+                                 // Remove active class from the corresponding item if needed
+                                 const correspondingItem = openSection.closest('.channel-item');
+                                 if(correspondingItem) correspondingItem.classList.remove('active');
+                             }
+                         });
 
                         // Toggle visibility using class for transition
                         detailsSection.classList.toggle('visible');
-
-                        // Toggle active class on the clicked preview row
-                        if (previewRowElement) {
-                            previewRowElement.classList.toggle('active', detailsSection.classList.contains('visible'));
-                        }
+                        // Optional: add an active class to the item for styling
+                        channelItem.classList.toggle('active', detailsSection.classList.contains('visible'));
                     }
                  }
 
@@ -388,11 +460,11 @@
                     const category = buttonElement.getAttribute('data-category');
                     const url = buttonElement.getAttribute('data-url');
 
+                    // --- Form filling (Same as before) ---
                     document.getElementById('channel_id').value = id || '';
                     document.getElementById('channel_name').value = name || '';
                     document.getElementById('category').value = category || '';
                     document.getElementById('source_url').value = url || '';
-
                     document.getElementById('submit_button').textContent = 'Update Channel';
                     const channelIdInput = document.getElementById('channel_id');
                     channelIdInput.readOnly = true;
@@ -401,14 +473,12 @@
 
                     document.getElementById('channel-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                    // Find and close the details section after clicking edit
-                    const detailsSection = document.getElementById(`details-${id}`);
+                    // --- Close the details section after clicking edit ---
+                    const detailsSection = buttonElement.closest('.details-section');
                      if (detailsSection && detailsSection.classList.contains('visible')) {
                          detailsSection.classList.remove('visible');
-                         const previewRow = detailsSection.previousElementSibling;
-                         if (previewRow && previewRow.classList.contains('preview-row')) {
-                            previewRow.classList.remove('active');
-                         }
+                         const channelItem = detailsSection.closest('.channel-item');
+                         if(channelItem) channelItem.classList.remove('active');
                     }
                  }
 
@@ -422,19 +492,17 @@
                     channelIdInput.style.cursor = '';
                     document.getElementById('category').value = "";
 
-                    // Hide all details sections
+                    // --- Hide all details sections ---
                     document.querySelectorAll('.details-section.visible').forEach(section => {
                          section.classList.remove('visible');
-                         const previewRow = section.previousElementSibling;
-                         if (previewRow && previewRow.classList.contains('preview-row')) {
-                            previewRow.classList.remove('active');
-                         }
+                          const channelItem = section.closest('.channel-item');
+                         if(channelItem) channelItem.classList.remove('active');
                     });
                 }
             </script>
 
         {% else %}
-            {# Login Form - unchanged #}
+            {# --- Login Form --- #}
             <form action="{{ url_for('admin_login') }}" method="post" class="login-form admin-form">
                  <h2>Admin Login</h2>
                  <label for="password">Password:</label>
@@ -443,6 +511,7 @@
              </form>
         {% endif %}
 
+         {# --- Home Link --- #}
          <p class="home-link">
             <a href="{{ url_for('index') }}">View Available Channels</a>
         </p>
