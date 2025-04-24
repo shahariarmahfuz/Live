@@ -12,7 +12,7 @@ app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'a_very_secret_key_for_multi
 ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'password123')
 
 # ডাটাবেস সার্ভারের URL কনফিগার করুন (এনভায়রনমেন্ট ভেরিয়েবল থেকে নেওয়া ভালো)
-DATABASE_API_URL = os.environ.get('DATABASE_API_URL', 'http://localhost:5001/api/channels') # ডাটাবেস সার্ভারের সঠিক IP/ডোমেইন ও পোর্ট দিন
+DATABASE_API_URL = os.environ.get('DATABASE_API_URL', 'https://b221a1f0-d988-470a-8894-5d7604cf696a-00-83i2mjzekvyp.sisko.replit.dev/api/channels') # ডাটাবেস সার্ভারের সঠিক IP/ডোমেইন ও পোর্ট দিন
 
 # --- রিমোট ডাটাবেস সার্ভারের সাথে যোগাযোগের ফাংশন ---
 
