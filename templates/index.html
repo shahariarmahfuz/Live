@@ -1,41 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn"> {# ভাষা পরিবর্তন #}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Available Channels</title>
+    <title>উপলব্ধ চ্যানেল তালিকা</title> {# টাইটেল পরিবর্তন #}
      <style>
-        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f4; }
-        .container { max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #333; }
-        ul { list-style: none; padding: 0; }
-        li { background: #eee; margin-bottom: 10px; padding: 15px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;}
-        li strong { color: #0056b3; margin-right: 10px; }
-        li span { word-break: break-all; } /* Channel ID র জন্য */
-        li a { color: #1a73e8; text-decoration: none; display: inline-block; margin-top: 5px; word-break: break-all; background-color: #e9f5ff; padding: 5px 10px; border-radius: 3px; border: 1px solid #b3d7ff;}
-        li a:hover { text-decoration: underline; background-color: #d0e7ff;}
-        p.no-channels { text-align: center; color: #777; }
-        .admin-link { text-align: center; margin-top: 30px; font-size: 0.9em; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 15px;
+            background-color: #eef1f5; /* হালকা ব্যাকগ্রাউন্ড */
+        }
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50; /* গাঢ় নীল */
+            margin-bottom: 30px;
+            font-size: 1.8em;
+        }
+        .category-section {
+            margin-bottom: 30px;
+            border-bottom: 1px solid #ddd; /* ক্যাটাগরির নিচে দাগ */
+            padding-bottom: 20px;
+        }
+         .category-section:last-child {
+             border-bottom: none; /* শেষ ক্যাটাগরির নিচে দাগ থাকবে না */
+             margin-bottom: 0;
+             padding-bottom: 0;
+         }
+        h2.category-title {
+            background-color: #3498db; /* ক্যাটাগরি শিরোনামের ব্যাকগ্রাউন্ড */
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+            cursor: pointer; /* ক্লিকের ইঙ্গিত */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+         h2.category-title .toggle-icon::before {
+             content: '▼'; /* ডিফল্ট আইকন (বন্ধ) */
+             font-size: 0.8em;
+             margin-left: 10px;
+         }
+         h2.category-title.open .toggle-icon::before {
+              content: '▲'; /* খোলা অবস্থার আইকন */
+          }
+        .channel-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            /* display: none; */ /* ডিফল্টভাবে বন্ধ থাকবে */
+            /* overflow: hidden; */ /* অ্যানিমেশনের জন্য */
+            /* transition: max-height 0.5s ease-out; */ /* স্মুথ অ্যানিমেশন */
+            /* max-height: 0; */
+        }
+        /* .channel-list.open { */
+            /* display: block; */ /* খোলা অবস্থায় দেখাবে */
+           /* max-height: 1000px; */ /* একটি বড় মান দিন যেন সব আইটেম দেখা যায় */
+       /* } */
+
+        .channel-item {
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 12px 15px;
+            border-radius: 4px;
+            border: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* ছোট স্ক্রিনে নিচে নামবে */
+            transition: background-color 0.2s ease;
+        }
+        .channel-item:hover {
+            background-color: #f1f1f1;
+        }
+        .channel-name {
+            color: #34495e; /* গাঢ় টেক্সট */
+            font-weight: 600; /* কিছুটা বোল্ড */
+            margin-right: 15px;
+            flex-grow: 1; /* নামের জন্য জায়গা নেবে */
+             word-break: break-word; /* লম্বা নাম ভেঙে যাবে */
+        }
+        .channel-id {
+            font-size: 0.8em;
+            color: #7f8c8d; /* হালকা রঙ */
+            margin-left: 5px;
+        }
+        .channel-link a {
+            color: #2980b9; /* লিঙ্ক রঙ */
+            text-decoration: none;
+            font-weight: bold;
+            padding: 6px 12px;
+            border-radius: 4px;
+            background-color: #ecf0f1;
+            border: 1px solid #bdc3c7;
+            white-space: nowrap; /* লিঙ্ক টেক্সট এক লাইনে */
+            transition: background-color 0.2s ease, color 0.2s ease;
+            display: inline-block;
+            margin-top: 5px; /* ছোট স্ক্রিনে নাম থেকে নিচে নামলে */
+        }
+        .channel-link a:hover {
+            background-color: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+        p.no-channels {
+            text-align: center;
+            color: #777;
+            padding: 20px;
+            font-size: 1.1em;
+        }
+        .admin-link {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.95em;
+        }
+        .admin-link a {
+            color: #555;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+        }
+        .admin-link a:hover {
+             background-color: #e0e0e0;
+             border-color: #bbb;
+         }
+
+         /* Responsive Design */
+        @media (max-width: 600px) {
+             h1 { font-size: 1.5em; margin-bottom: 20px;}
+             h2.category-title { font-size: 1.1em; padding: 8px 12px;}
+             .channel-item { flex-direction: column; align-items: flex-start;} /* আইটেমগুলো কলামে সাজান */
+             .channel-name { margin-bottom: 5px; margin-right: 0;}
+             .channel-link { margin-top: 8px; width: 100%; text-align: left;}
+             .channel-link a { display: block; text-align: center; } /* লিঙ্ক পুরো প্রস্থ নেবে */
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Available IPTV Channels</h1>
-        {% if available_channels %}
-            <ul>
-                {% for channel_id, proxy_url in available_channels.items()|sort %}
-                    <li>
-                        <span><strong>Channel ID:</strong> {{ channel_id }}</span>
-                        <a href="{{ proxy_url }}" target="_blank" rel="noopener noreferrer">Proxy M3U8 Link</a>
-                    </li>
-                {% endfor %}
-            </ul>
+        <h1>উপলব্ধ IPTV চ্যানেল</h1> {# শিরোনাম পরিবর্তন #}
+
+        {# ক্যাটাগরি অনুযায়ী চ্যানেল প্রদর্শন #}
+        {% if grouped_channels %}
+            {% for category, channels in grouped_channels.items() %}
+                <div class="category-section">
+                    {# ক্যাটাগরি শিরোনামে ক্লিক করে খোলা/বন্ধ করার ব্যবস্থা #}
+                    <h2 class="category-title" onclick="toggleCategory(this)">
+                        {{ category }} ({{ channels|length }}) {# চ্যানেলের সংখ্যা প্রদর্শন #}
+                         <span class="toggle-icon"></span> {# খোলা/বন্ধ করার আইকন #}
+                    </h2>
+                    <ul class="channel-list"> {# ডিফল্টভাবে বন্ধ থাকবে #}
+                        {% for channel in channels %}
+                            <li class="channel-item">
+                                <div class="channel-name">
+                                    {{ channel.name }}
+                                    {# <span class="channel-id">({{ channel.id }})</span> #} {# আইডি দেখানো ঐচ্ছিক #}
+                                </div>
+                                <div class="channel-link">
+                                    <a href="{{ channel.proxy_url }}" target="_blank" rel="noopener noreferrer">M3U8 লিঙ্ক</a> {# লিঙ্ক টেক্সট পরিবর্তন #}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
         {% else %}
-            <p class="no-channels">No channels are currently configured.</p>
+            <p class="no-channels">কোনো চ্যানেল কনফিগার করা নেই।</p> {# বার্তা পরিবর্তন #}
         {% endif %}
+
          <p class="admin-link">
-            <a href="{{ url_for('admin_panel') }}">Admin Panel</a>
+            <a href="{{ url_for('admin_panel') }}">এডমিন প্যানেল</a> {# লিঙ্ক টেক্সট পরিবর্তন #}
         </p>
     </div>
+
+    <script>
+        function toggleCategory(element) {
+            const list = element.nextElementSibling; // h2 এর পরের ul এলিমেন্ট
+            if (list) {
+                // element.classList.toggle('open'); // ক্লাস যোগ/বাদ দিন
+                // list.classList.toggle('open'); // লিস্টে ক্লাস যোগ/বাদ দিন
+
+                // ডিসপ্লে টগল করা সহজ উপায়
+                 if (list.style.display === "block") {
+                     list.style.display = "none";
+                     element.classList.remove('open');
+                 } else {
+                     list.style.display = "block";
+                     element.classList.add('open');
+                 }
+            }
+        }
+
+         // পাতা লোড হওয়ার পর সব ক্যাটাগরি বন্ধ করে দিন (যদি ডিফল্টভাবে খোলা থাকে CSS এ)
+        // document.addEventListener('DOMContentLoaded', function() {
+            // document.querySelectorAll('.channel-list').forEach(list => {
+                // list.style.maxHeight = '0'; // CSS এ max-height ব্যবহার করলে
+                // list.style.display = 'none'; // CSS এ display ব্যবহার করলে
+            // });
+             // document.querySelectorAll('.category-title').forEach(title => {
+                 // title.classList.remove('open');
+             // });
+         // });
+    </script>
+
 </body>
 </html>
