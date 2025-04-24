@@ -5,34 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Channels</title>
      <style>
-        body { font-family: sans-serif; padding: 20px; background-color: #f4f4f4; }
-        .container { max-width: 700px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #333; }
-        ul { list-style: none; padding: 0; }
-        li { background: #eee; margin-bottom: 10px; padding: 15px; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;}
-        li strong { color: #0056b3; margin-right: 10px; }
-        li span { word-break: break-all; } /* Channel ID র জন্য */
-        li a { color: #1a73e8; text-decoration: none; display: inline-block; margin-top: 5px; word-break: break-all; background-color: #e9f5ff; padding: 5px 10px; border-radius: 3px; border: 1px solid #b3d7ff;}
-        li a:hover { text-decoration: underline; background-color: #d0e7ff;}
-        p.no-channels { text-align: center; color: #777; }
-        .admin-link { text-align: center; margin-top: 30px; font-size: 0.9em; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 15px; background-color: #f0f2f5; color: #333; margin: 0;}
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        h1 { text-align: center; color: #1a73e8; margin-bottom: 25px; font-size: 1.8em; }
+        .category-group { margin-bottom: 25px; border-left: 3px solid #007bff; padding-left: 15px; }
+        .category-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #0056b3;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        ul.channel-list { list-style: none; padding: 0; margin: 0; }
+        li.channel-item {
+            background: #f9f9f9;
+            margin-bottom: 10px;
+            padding: 12px 15px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap; /* মোবাইলের জন্য */
+            border: 1px solid #e9e9e9;
+            transition: box-shadow 0.2s ease;
+        }
+        li.channel-item:hover {
+            box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+        }
+        .channel-name {
+            font-weight: 500;
+            color: #333;
+            margin-right: 15px; /* নামের পর একটু জায়গা */
+            flex-grow: 1; /* নামকে জায়গা দিন */
+            word-break: break-word; /* লম্বা নাম ভাঙুন */
+             min-width: 150px; /* Ensure name has some minimum width */
+        }
+        .channel-link a {
+            color: #1a73e8;
+            text-decoration: none;
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 4px;
+            border: 1px solid #b3d7ff;
+            background-color: #e9f5ff;
+            font-size: 0.9em;
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+            white-space: nowrap; /* লিঙ্ক টেক্সট এক লাইনে রাখুন */
+            margin-top: 5px; /* মোবাইলে নতুন লাইনে গেলে মার্জিন */
+        }
+        .channel-link a:hover {
+            background-color: #d0e7ff;
+            border-color: #80bfff;
+            text-decoration: none;
+        }
+        p.no-channels { text-align: center; color: #777; font-size: 1.1em; margin-top: 30px; }
+        .admin-link { text-align: center; margin-top: 30px; font-size: 0.95em; }
+        .admin-link a { color: #007bff; text-decoration: none; }
+        .admin-link a:hover { text-decoration: underline; }
+
+        /* মোবাইল ডিভাইসের জন্য স্টাইল */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.5em; }
+            .category-title { font-size: 1.1em; }
+            li.channel-item { flex-direction: column; align-items: flex-start; }
+            .channel-name { margin-bottom: 8px; /* নামের নিচে একটু জায়গা */ width: 100%; }
+            .channel-link { width: 100%; text-align: left; /* লিঙ্ক বাম দিকে */ margin-top: 5px; }
+             .channel-link a { width: calc(100% - 24px); text-align: center; } /* মোবাইলে লিঙ্ক পুরোটা নিন */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Available IPTV Channels</h1>
-        {% if available_channels %}
-            <ul>
-                {% for channel_id, proxy_url in available_channels.items()|sort %}
-                    <li>
-                        <span><strong>Channel ID:</strong> {{ channel_id }}</span>
-                        <a href="{{ proxy_url }}" target="_blank" rel="noopener noreferrer">Proxy M3U8 Link</a>
-                    </li>
-                {% endfor %}
-            </ul>
+
+        {% if grouped_channels %}
+            {# Iterate through sorted categories #}
+            {% for category, channels_in_category in grouped_channels.items() %}
+                <div class="category-group">
+                    <h2 class="category-title">{{ category }}</h2>
+                    <ul class="channel-list">
+                        {# Iterate through channels in this category (already sorted by name in Flask) #}
+                        {% for channel in channels_in_category %}
+                            <li class="channel-item">
+                                <span class="channel-name">{{ channel.get('name', channel.channel_id) }}</span> {# Show channel name, fallback to ID #}
+                                <span class="channel-link">
+                                    <a href="{{ url_for('serve_m3u8', channel_id=channel.channel_id, _external=True) }}" target="_blank" rel="noopener noreferrer">Play M3U8</a>
+                                </span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
         {% else %}
-            <p class="no-channels">No channels are currently configured.</p>
+            <p class="no-channels">No channels are currently configured or failed to load channels.</p>
         {% endif %}
+
          <p class="admin-link">
             <a href="{{ url_for('admin_panel') }}">Admin Panel</a>
         </p>
