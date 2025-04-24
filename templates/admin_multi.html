@@ -25,6 +25,7 @@
             transition: border-color 0.2s ease;
         }
         input:focus, select:focus { border-color: #007bff; outline: none; box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2); }
+        input[readonly] { background-color: #eee; cursor: not-allowed; } /* শুধুমাত্র পঠনযোগ্য ফিল্ডের স্টাইল */
         button { padding: 10px 22px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; transition: background-color 0.2s ease; }
         button:hover { background-color: #0056b3; }
         button.delete-btn { background-color: #dc3545; margin-left: 8px; }
@@ -74,10 +75,14 @@
                 padding-left: 50%;
                 white-space: normal;
                 text-align:left;
+                min-height: 30px; /* Ensure cells have height */
+                display: flex; /* Use flexbox for alignment */
+                align-items: center; /* Vertically align content */
             }
             td:before {
                 position: absolute;
-                top: 6px;
+                top: 50%; /* Vertically center label */
+                transform: translateY(-50%); /* Adjust vertical centering */
                 left: 6px;
                 width: 45%;
                 padding-right: 10px;
@@ -96,6 +101,8 @@
             td[data-label="Actions"]:before { content: "Actions"; }
 
             .actions button { width: auto; display: inline-block; margin: 3px;} /* বাটনগুলো ইনলাইন রাখুন */
+            td[data-label="Actions"] { display: flex; flex-wrap: wrap; justify-content: flex-end; padding-left: 50%;} /* Align buttons right */
+            td[data-label="Actions"] form { display: inline-block; margin-left: 5px;} /* Align delete form */
          }
 
     </style>
@@ -104,6 +111,7 @@
     <div class="container">
         <h1>IPTV Multi Channel Proxy Admin</h1>
 
+        {# Flash messages section - unchanged #}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <ul class="flash-messages">
@@ -114,12 +122,15 @@
             {% endif %}
         {% endwith %}
 
+        {# Main content: Login form or Admin panel #}
         {% if session.logged_in %}
+            {# Logout button - unchanged #}
             <form action="{{ url_for('admin_logout') }}" method="post" style="border:none; background: none; padding: 0; margin: 0;">
                  <button type="submit" class="logout-btn">Logout</button>
             </form>
             <h2>Manage Channels</h2>
 
+            {# Add/Update Channel Form - unchanged except for readonly style in CSS #}
             <form id="channel-form" action="{{ url_for('add_or_update_channel') }}" method="post">
                  <label for="channel_id">Channel ID (only letters/numbers, no spaces):</label>
                  <input type="text" id="channel_id" name="channel_id" pattern="[a-zA-Z0-9]+" title="Only letters and numbers allowed." required>
@@ -130,6 +141,7 @@
                  <label for="category">Category:</label>
                  <select id="category" name="category" required>
                      <option value="" disabled selected>-- Select Category --</option>
+                     {# categories list comes from Flask route /admin #}
                      {% if categories %}
                          {% for cat in categories %}
                          <option value="{{ cat }}">{{ cat }}</option>
@@ -145,29 +157,40 @@
             </form>
 
             <h2>Current Channels</h2>
+            {# Channels Table - Edit button and data-labels updated #}
             {% if channels %}
                 <table>
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Name</th> <th>Category</th> <th>Source URL</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Source URL</th>
                             <th>Proxy URL</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {# Sort by category, then by name for display #}
+                        {# Sort channels for display - unchanged #}
                         {% for channel_id, info in channels.items()|sort(attribute='category')|sort(attribute='name') %}
                         <tr>
                             <td data-label="ID">{{ channel_id }}</td>
-                            <td data-label="Name">{{ info.get('name', 'N/A') }}</td> <td data-label="Category">{{ info.get('category', 'N/A') }}</td> <td data-label="Source URL">{{ info.source_url }}</td>
+                            <td data-label="Name">{{ info.get('name', 'N/A') }}</td>
+                            <td data-label="Category">{{ info.get('category', 'N/A') }}</td>
+                            <td data-label="Source URL">{{ info.source_url }}</td>
                             <td data-label="Proxy URL"><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank">/live/{{ channel_id }}.m3u8</a></td>
                             <td data-label="Actions" class="actions">
-                                {# Escape data properly for JavaScript using tojson filter #}
+                                {# CORRECTED Edit Button with data-* attributes #}
                                 <button type="button"
-                                        onclick="editChannel('{{ channel_id }}', {{ info.get('name', 'N/A')|tojson }}, {{ info.get('category', 'N/A')|tojson }}, {{ info.source_url|tojson }})">
+                                        class="edit-btn"
+                                        data-id="{{ channel_id }}"
+                                        data-name="{{ info.get('name', '')|escape }}"
+                                        data-category="{{ info.get('category', '')|escape }}"
+                                        data-url="{{ info.source_url|escape }}"
+                                        onclick="editChannel(this)">
                                     Edit
                                 </button>
+                                {# Delete Button Form - unchanged #}
                                 <form action="{{ url_for('delete_channel', channel_id=channel_id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel_id }}\' ({{ info.get('name', 'N/A') }})?');">
                                     <button type="submit" class="delete-btn">Delete</button>
                                 </form>
@@ -180,43 +203,41 @@
                 <p>No channels configured yet, or failed to load channels from the database API.</p>
             {% endif %}
 
+            {# JavaScript Section - editChannel function updated #}
             <script>
-                function escapeHtml(unsafe) {
-                    if (unsafe === null || unsafe === undefined) return '';
-                    return unsafe
-                         .replace(/&/g, "&amp;")
-                         .replace(/</g, "&lt;")
-                         .replace(/>/g, "&gt;")
-                         .replace(/"/g, "&quot;")
-                         .replace(/'/g, "&#039;");
-                }
+                function editChannel(buttonElement) {
+                    // Retrieve data from the button's data attributes
+                    const id = buttonElement.getAttribute('data-id');
+                    const name = buttonElement.getAttribute('data-name');
+                    const category = buttonElement.getAttribute('data-category');
+                    const url = buttonElement.getAttribute('data-url');
 
-                function editChannel(id, name, category, url) {
-                    document.getElementById('channel_id').value = id;
-                    // Use the raw values passed (already JSON decoded by tojson)
-                    document.getElementById('channel_name').value = name || ''; // Handle null/undefined
-                    document.getElementById('category').value = category || ''; // Handle null/undefined
-                    document.getElementById('source_url').value = url || '';   // Handle null/undefined
+                    // Set form values
+                    document.getElementById('channel_id').value = id || '';
+                    document.getElementById('channel_name').value = name || '';
+                    document.getElementById('category').value = category || ''; // Ensure this category exists in the dropdown options
+                    document.getElementById('source_url').value = url || '';
 
+                    // Update UI
                     document.getElementById('submit_button').textContent = 'Update Channel';
-                    document.getElementById('channel_id').readOnly = true; // আইডি পরিবর্তন করতে দেবেন না
+                    document.getElementById('channel_id').readOnly = true;
                     document.getElementById('channel_id').style.backgroundColor = '#eee'; // Indicate read-only
 
                     // Scroll to the form
-                    document.getElementById('channel-form').scrollIntoView({ behavior: 'smooth' });
+                    document.getElementById('channel-form').scrollIntoView({ behavior: 'smooth', block: 'start' });
                  }
 
                 function resetForm() {
-                    document.getElementById('channel-form').reset(); // রিসেট ফর্ম
+                    document.getElementById('channel-form').reset(); // Reset all form fields
                     document.getElementById('submit_button').textContent = 'Add Channel';
-                    document.getElementById('channel_id').readOnly = false; // আইডি আবার এডিট করা যাবে
+                    document.getElementById('channel_id').readOnly = false; // Make ID editable again
                     document.getElementById('channel_id').style.backgroundColor = ''; // Reset background
-                    document.getElementById('category').value = ""; // Ensure category dropdown resets to default
+                    document.getElementById('category').value = ""; // Ensure category dropdown resets to default placeholder
                 }
             </script>
 
         {% else %}
-            {# Login Form remains the same #}
+            {# Login Form - unchanged #}
             <form action="{{ url_for('admin_login') }}" method="post" class="login-form">
                  <h2>Admin Login</h2>
                  <label for="password">Password:</label>
@@ -224,6 +245,8 @@
                  <button type="submit">Login</button>
              </form>
         {% endif %}
+
+        {# Link to index page - unchanged #}
          <p class="home-link">
             <a href="{{ url_for('index') }}">View Available Channels</a>
         </p>
