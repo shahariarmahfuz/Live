@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>অ্যাডমিন প্যানেল - মাল্টি চ্যানেল প্রক্সি</title>
+    <title>অ্যাডমিন প্যানেল - ফ্ল্যাট ডিজাইন</title> {# Updated Title #}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,7 +12,7 @@
         :root {
             --primary-color: #4F46E5; /* Indigo */
             --primary-hover: #4338CA;
-            --primary-light: #eef2ff; /* Lighter Indigo for backgrounds */
+            --primary-light: #eef2ff;
             --secondary-color: #6B7280; /* Gray */
             --secondary-hover: #4B5563;
             --danger-color: #EF4444; /* Red */
@@ -30,11 +30,10 @@
             --dark-gray: #374151;
             --text-color: #1F2937;
             --text-muted: #6B7280;
-            --bg-color: #F9FAFB;
+            --bg-color: #F9FAFB; /* Slightly off-white background */
             --card-bg: #FFFFFF;
-            --border-radius: 8px;
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --border-radius: 6px; /* Slightly reduced radius for flatter feel */
+            --border-color: var(--medium-gray); /* Default border color */
             --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
         }
 
@@ -56,34 +55,33 @@
             background: var(--card-bg);
             padding: 25px;
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-color); /* Add border instead of shadow */
         }
         h1, h2 {
             text-align: center;
             color: var(--primary-color);
             margin-bottom: 20px;
-            font-weight: 700;
+            font-weight: 600; /* Slightly less bold */
         }
-        h1 { font-size: 1.8em; margin-top: 0; }
+        h1 { font-size: 1.7em; margin-top: 0; }
         h2 {
             margin-top: 30px;
-            border-bottom: 1px solid var(--medium-gray);
+            border-bottom: 1px solid var(--border-color);
             padding-bottom: 12px;
-            font-size: 1.4em;
-            font-weight: 600;
+            font-size: 1.3em;
             color: var(--dark-gray);
         }
 
         /* --- Flash Messages --- */
         .flash-messages { list-style: none; padding: 0; margin: 0 0 20px 0; }
-        .flash-messages li { padding: 12px 18px; margin-bottom: 10px; border-radius: 6px; border: 1px solid transparent; font-size: 0.95em; }
+        .flash-messages li { padding: 12px 18px; margin-bottom: 10px; border-radius: var(--border-radius); border: 1px solid transparent; font-size: 0.95em; }
         .flash-success { background-color: var(--success-bg); color: var(--success-text); border-color: var(--success-border); }
         .flash-error { background-color: var(--error-bg); color: var(--error-text); border-color: var(--error-border); }
 
         /* --- Forms --- */
         .admin-form {
             padding: 20px;
-            border: 1px solid var(--medium-gray);
+            border: 1px solid var(--border-color);
             border-radius: var(--border-radius);
             background-color: #fff;
             margin-bottom: 30px;
@@ -93,71 +91,76 @@
             width: 100%;
             padding: 10px 12px;
             margin-bottom: 15px;
-            border: 1px solid var(--medium-gray);
-            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
             font-size: 1em;
             font-family: inherit;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            transition: border-color 0.2s ease, background-color 0.2s ease; /* Added bg transition */
             box-sizing: border-box;
+            background-color: var(--card-bg); /* Ensure background matches */
         }
         input:focus, select:focus {
             border-color: var(--primary-color);
             outline: none;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+             /* Removed box-shadow, rely on border color */
+             background-color: var(--primary-light); /* Subtle background change on focus */
         }
         input[readonly] { background-color: var(--light-gray); cursor: not-allowed; border-color: var(--light-gray); }
 
         /* --- Buttons --- */
         button {
             padding: 9px 18px;
-            border: none;
-            border-radius: 6px;
+            border: 1px solid transparent; /* Start with transparent border */
+            border-radius: var(--border-radius);
             cursor: pointer;
             font-size: 0.95em;
             font-weight: 500;
             font-family: inherit;
-            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease; /* Added border transition */
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
             line-height: 1.4;
-            box-shadow: var(--shadow-sm);
+            /* Removed box-shadow */
         }
-        button:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        button:active { transform: translateY(0); box-shadow: var(--shadow-sm); }
-        button[type="submit"], .edit-btn { background-color: var(--primary-color); color: white; }
-        button[type="submit"]:hover, .edit-btn:hover { background-color: var(--primary-hover); }
-        .delete-btn { background-color: var(--danger-color); color: white; }
-        .delete-btn:hover { background-color: var(--danger-hover); }
-        .logout-btn { background-color: var(--secondary-color); color: white; float: right; margin-bottom: 15px; }
-        .logout-btn:hover { background-color: var(--secondary-hover);}
-        .cancel-btn { background-color: var(--light-gray); color: var(--dark-gray); border: 1px solid var(--medium-gray); margin-left: 8px; box-shadow: none;}
-        .cancel-btn:hover { background-color: var(--medium-gray);}
+        button:hover { transform: translateY(-1px); }
+        button:active { transform: translateY(0); }
+        /* Add focus style */
+        button:focus-visible {
+             outline: 2px solid var(--primary-color);
+             outline-offset: 2px;
+        }
+
+        /* Specific Button Styles */
+        button[type="submit"], .edit-btn { background-color: var(--primary-color); color: white; border-color: var(--primary-color); }
+        button[type="submit"]:hover, .edit-btn:hover { background-color: var(--primary-hover); border-color: var(--primary-hover); }
+        .delete-btn { background-color: var(--danger-color); color: white; border-color: var(--danger-color); }
+        .delete-btn:hover { background-color: var(--danger-hover); border-color: var(--danger-hover); }
+        .logout-btn { background-color: var(--secondary-color); color: white; float: right; margin-bottom: 15px; border-color: var(--secondary-color); }
+        .logout-btn:hover { background-color: var(--secondary-hover); border-color: var(--secondary-hover); }
+        .cancel-btn { background-color: var(--light-gray); color: var(--dark-gray); border: 1px solid var(--border-color); margin-left: 8px; }
+        .cancel-btn:hover { background-color: var(--medium-gray); }
         button svg { width: 1em; height: 1em; vertical-align: middle; }
 
         /* --- Channel List Styles --- */
         .channel-list { list-style: none; padding: 0; margin-top: 15px; }
-        .category-header { /* This is the style for the header shown ONCE per category */
-            color: var(--primary-color);
-            font-weight: 600;
-            font-size: 1.1em;
-            padding: 20px 0 8px 0;
-            margin-top: 10px;
-            border-bottom: 1px solid var(--medium-gray);
-            margin-bottom: 10px;
-        }
+        /* REMOVED .category-header style */
         .channel-item {
             background-color: var(--card-bg);
             margin-bottom: 8px;
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--medium-gray);
-            transition: box-shadow 0.2s ease, border-color 0.2s ease;
+            /* Removed box-shadow */
+            border: 1px solid var(--border-color); /* Rely on border */
+            transition: border-color 0.2s ease; /* Transition border color */
             overflow: hidden;
         }
-        .channel-item:hover { box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08); }
-        .channel-item.active { border-color: var(--primary-color); box-shadow: 0 0 0 1px var(--primary-color); }
+        .channel-item:hover {
+             border-color: var(--primary-light); /* Subtle hover border */
+        }
+        .channel-item.active { /* Style when details are open */
+             border-color: var(--primary-color); /* Highlight active item */
+        }
 
         /* Preview Row */
         .preview-row {
@@ -170,7 +173,7 @@
             user-select: none;
             min-height: 48px;
         }
-        .preview-row:hover { background-color: var(--light-gray); }
+        .channel-item:hover .preview-row { background-color: var(--light-gray); } /* Hover effect inside item */
         .preview-name {
             font-weight: 500;
             color: var(--text-color);
@@ -193,8 +196,8 @@
             overflow: hidden;
             transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
             padding: 0 15px;
-            background-color: var(--primary-light);
-            border-top: 1px solid var(--medium-gray);
+            background-color: var(--light-gray); /* Use light gray for details bg */
+            border-top: 1px solid var(--border-color);
         }
         .details-section.visible {
             max-height: 700px;
@@ -207,7 +210,7 @@
         .channel-details-table td {
             padding: 8px 5px;
             text-align: left;
-            border-bottom: 1px solid var(--medium-gray);
+            border-bottom: 1px solid var(--medium-gray); /* Use medium gray for inner border */
             font-size: 0.9em;
             vertical-align: top;
         }
@@ -238,14 +241,14 @@
 
         /* --- Mobile Responsiveness --- */
         @media (max-width: 767px) {
-            .container { padding: 15px; margin: 10px; }
+            .container { padding: 15px; margin: 10px; border: none; /* Remove border on mobile container */ }
             h1 { font-size: 1.6em; }
             h2 { font-size: 1.2em; margin-top: 25px; padding-bottom: 10px; }
             .admin-form { padding: 15px; }
             .logout-btn { width: auto; float: right; padding: 8px 12px; font-size: 0.9em; }
             .cancel-btn { margin-left: 5px; }
 
-            .category-header { font-size: 1em; padding: 15px 0 5px 0; }
+            /* REMOVED .category-header mobile style */
             .preview-row { padding: 10px 12px; min-height: 44px; }
             .preview-name { font-size: 0.95em; }
             .preview-id { font-size: 0.8em; }
@@ -276,6 +279,7 @@
                  border-bottom: 1px solid var(--medium-gray);
                  padding-bottom: 8px;
             }
+
             .channel-details-table .actions td { padding-top: 10px; }
              .channel-details-table .actions button,
              .channel-details-table .actions form {
@@ -327,10 +331,8 @@
             <form id="channel-form" action="{{ url_for('add_or_update_channel') }}" method="post" class="admin-form">
                  <label for="channel_id">চ্যানেল আইডি (শুধু সংখ্যা):</label>
                  <input type="text" id="channel_id" name="channel_id" pattern="[0-9]+" title="শুধুমাত্র সংখ্যা ব্যবহার করুন।" required>
-
                  <label for="channel_name">চ্যানেলের নাম:</label>
                  <input type="text" id="channel_name" name="channel_name" required>
-
                  <label for="category">ক্যাটেগরি:</label>
                  <select id="category" name="category" required>
                      <option value="" disabled selected>-- ক্যাটেগরি নির্বাচন করুন --</option>
@@ -340,10 +342,8 @@
                          {% endfor %}
                      {% endif %}
                  </select>
-
                  <label for="source_url">সোর্স M3U8 ইউআরএল:</label>
                  <input type="url" id="source_url" name="source_url" placeholder="যেমন: http://example.com/stream.m3u8" required>
-
                  <button type="submit" id="submit_button">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:1.2em; height:1.2em;"> <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /> </svg>
                      চ্যানেল যোগ করুন
@@ -354,31 +354,17 @@
             <h2>বর্তমান চ্যানেলসমূহ</h2>
             {% if channels %}
                 <ul class="channel-list">
-                    {# --- Sorting Logic --- #}
+                    {# --- Sorting Logic (ID only) --- #}
                     {% set channel_list = [] %}
                     {% for id, info in channels.items() %}
-                        {# Ensure ID conversion happens correctly, handle potential errors if needed #}
                         {% set _ = channel_list.append((id|int, info)) %}
                     {% endfor %}
-                    {# Sort by category first, then by integer ID #}
-                    {% set sorted_channels = channel_list|sort(attribute='1.category')|sort(attribute='0') %}
+                    {# Sort by integer ID only #}
+                    {% set sorted_channels = channel_list|sort(attribute='0') %}
 
-                    {# --- Variable to track the current category being displayed --- #}
-                    {% set current_category = None %} {# Use None to handle the very first check reliably #}
+                    {# REMOVED Category Header Logic #}
 
-                    {% for channel_id, info in sorted_channels %} {# Loop through the correctly sorted list #}
-
-                        {# --- Category Header Logic --- #}
-                        {# Check if the category for the current channel is different from the last one shown #}
-                        {% set item_category = info.get('category', 'N/A') %}
-                        {% if item_category != current_category %}
-                            {# If different, update the tracker and display the header ONCE #}
-                            {% set current_category = item_category %}
-                            <li class="category-header">{{ current_category }}</li>
-                        {% endif %}
-                        {# --- End of Category Header Logic --- #}
-
-
+                    {% for channel_id, info in sorted_channels %} {# Loop through the ID-sorted list #}
                         {# --- Channel Item (li) --- #}
                         <li class="channel-item">
                             {# --- Preview Row (div) --- #}
@@ -392,7 +378,7 @@
                                 <table class="channel-details-table">
                                     <tr><th>নাম</th><td>{{ info.get('name', 'N/A') }}</td></tr>
                                     <tr><th>আইডি</th><td>{{ channel_id }}</td></tr>
-                                    <tr><th>ক্যাটেগরি</th><td>{{ info.get('category', 'N/A') }}</td></tr> {# Category shown in details is normal #}
+                                    <tr><th>ক্যাটেগরি</th><td>{{ info.get('category', 'N/A') }}</td></tr>
                                     <tr><th>সোর্স ইউআরএল</th><td>{{ info.source_url }}</td></tr>
                                     <tr><th>প্রক্সি ইউআরএল</th><td><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank">/live/{{ channel_id }}.m3u8</a></td></tr>
                                     <tr class="actions">
