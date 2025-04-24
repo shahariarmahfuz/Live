@@ -1,63 +1,38 @@
 <!DOCTYPE html>
-<html lang="bn"> {# ভাষা পরিবর্তন করুন #}
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>এডমিন প্যানেল - মাল্টি চ্যানেল প্রক্সি</title> {# টাইটেল পরিবর্তন #}
+    <title>Admin Panel - Multi Channel Proxy</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 20px; background-color: #f9f9f9; }
-        .container { max-width: 900px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        body { font-family: sans-serif; margin: 20px; background-color: #f9f9f9; }
+        .container { max-width: 800px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         h1, h2 { text-align: center; color: #333; }
         .flash-messages { list-style: none; padding: 0; margin-bottom: 15px; }
         .flash-messages li { padding: 10px 15px; margin-bottom: 10px; border-radius: 4px; }
         .flash-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .flash-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         form { margin-bottom: 20px; padding: 15px; border: 1px solid #ddd; border-radius: 5px; background-color: #fefefe; }
-        label { display: block; margin: 10px 0 5px 0; font-weight: bold; }
-        input[type="text"], input[type="password"], input[type="url"], select {
-            width: calc(100% - 22px); /* প্যাডিং ও বর্ডার বাদ দিয়ে */
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            box-sizing: border-box; /* Include padding and border in the element's total width and height */
-        }
-         button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; margin-top: 10px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"], input[type="password"], input[type="url"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; }
         button:hover { background-color: #0056b3; }
-        button.delete-btn { background-color: #dc3545; margin-left: 5px; } /* মার্জিন কমানো */
+        button.delete-btn { background-color: #dc3545; margin-left: 10px; }
         button.delete-btn:hover { background-color: #c82333; }
-        button.logout-btn { background-color: #6c757d; float: right; margin-top: 0;} /* উপরে তুলুন */
+        button.logout-btn { background-color: #6c757d; float: right;}
         button.logout-btn:hover { background-color: #5a6268;}
-        button.cancel-btn { background-color: #ffc107; color: #333; } /* ক্যানসেল বাটন স্টাইল */
-        button.cancel-btn:hover { background-color: #e0a800; }
-
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; table-layout: fixed; } /* টেবিল লেআউট ফিক্সড */
-        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; word-wrap: break-word; } /* শব্দ ভেঙে নতুন লাইনে আনুন */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: left; word-break: break-all; }
         th { background-color: #f2f2f2; }
         td form { margin-bottom: 0; padding: 0; border: none; background: none; display: inline;}
         .login-form { max-width: 400px; margin: 30px auto; }
-        .actions { white-space: normal; } /* বাটনগুলো প্রয়োজনে নিচে নামবে */
-        .actions button { margin-bottom: 5px; display: inline-block;} /* বাটনগুলোর মধ্যে ফাঁক */
-
+        .actions { white-space: nowrap; }
         .home-link { display: block; text-align: center; margin-top: 20px; }
-
-         /* Responsive Design */
-        @media (max-width: 600px) {
-             input[type="text"], input[type="password"], input[type="url"], select {
-                 width: 100%; /* ছোট স্ক্রিনে পুরো প্রস্থ */
-             }
-             th, td { padding: 8px; font-size: 0.9em;}
-             button { padding: 8px 15px; font-size: 0.9em;}
-             .actions button { display: block; width: 100%; margin-left: 0; margin-bottom: 5px; box-sizing: border-box;}
-             .logout-btn { float: none; display: block; margin: 15px auto; }
-             h1 { font-size: 1.5em;}
-             h2 { font-size: 1.2em;}
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>IPTV মাল্টি চ্যানেল প্রক্সি এডমিন</h1> {# শিরোনাম পরিবর্তন #}
+        <h1>IPTV Multi Channel Proxy Admin</h1>
 
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
@@ -70,73 +45,43 @@
         {% endwith %}
 
         {% if session.logged_in %}
-            <form action="{{ url_for('admin_logout') }}" method="post" style="display: block; text-align: right; margin-bottom: -40px;"> {# Logout বাটন উপরে ডানদিকে #}
-                 <button type="submit" class="logout-btn">লগআউট</button>
+            <form action="{{ url_for('admin_logout') }}" method="post" style="display: inline;">
+                 <button type="submit" class="logout-btn">Logout</button>
             </form>
-            <h2>চ্যানেল পরিচালনা করুন</h2> {# শিরোনাম পরিবর্তন #}
+            <h2>Manage Channels</h2>
 
-            {# চ্যানেল যোগ/আপডেট করার ফর্ম #}
             <form action="{{ url_for('add_or_update_channel') }}" method="post">
-                 <input type="hidden" name="action" id="form_action" value="add">
+                 <input type="hidden" name="action" id="form_action" value="add"> <label for="channel_id">Channel ID (only letters/numbers, no spaces):</label>
+                 <input type="text" id="channel_id" name="channel_id" pattern="[a-zA-Z0-9]+" title="Only letters and numbers allowed." required>
 
-                 {# চ্যানেল আইডি ইনপুট #}
-                 <label for="channel_id">চ্যানেল আইডি (শুধু অক্ষর/সংখ্যা, স্পেস ছাড়া):</label>
-                 <input type="text" id="channel_id" name="channel_id" pattern="[a-zA-Z0-9]+" title="শুধু অক্ষর এবং সংখ্যা অনুমোদিত।" required>
+                 <label for="source_url">Source M3U8 URL:</label>
+                 <input type="url" id="source_url" name="source_url" placeholder="e.g., http://example.com/stream.m3u8" required>
 
-                 {# চ্যানেল নাম ইনপুট - নতুন ফিল্ড #}
-                 <label for="channel_name">চ্যানেলের নাম:</label>
-                 <input type="text" id="channel_name" name="channel_name" required>
-
-                 {# ক্যাটাগরি সিলেক্ট - নতুন ফিল্ড #}
-                 <label for="category">ক্যাটাগরি:</label>
-                 <select id="category" name="category" required>
-                    <option value="" disabled selected>-- একটি ক্যাটাগরি নির্বাচন করুন --</option>
-                    {% if categories %} {# categories ভেরিয়েবল চেক করুন #}
-                        {% for cat in categories %}
-                            <option value="{{ cat }}">{{ cat }}</option>
-                        {% endfor %}
-                    {% endif %}
-                 </select>
-
-                 {# সোর্স URL ইনপুট #}
-                 <label for="source_url">সোর্স M3U8 URL:</label>
-                 <input type="url" id="source_url" name="source_url" placeholder="যেমন: http://example.com/stream.m3u8" required>
-
-                 {# বাটন #}
-                 <button type="submit" id="submit_button">চ্যানেল যোগ করুন</button> {# বাটন টেক্সট পরিবর্তন #}
-                 <button type="button" onclick="resetForm()" class="cancel-btn">এডিট বাতিল করুন</button> {# বাটন টেক্সট পরিবর্তন #}
+                 <button type="submit" id="submit_button">Add Channel</button>
+                 <button type="button" onclick="resetForm()" style="margin-left: 10px; background-color: #ffc107;">Cancel Edit</button>
             </form>
 
-            <h2>বর্তমান চ্যানেল তালিকা</h2> {# শিরোনাম পরিবর্তন #}
+            <h2>Current Channels</h2>
             {% if channels %}
                 <table>
                     <thead>
                         <tr>
-                            <th>আইডি</th>     {# সংক্ষিপ্ত শিরোনাম #}
-                            <th>নাম</th>     {# নতুন কলাম #}
-                            <th>ক্যাটাগরি</th> {# নতুন কলাম #}
-                            <th>সোর্স URL</th>
-                            <th>প্রক্সি URL</th>
-                            <th>কার্যক্রম</th> {# কার্যক্রম বা Actions #}
+                            <th>Channel ID</th>
+                            <th>Source URL</th>
+                            <th>Proxy URL</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {# চ্যানেলগুলো ক্যাটাগরি ও নাম অনুযায়ী সাজানো ভালো #}
-                        {# ব্যাকএন্ডে সাজানো হয়েছে, এখানে শুধু প্রদর্শন #}
-                        {% for channel_id, info in channels.items()|sort(attribute='channel_name') %} {# নাম অনুযায়ী সাজানো #}
+                        {% for channel_id, info in channels.items()|sort %}
                         <tr>
                             <td>{{ channel_id }}</td>
-                            {# নতুন ডেটা প্রদর্শন #}
-                            <td>{{ info.channel_name | default('N/A', true) }}</td>
-                            <td>{{ info.category | default('N/A', true)}}</td>
-                            {# /নতুন ডেটা প্রদর্শন #}
                             <td>{{ info.source_url }}</td>
-                            <td><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank" rel="noopener noreferrer">/live/{{ channel_id }}.m3u8</a></td>
+                            <td><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank">/live/{{ channel_id }}.m3u8</a></td>
                             <td class="actions">
-                                {# Edit বাটনে নতুন প্যারামিটার যোগ করুন #}
-                                <button type="button" onclick="editChannel('{{ channel_id }}', '{{ info.source_url }}', '{{ info.channel_name | escape | replace("'", "\\'") }}', '{{ info.category }}')">এডিট</button> {# escape ও replace ব্যবহার করে JS string ঠিক রাখা #}
-                                <form action="{{ url_for('delete_channel', channel_id=channel_id) }}" method="post" onsubmit="return confirm('আপনি কি নিশ্চিত যে চ্যানেল \'{{ info.channel_name | escape | replace(\"'\", \"\\'\") }}\' ({{ channel_id }}) মুছে ফেলতে চান?');"> {# কনফার্ম মেসেজে নাম যোগ করুন #}
-                                    <button type="submit" class="delete-btn">মুছুন</button>
+                                <button type="button" onclick="editChannel('{{ channel_id }}', '{{ info.source_url }}')">Edit</button>
+                                <form action="{{ url_for('delete_channel', channel_id=channel_id) }}" method="post" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel_id }}\'?');">
+                                    <button type="submit" class="delete-btn">Delete</button>
                                 </form>
                             </td>
                         </tr>
@@ -144,45 +89,38 @@
                     </tbody>
                 </table>
             {% else %}
-                <p>এখনো কোনো চ্যানেল কনফিগার করা হয়নি।</p> {# বার্তা পরিবর্তন #}
+                <p>No channels configured yet.</p>
             {% endif %}
 
-            {# জাভাস্ক্রিপ্ট আপডেট #}
             <script>
-                // ফাংশন সিগনেচার পরিবর্তন করুন
-                function editChannel(id, url, name, category) {
+                function editChannel(id, url) {
                     document.getElementById('channel_id').value = id;
-                    document.getElementById('channel_name').value = name; // নাম সেট করুন
-                    document.getElementById('category').value = category; // ক্যাটাগরি সেট করুন
                     document.getElementById('source_url').value = url;
-                    document.getElementById('form_action').value = 'update';
-                    document.getElementById('submit_button').textContent = 'চ্যানেল আপডেট করুন'; // বাটন টেক্সট পরিবর্তন
+                    document.getElementById('form_action').value = 'update'; // অ্যাকশন পরিবর্তন করুন
+                    document.getElementById('submit_button').textContent = 'Update Channel';
                     document.getElementById('channel_id').readOnly = true; // আইডি পরিবর্তন করতে দেবেন না
-                    window.scrollTo(0, document.getElementById('channel_id').offsetTop - 20); // ফর্মের শুরুতে স্ক্রল করুন
+                    window.scrollTo(0, 0); // ফর্মের শুরুতে স্ক্রল করুন
                 }
 
                 function resetForm() {
                     document.getElementById('channel_id').value = '';
-                    document.getElementById('channel_name').value = ''; // নাম ফিল্ড খালি করুন
-                    document.getElementById('category').value = ''; // ক্যাটাগরি রিসেট করুন
                     document.getElementById('source_url').value = '';
-                    document.getElementById('form_action').value = 'add';
-                    document.getElementById('submit_button').textContent = 'চ্যানেল যোগ করুন'; // বাটন টেক্সট রিসেট
-                    document.getElementById('channel_id').readOnly = false;
+                    document.getElementById('form_action').value = 'add'; // অ্যাকশন রিসেট করুন
+                    document.getElementById('submit_button').textContent = 'Add Channel';
+                    document.getElementById('channel_id').readOnly = false; // আইডি আবার এডিট করা যাবে
                 }
             </script>
 
         {% else %}
-            {# লগইন ফর্ম অপরিবর্তিত #}
             <form action="{{ url_for('admin_login') }}" method="post" class="login-form">
-                 <h2>এডমিন লগইন</h2>
-                 <label for="password">পাসওয়ার্ড:</label>
+                 <h2>Admin Login</h2>
+                 <label for="password">Password:</label>
                  <input type="password" id="password" name="password" required>
-                 <button type="submit">লগইন</button>
+                 <button type="submit">Login</button>
              </form>
         {% endif %}
          <p class="home-link">
-            <a href="{{ url_for('index') }}">উপলব্ধ চ্যানেলগুলো দেখুন</a> {# লিঙ্ক টেক্সট পরিবর্তন #}
+            <a href="{{ url_for('index') }}">View Available Channels</a>
         </p>
     </div>
 </body>
