@@ -41,7 +41,7 @@
     {% endif %}
 
     <h2>{% if edit_channel_data %}Edit Channel{% else %}Add New Channel{% endif %}</h2>
-    <form method="POST" action="{{ url_for('add_or_update_channel') }}">
+    <form method="POST" action="{{ url_for('add_or_update_channel_m3u') }}"> {# <-- CHANGED ENDPOINT HERE #}
         <label for="channel_id">Channel ID (Unique, alphanumeric, -, _ allowed):</label>
         <input type="text" id="channel_id" name="channel_id"
                value="{{ edit_channel_data.channel_id if edit_channel_data else '' }}"
@@ -68,7 +68,8 @@
 
         <button type="submit">{% if edit_channel_data %}Update Channel{% else %}Add Channel{% endif %}</button>
         {% if edit_channel_data %}
-            <button type="button" onclick="window.location.href='{{ url_for('admin_panel') }}';">Cancel Edit</button>
+            {# <-- CHANGED ENDPOINT HERE to point to the admin1 page #}
+            <button type="button" onclick="window.location.href='{{ url_for('admin1_panel') }}';">Cancel Edit</button>
         {% endif %}
 
         <p><em>To update a channel, click 'Edit' in the table below. The form will fill automatically. Make changes and click 'Update Channel'. To add a new channel, clear the form and fill in a unique Channel ID.</em></p>
@@ -102,7 +103,8 @@
                         <td>{{ channel.group_title }}</td>
                         <td>{{ channel.stream_link }}</td>
                         <td class="actions">
-                            <a href="{{ url_for('admin_panel', edit_id=channel.channel_id) }}">
+                            {# <-- CHANGED ENDPOINT HERE to point to the admin1 page #}
+                            <a href="{{ url_for('admin1_panel', edit_id=channel.channel_id) }}">
                                 <button type="button" class="edit-button">Edit</button>
                             </a>
 
@@ -119,4 +121,5 @@
     {% endif %}
 
 </body>
-</html>
+            </html>
+                
