@@ -34,7 +34,7 @@
             --card-bg: #FFFFFF;
             --border-radius: 6px; /* Slightly reduced radius for flatter feel */
             --border-color: var(--medium-gray); /* Default border color */
-            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+            --font-sans: 'Inter', -apple-system, BlinkMacMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
         }
 
         /* --- Base Styles --- */
@@ -328,7 +328,7 @@
             <h2>চ্যানেল ম্যানেজ করুন</h2>
 
             {# --- Add/Update Channel Form --- #}
-            <form id="channel-form" action="{{ url_for('add_or_update_channel') }}" method="post" class="admin-form">
+            <form id="channel-form" action="{{ url_for('add_or_update_channel_main') }}" method="post" class="admin-form"> {# <-- CHANGED ENDPOINT HERE #}
                  <label for="channel_id">চ্যানেল আইডি (শুধু সংখ্যা):</label>
                  <input type="text" id="channel_id" name="channel_id" pattern="[0-9]+" title="শুধুমাত্র সংখ্যা ব্যবহার করুন।" required>
                  <label for="channel_name">চ্যানেলের নাম:</label>
@@ -379,7 +379,7 @@
                                     <tr><th>নাম</th><td>{{ info.get('name', 'N/A') }}</td></tr>
                                     <tr><th>আইডি</th><td>{{ channel_id }}</td></tr>
                                     <tr><th>ক্যাটেগরি</th><td>{{ info.get('category', 'N/A') }}</td></tr>
-                                    <tr><th>সোর্স ইউআরএল</th><td>{{ info.source_url }}</td></tr>
+                                    <tr><th>সোর্স ইউआरএল</th><td>{{ info.source_url }}</td></tr> {# Assuming source_url is in info dict #}
                                     <tr><th>প্রক্সি ইউআরএল</th><td><a href="{{ url_for('serve_m3u8', channel_id=channel_id, _external=True) }}" target="_blank">/live/{{ channel_id }}.m3u8</a></td></tr>
                                     <tr class="actions">
                                         <th>অ্যাকশন</th>
@@ -387,13 +387,13 @@
                                             {# Edit Button with Icon #}
                                             <button type="button" class="edit-btn"
                                                     data-id="{{ channel_id }}" data-name="{{ info.get('name', '')|escape }}"
-                                                    data-category="{{ info.get('category', '')|escape }}" data-url="{{ info.source_url|escape }}"
+                                                    data-category="{{ info.get('category', '')|escape }}" data-url="{{ info.source_url|escape }}" {# Assuming source_url #}
                                                     onclick="event.stopPropagation(); editChannel(this)">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width:1.1em; height:1.1em;"><path d="M17.414 2.586a2 2 0 0 0-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 0 0 0-2.828Z" /><path fill-rule="evenodd" d="M2 6a2 2 0 0 1 2-2h4a1 1 0 0 1 0 2H4v10h10v-4a1 1 0 1 1 2 0v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6Z" clip-rule="evenodd" /></svg>
                                                 Edit
                                             </button>
                                             {# Delete Button Form with Icon #}
-                                            <form action="{{ url_for('delete_channel', channel_id=channel_id) }}" method="post"
+                                            <form action="{{ url_for('delete_channel_main', channel_id=channel_id) }}" method="post" {# <-- CHANGED ENDPOINT HERE #}
                                                   onsubmit="return confirm('আপনি কি নিশ্চিত চ্যানেল \'{{ channel_id }}\' ({{ info.get('name', 'N/A') }}) মুছে ফেলতে চান?');"
                                                   style="display: inline;" onclick="event.stopPropagation();">
                                                 <button type="submit" class="delete-btn">
