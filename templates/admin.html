@@ -5,219 +5,158 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3U Playlist Admin</title>
     <style>
+        /* আপনার আগের CSS কোড এখানে থাকবে */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 15px;
-            background-color: #f5f5f5;
-            color: #333;
+            font-family: sans-serif;
+            margin: 15px;
             line-height: 1.6;
+            max-width: 100%;
+            overflow-x: hidden;
         }
-        
-        h1 {
-            color: #2c3e50;
-            text-align: center;
+        h1, h2 { color: #333; }
+        form#channel-form { /* ফর্মকে একটি আইডি দেওয়া হলো */
             margin-bottom: 20px;
-            font-size: 1.8rem;
-        }
-        
-        h2 {
-            color: #3498db;
-            margin-top: 25px;
-            font-size: 1.4rem;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 5px;
-        }
-        
-        .m3u-link {
-            background-color: #e8f4fc;
-            padding: 12px;
-            border-radius: 5px;
-            margin: 15px 0;
-            border-left: 4px solid #3498db;
-            word-break: break-all;
-        }
-        
-        .m3u-link a {
-            color: #2980b9;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .m3u-link a:hover {
-            text-decoration: underline;
-        }
-        
-        .error-message {
-            background-color: #fdecea;
-            color: #c62828;
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border-left: 4px solid #c62828;
-        }
-        
-        form {
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-        }
-        
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-        
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
+            padding: 15px;
             border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
+            border-radius: 5px;
+            background-color: #f9f9f9;
             box-sizing: border-box;
         }
-        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
         input[type="text"]:focus {
-            border-color: #3498db;
+            border-color: #007bff;
             outline: none;
-            box-shadow: 0 0 0 2px rgba(52,152,219,0.2);
         }
-        
-        input[readonly] {
-            background-color: #f5f5f5;
-            color: #666;
-            cursor: not-allowed;
-        }
-        
-        .form-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 15px;
-        }
-        
         button {
-            padding: 10px 18px;
+            padding: 8px 12px;
+            background-color: #5cb85c; /* ডিফল্ট রঙ অ্যাড এর জন্য */
+            color: white;
             border: none;
             border-radius: 4px;
-            font-size: 1rem;
             cursor: pointer;
-            transition: background-color 0.3s;
+            font-size: 1em;
+            margin-right: 5px;
+            margin-bottom: 5px;
         }
-        
-        .submit-btn {
-            background-color: #2ecc71;
-            color: white;
+        button:hover {
+            opacity: 0.9; /* একটু ভিন্ন hover effect */
         }
-        
-        .submit-btn:hover {
-            background-color: #27ae60;
+        #submit-button.update-mode { /* আপডেট মোডে বাটনের স্টাইল */
+             background-color: #0275d8;
         }
-        
-        .cancel-btn {
-            background-color: #e74c3c;
-            color: white;
-        }
-        
-        .cancel-btn:hover {
-            background-color: #c0392b;
-        }
-        
-        .secondary-btn {
-            background-color: #3498db;
-            color: white;
-        }
-        
-        .secondary-btn:hover {
-            background-color: #2980b9;
-        }
-        
+         #cancel-edit-button { /* ক্যানসেল বাটন স্টাইল */
+            background-color: #f0ad4e;
+            display: none; /* শুরুতে লুকানো থাকবে */
+         }
+         #cancel-edit-button:hover {
+            background-color: #ec971f;
+         }
+
         table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
-            background-color: white;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            border-radius: 8px;
-            overflow: hidden;
+            font-size: 0.9em;
         }
-        
         th, td {
-            padding: 12px 15px;
+            border: 1px solid #ddd;
+            padding: 8px;
             text-align: left;
-            border-bottom: 1px solid #eee;
+            word-break: break-word;
         }
-        
         th {
-            background-color: #3498db;
-            color: white;
-            font-weight: 600;
+            background-color: #e9e9e9;
+            font-weight: bold;
         }
-        
-        tr:hover {
-            background-color: #f5f9fc;
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
         }
-        
-        .logo-cell {
-            text-align: center;
+        .actions {
+            white-space: nowrap;
         }
-        
-        .logo-img {
+        .actions button {
+            padding: 5px 8px;
+            font-size: 0.85em;
+            margin: 2px;
+        }
+        .edit-button-js { /* এডিট বাটনের জন্য নতুন ক্লাস */
+            background-color: #0275d8;
+        }
+        .edit-button-js:hover {
+            background-color: #025aa5;
+        }
+        .delete-form {
+            display: inline-block;
+            margin: 0;
+            padding: 0;
+        }
+        .delete-button {
+            background-color: #d9534f;
+        }
+        .delete-button:hover {
+            background-color: #c9302c;
+        }
+        .error-message {
+            color: red;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .m3u-link {
+            margin-top: 15px;
+            font-size: 1em;
+            background-color: #e9f2f7;
+            padding: 8px;
+            border-left: 5px solid #007bff;
+            word-break: break-all;
+        }
+        .m3u-link a {
+            color: #0056b3;
+            text-decoration: none;
+        }
+        .m3u-link a:hover {
+            text-decoration: underline;
+        }
+        img {
             max-height: 30px;
-            max-width: 60px;
-            display: block;
-            margin: 0 auto;
+            max-width: 100%;
+            vertical-align: middle;
         }
-        
-        .action-btns {
-            display: flex;
-            gap: 8px;
+        input[readonly] {
+            background-color: #eee;
+            cursor: not-allowed;
         }
-        
-        .edit-btn {
-            background-color: #3498db;
-            color: white;
-            padding: 6px 12px;
-            font-size: 0.9rem;
-            border-radius: 4px;
-        }
-        
-        .delete-btn {
-            background-color: #e74c3c;
-            color: white;
-            padding: 6px 12px;
-            font-size: 0.9rem;
-            border-radius: 4px;
-        }
-        
-        .no-channels {
-            background-color: white;
-            padding: 20px;
-            text-align: center;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            color: #7f8c8d;
-        }
-        
-        @media (max-width: 768px) {
+
+        @media (max-width: 600px) {
             table {
-                display: block;
-                overflow-x: auto;
+                font-size: 0.8em;
             }
-            
-            .action-btns {
+            th, td {
+                padding: 6px 4px;
+            }
+            .actions {
+                display: flex;
                 flex-direction: column;
-                gap: 5px;
             }
-            
-            .edit-btn, .delete-btn {
+            .actions button {
                 width: 100%;
-                text-align: center;
+                margin: 2px 0;
             }
         }
     </style>
@@ -225,143 +164,187 @@
 <body>
     <h1>M3U Playlist Admin Panel</h1>
 
-    <div class="m3u-link">
-        Your M3U Playlist URL: 
-        <a href="{{ url_for('generate_m3u_playlist', _external=True) }}" target="_blank">
-            {{ url_for('generate_m3u_playlist', _external=True) }}
-        </a>
-    </div>
+    <div class="m3u-link">Your M3U Playlist URL: <a href="{{ url_for('generate_m3u_playlist', _external=True) }}" target="_blank">{{ url_for('generate_m3u_playlist', _external=True) }}</a></div>
 
     {% if error %}
         <div class="error-message">{{ error }}</div>
     {% endif %}
 
-    <h2>{% if edit_channel_data %}Edit Channel{% else %}Add New Channel{% endif %}</h2>
-    <form method="POST" action="{{ url_for('add_or_update_channel_m3u') }}">
-        <!-- Hidden field to identify edit mode -->
-        <input type="hidden" name="is_edit" value="{{ 'true' if edit_channel_data else 'false' }}">
-        
-        <label for="channel_id">Channel ID:</label>
-        <input type="text" id="channel_id" name="channel_id"
-               value="{{ edit_channel_data.channel_id if edit_channel_data else '' }}"
-               required pattern="^[a-zA-Z0-9_-]+$" 
-               title="Only letters, numbers, hyphens and underscores are allowed."
-               {% if edit_channel_data %}readonly{% endif %}>
+    <form id="channel-form" method="POST" action="{{ url_for('add_or_update_channel_m3u') }}">
+        <h2 id="form-title">Add New Channel</h2> <input type="hidden" id="is_edit" name="is_edit" value="false">
+
+        <label for="channel_id">Channel ID (Unique, alphanumeric, -, _ allowed):</label>
+        <input type="text" id="channel_id" name="channel_id" required pattern="^[a-zA-Z0-9_-]+$" title="Only letters, numbers, hyphens and underscores are allowed.">
 
         <label for="name">Channel Name:</label>
-        <input type="text" id="name" name="name"
-               value="{{ edit_channel_data.name if edit_channel_data else '' }}"
-               required>
+        <input type="text" id="name" name="name" required>
 
-        <label for="logo_link">Logo URL:</label>
-        <input type="text" id="logo_link" name="logo_link"
-               value="{{ edit_channel_data.logo_link if edit_channel_data else '' }}"
-               placeholder="https://example.com/logo.png">
+        <label for="logo_link">Logo Link (URL):</label>
+        <input type="text" id="logo_link" name="logo_link">
 
         <label for="group_title">Group Title:</label>
-        <input type="text" id="group_title" name="group_title"
-               value="{{ edit_channel_data.group_title if edit_channel_data else '' }}"
-               placeholder="e.g., Entertainment, News">
+        <input type="text" id="group_title" name="group_title">
 
-        <label for="stream_link">Stream URL:</label>
-        <input type="text" id="stream_link" name="stream_link"
-               value="{{ edit_channel_data.stream_link if edit_channel_data else '' }}"
-               required placeholder="https://example.com/stream.m3u8">
+        <label for="stream_link">Stream Link (URL):</label>
+        <input type="text" id="stream_link" name="stream_link" required>
 
-        <div class="form-actions">
-            <button type="submit" class="submit-btn">
-                {% if edit_channel_data %}Update Channel{% else %}Add Channel{% endif %}
-            </button>
-            
-            {% if edit_channel_data %}
-                <a href="{{ url_for('admin1_panel') }}" class="cancel-btn">
-                    <button type="button">Cancel Edit</button>
-                </a>
-            {% endif %}
-        </div>
+        <button type="submit" id="submit-button">Add Channel</button>
+        <button type="button" id="cancel-edit-button">Cancel Edit</button>
 
-        <p style="margin-top: 15px; color: #7f8c8d; font-size: 0.9rem;">
-            <strong>Note:</strong> To edit a channel, click 'Edit' in the table below. 
-            Channel ID cannot be changed after creation.
-        </p>
+        <p><em>To add a new channel, fill the form. To update, click 'Edit' in the table below. The form will be populated. Make changes and click 'Update Channel'.</em></p>
     </form>
 
     <h2>Existing Channels</h2>
     {% if channels %}
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th class="logo-cell">Logo</th>
-                    <th>Group</th>
-                    <th>Stream URL</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for channel in channels %}
+        <div style="overflow-x: auto;">
+            <table id="channels-table">
+                <thead>
                     <tr>
-                        <td>{{ channel.channel_id }}</td>
-                        <td>{{ channel.name }}</td>
-                        <td class="logo-cell">
-                            {% if channel.logo_link %}
-                                <img src="{{ channel.logo_link }}" alt="Logo" class="logo-img" 
-                                     onerror="this.style.display='none'">
-                            {% else %}
-                                -
-                            {% endif %}
-                        </td>
-                        <td>{{ channel.group_title or '-' }}</td>
-                        <td>
-                            {% if channel.stream_link|length > 30 %}
-                                {{ channel.stream_link[:30] }}...
-                            {% else %}
-                                {{ channel.stream_link }}
-                            {% endif %}
-                        </td>
-                        <td>
-                            <div class="action-btns">
-                                <a href="{{ url_for('admin1_panel', edit_id=channel.channel_id) }}">
-                                    <button class="edit-btn">Edit</button>
-                                </a>
-                                
-                                <form method="POST" action="{{ url_for('delete_m3u_channel', channel_id=channel.channel_id) }}" 
-                                      onsubmit="return confirm('Are you sure you want to delete {{ channel.name|escape }} ({{ channel.channel_id }})?');">
-                                    <button type="submit" class="delete-btn">Delete</button>
-                                </form>
-                            </div>
-                        </td>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Logo</th>
+                        <th>Group</th>
+                        <th>Stream Link</th>
+                        <th>Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% else %}
-        <div class="no-channels">
-            No channels found. Add your first channel using the form above.
+                </thead>
+                <tbody>
+                    {% for channel in channels %}
+                        <tr data-id="{{ channel.channel_id }}"
+                            data-name="{{ channel.name }}"
+                            data-logo="{{ channel.logo_link }}"
+                            data-group="{{ channel.group_title }}"
+                            data-stream="{{ channel.stream_link }}">
+                            <td>{{ channel.channel_id }}</td>
+                            <td>{{ channel.name }}</td>
+                            <td>
+                                {% if channel.logo_link %}
+                                    <img src="{{ channel.logo_link }}" alt="{{ channel.name }} Logo" onerror="this.style.display='none'">
+                                {% else %}
+                                    No Logo
+                                {% endif %}
+                            </td>
+                            <td>{{ channel.group_title }}</td>
+                            <td>{{ (channel.stream_link[:30] + '...') if channel.stream_link|length > 30 else channel.stream_link }}</td>
+                            <td class="actions">
+                                <button type="button" class="edit-button-js">Edit</button>
+
+                                <form class="delete-form" method="POST" action="{{ url_for('delete_m3u_channel', channel_id=channel.channel_id) }}" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel.name | escape }}\' ({{ channel.channel_id }})?');">
+                                    <button type="submit" class="delete-button">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+    {% else %}
+        <p>No channels found.</p>
     {% endif %}
 
     <script>
-        // Add confirmation for form submission
-        document.querySelector('form').addEventListener('submit', function(e) {
-            if(document.getElementById('channel_id').value.trim() === '') {
-                alert('Channel ID cannot be empty!');
-                e.preventDefault();
+        // ফর্মের এলিমেন্টগুলো ধরা
+        const channelForm = document.getElementById('channel-form');
+        const formTitle = document.getElementById('form-title');
+        const channelIdInput = document.getElementById('channel_id');
+        const nameInput = document.getElementById('name');
+        const logoLinkInput = document.getElementById('logo_link');
+        const groupTitleInput = document.getElementById('group_title');
+        const streamLinkInput = document.getElementById('stream_link');
+        const isEditInput = document.getElementById('is_edit');
+        const submitButton = document.getElementById('submit-button');
+        const cancelEditButton = document.getElementById('cancel-edit-button');
+        const channelsTable = document.getElementById('channels-table');
+
+        // রিসেট ফাংশন: ফর্মকে অ্যাড মোডে ফেরত নিয়ে যায়
+        function resetFormToAddMode() {
+            channelForm.reset(); // ফর্মের সব ফিল্ড খালি করে
+            channelIdInput.readOnly = false; // আইডি ফিল্ড আবার লেখার যোগ্য করে
+            isEditInput.value = 'false'; // এডিট মোড বন্ধ
+            submitButton.textContent = 'Add Channel'; // বাটনের লেখা পরিবর্তন
+            submitButton.classList.remove('update-mode'); // বাটনের স্টাইল অ্যাড মোডে ফেরত
+            formTitle.textContent = 'Add New Channel'; // ফর্মের টাইটেল পরিবর্তন
+            cancelEditButton.style.display = 'none'; // ক্যানসেল বাটন লুকিয়ে ফেলা
+             // কোনো সিলেক্টেড রো থাকলে হাইলাইট তুলে দেওয়া (যদি থাকে)
+            const currentlyEditingRow = channelsTable.querySelector('tr.editing');
+            if (currentlyEditingRow) {
+                currentlyEditingRow.classList.remove('editing');
             }
-        });
-        
-        // Improve mobile experience
-        if(window.innerWidth < 768) {
-            document.querySelectorAll('input[type="text"]').forEach(input => {
-                input.style.padding = '12px';
-            });
-            
-            document.querySelectorAll('button').forEach(button => {
-                button.style.padding = '12px 15px';
-                button.style.fontSize = '1rem';
+        }
+
+        // টেবিলের মধ্যে ক্লিক ইভেন্ট শোনা (ইভেন্ট ডেলিগেশন)
+        if (channelsTable) {
+            channelsTable.addEventListener('click', function(event) {
+                // যদি ক্লিক করা এলিমেন্টের ক্লাস 'edit-button-js' হয়
+                if (event.target.classList.contains('edit-button-js')) {
+                    const button = event.target;
+                    const row = button.closest('tr'); // বাটনটির সবচেয়ে কাছের row খুঁজে বের করা
+
+                    // আগের কোনো রো এডিট মোডে থাকলে তা রিসেট করা
+                     const currentlyEditingRow = channelsTable.querySelector('tr.editing');
+                     if (currentlyEditingRow && currentlyEditingRow !== row) {
+                         currentlyEditingRow.classList.remove('editing');
+                     }
+                     // বর্তমান রো-কে এডিটিং হিসেবে মার্ক করা (optional styling)
+                     row.classList.add('editing');
+
+
+                    // row এর ডেটা অ্যাট্রিবিউট থেকে তথ্য নেওয়া
+                    const id = row.dataset.id;
+                    const name = row.dataset.name;
+                    const logo = row.dataset.logo;
+                    const group = row.dataset.group;
+                    const stream = row.dataset.stream;
+
+                    // ফর্মের ফিল্ডগুলো পূরণ করা
+                    channelIdInput.value = id;
+                    nameInput.value = name;
+                    logoLinkInput.value = logo || ''; // যদি লোগো না থাকে তাহলে খালি স্ট্রিং
+                    groupTitleInput.value = group || '';
+                    streamLinkInput.value = stream;
+
+                    // আইডি ফিল্ডকে readonly করা
+                    channelIdInput.readOnly = true;
+
+                    // is_edit ফিল্ডের মান 'true' করা
+                    isEditInput.value = 'true';
+
+                    // সাবমিট বাটনের লেখা ও স্টাইল পরিবর্তন করা
+                    submitButton.textContent = 'Update Channel';
+                    submitButton.classList.add('update-mode');
+
+                    // ফর্মের টাইটেল পরিবর্তন করা
+                    formTitle.textContent = 'Edit Channel';
+
+                    // ক্যানসেল বাটন দেখানো
+                    cancelEditButton.style.display = 'inline-block';
+
+                    // ফর্মটি যেখানে আছে, সেখানে স্ক্রল করে যাওয়া (optional)
+                    channelForm.scrollIntoView({ behavior: 'smooth' });
+                }
             });
         }
+
+        // ক্যানসেল বাটনে ক্লিক করলে ফর্ম রিসেট হবে
+        cancelEditButton.addEventListener('click', resetFormToAddMode);
+
+         // ফর্ম সাবমিট করার আগে আইডি readonly থাকলে তা সাময়িকভাবে তুলে দেওয়া উচিত,
+         // যাতে সাবমিটের সময় ভ্যালুটা পাঠানো যায় (কিছু ব্রাউজারে readonly ফিল্ড যায় না)
+         // তবে সাধারণত readonly ফিল্ড সাবমিট হয়। তাও নিশ্চিত হতে চাইলে নিচের কোড যোগ করা যেতে পারে।
+         /*
+         channelForm.addEventListener('submit', function() {
+             if (channelIdInput.readOnly) {
+                 channelIdInput.readOnly = false;
+             }
+         });
+         */
+
+         // পেজ লোড হওয়ার সময় যদি কোনো কারণে فرم আগে থেকে পূরণ থাকে (যেমন ব্যাকএন্ড থেকে error সহ রিডাইরেক্ট),
+         // তাহলে অবস্থা বুঝে ফর্ম মোড ঠিক করা যেতে পারে, তবে সাধারণত এটা প্রয়োজন হয় না।
+         // শুরুতে সবসময় অ্যাড মোডেই থাকা উচিত।
+         // resetFormToAddMode(); // প্রয়োজন হলে পেজ লোডের শুরুতে কল করা যেতে পারে
+
     </script>
+
 </body>
 </html>
