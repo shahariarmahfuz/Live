@@ -8,149 +8,78 @@
     <style>
         body {
             font-family: sans-serif;
-            margin: 10px; /* Margin কমানো হলো */
-            line-height: 1.5; /* Line height সামান্য কমানো হলো */
-            font-size: 0.95em; /* Base font size কমানো হলো */
+            margin: 10px;
+            line-height: 1.5;
+            font-size: 0.95em; /* Base font size for form area */
             max-width: 100%;
             overflow-x: hidden;
-            background-color: #f4f4f4; /* হালকা ব্যাকগ্রাউন্ড */
+            background-color: #f4f4f4;
         }
         h1, h2 {
             color: #333;
             margin-top: 15px;
             margin-bottom: 10px;
-            font-size: 1.5em; /* হেডিং সাইজ */
+            font-size: 1.5em;
         }
         h2 {
             font-size: 1.3em;
         }
 
+        /* --- Form Styles (Mostly Unchanged) --- */
         form#channel-form {
             margin-bottom: 15px;
-            padding: 12px; /* Padding কমানো হলো */
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 5px;
-            background-color: #fff; /* সাদা ব্যাকগ্রাউন্ড */
+            background-color: #fff;
             box-sizing: border-box;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); /* হালকা শ্যাডো */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
-        label {
+        form#channel-form label {
             display: block;
-            margin-bottom: 4px; /* Margin কমানো হলো */
+            margin-bottom: 4px;
             font-weight: bold;
             color: #555;
-            font-size: 0.9em; /* লেবেলের ফন্ট সাইজ */
+            font-size: 0.9em;
         }
-        input[type="text"] {
+        form#channel-form input[type="text"] {
             width: 100%;
-            padding: 6px 8px; /* Padding কমানো হলো */
-            margin-bottom: 8px; /* Margin কমানো হলো */
+            padding: 6px 8px;
+            margin-bottom: 8px;
             border: 1px solid #ccc;
-            border-radius: 3px; /* বর্ডার রেডিয়াস */
-            font-size: 0.95em; /* ইনপুট ফন্ট সাইজ */
+            border-radius: 3px;
+            font-size: 0.95em;
             box-sizing: border-box;
         }
-        input[type="text"]:focus {
+        form#channel-form input[type="text"]:focus {
             border-color: #007bff;
             outline: none;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25); /* ফোকাস শ্যাডো */
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
         }
-
-        /* --- Button Styles --- */
-        button {
-            padding: 5px 10px; /* Padding কমানো হলো */
+        form#channel-form button {
+            padding: 5px 10px;
             color: white;
             border: none;
             border-radius: 3px;
             cursor: pointer;
-            font-size: 0.9em; /* বাটনের ফন্ট সাইজ */
+            font-size: 0.9em;
             margin-right: 5px;
             margin-bottom: 5px;
-            vertical-align: middle; /* আইকন ও টেক্সট অ্যালাইনমেন্ট */
-            transition: background-color 0.2s ease; /* স্মুথ ট্রানজিশন */
+            vertical-align: middle;
+            transition: background-color 0.2s ease;
         }
-        button i {
-            margin-right: 4px; /* আইকন ও টেক্সটের মধ্যে স্পেস */
+        form#channel-form button i {
+            margin-right: 4px;
         }
-        button:hover {
+        form#channel-form button:hover {
             opacity: 0.85;
         }
+        #submit-button { background-color: #28a745; }
+        #submit-button.update-mode { background-color: #007bff; }
+        #cancel-edit-button { background-color: #ffc107; color: #333; display: none; }
+        #cancel-edit-button:hover { background-color: #e0a800; }
 
-        #submit-button {
-            background-color: #28a745; /* সবুজ অ্যাড বাটন */
-        }
-        #submit-button.update-mode {
-             background-color: #007bff; /* নীল আপডেট বাটন */
-        }
-         #cancel-edit-button {
-            background-color: #ffc107; /* হলুদ ক্যানসেল বাটন */
-            color: #333; /* ডার্ক টেক্সট */
-            display: none;
-         }
-         #cancel-edit-button:hover {
-            background-color: #e0a800;
-         }
-
-         /* --- Table Styles --- */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 0.85em; /* টেবিলের ফন্ট সাইজ কমানো হলো */
-            background-color: #fff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 4px 6px; /* সেলের প্যাডিং কমানো হলো */
-            text-align: left;
-            word-break: break-word;
-            vertical-align: middle; /* কনটেন্ট ভার্টিক্যালি মিডল */
-        }
-        th {
-            background-color: #e9ecef; /* হালকা হেডার ব্যাকগ্রাউন্ড */
-            font-weight: 600; /* সেমি-বোল্ড */
-            white-space: nowrap; /* হেডার যেন র‍্যাপ না হয় */
-        }
-        tr:nth-child(even) {
-            background-color: #f8f9fa; /* হালকা স্ট্রাইপ */
-        }
-         tr.editing { /* এডিট করার সময় রো হাইলাইট (Optional) */
-             background-color: #cfe2ff;
-         }
-
-        .actions {
-            white-space: nowrap;
-            text-align: center; /* অ্যাকশন বাটন সেন্টারে */
-        }
-        .actions button {
-            padding: 4px 8px; /* অ্যাকশন বাটনের প্যাডিং */
-            font-size: 0.9em; /* অ্যাকশন বাটনের আইকন সাইজ */
-            margin: 2px;
-            display: inline-block; /* বাটন পাশাপাশি */
-        }
-        .edit-button-js {
-            background-color: #007bff; /* নীল এডিট */
-        }
-        .delete-button {
-            background-color: #dc3545; /* লাল ডিলিট */
-        }
-        .delete-form {
-            display: inline-block;
-            margin: 0;
-            padding: 0;
-            vertical-align: middle;
-        }
-
-        .error-message {
-            color: #721c24;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            padding: 8px 10px; /* Padding কমানো হলো */
-            border-radius: 3px;
-            margin-bottom: 10px;
-            font-size: 0.9em;
-        }
+        /* --- M3U Link Style --- */
         .m3u-link {
             margin-top: 10px;
             margin-bottom: 15px;
@@ -158,58 +87,126 @@
             background-color: #e9f2f7;
             padding: 8px 10px;
             border-left: 4px solid #007bff;
-            word-break: break-all;
+            word-break: break-all; /* URL যেন ভেঙ্গে পরের লাইনে যায় */
+            line-height: 1.4; /* URL লম্বা হলে লাইন হাইট ঠিক রাখা */
         }
         .m3u-link a {
             color: #0056b3;
             text-decoration: none;
-            font-weight: bold;
+            /* font-weight: bold; */ /* বোল্ড বাদ দেওয়া হলো */
         }
         .m3u-link a:hover {
             text-decoration: underline;
         }
-        img {
-            max-height: 25px; /* Logo height কমানো হলো */
-            max-width: 100%;
+
+        /* --- Table Styles (Made More Compact) --- */
+        .table-container { /* Wrapper div for overflow */
+             overflow-x: auto;
+             width: 100%;
+             margin-top: 15px;
+        }
+        table#channels-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.80em; /* টেবিলের ফন্ট সাইজ আরও কমানো হলো */
+            line-height: 1.3; /* টেবিলের লাইন হাইট কমানো হলো */
+            background-color: #fff;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        #channels-table th,
+        #channels-table td {
+            border: 1px solid #ddd;
+            padding: 2px 5px; /* সেলের প্যাডিং আরও কমানো হলো */
+            text-align: left;
+            word-break: break-word;
             vertical-align: middle;
-            background-color: #eee; /* যদি ইমেজ লোড না হয় */
+        }
+        #channels-table th {
+            background-color: #e9ecef;
+            font-weight: 600;
+            white-space: nowrap; /* হেডার যেন এক লাইনে থাকে */
+            padding: 3px 5px; /* হেডারের প্যাডিং সামান্য বেশি */
+        }
+        #channels-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+         #channels-table tr.editing {
+             background-color: #cfe2ff;
+         }
+         #channels-table img {
+            max-height: 20px; /* Logo height আরও কমানো হলো */
+            max-width: 40px; /* Max width for logo */
+            vertical-align: middle;
+            background-color: #eee;
             border-radius: 2px;
+         }
+         /* Stream Link Column Width (Optional) */
+         /*
+         #channels-table th:nth-child(5),
+         #channels-table td:nth-child(5) {
+             min-width: 150px; // or some other value
+             max-width: 250px;
+             overflow: hidden;
+             text-overflow: ellipsis;
+             white-space: nowrap;
+         }
+         #channels-table td:nth-child(5) {
+             cursor: help; // Indicate full link is in title
+         }
+         */
+
+        /* --- Action Buttons in Table (Made More Compact) --- */
+        #channels-table .actions {
+            white-space: nowrap;
+            text-align: center;
+        }
+        #channels-table .actions button {
+            padding: 2px 6px; /* অ্যাকশন বাটনের প্যাডিং আরও কমানো */
+            font-size: 0.85em; /* অ্যাকশন বাটনের আইকন সাইজ আরও কমানো */
+            margin: 1px; /* Margin কমানো */
+            display: inline-block;
+        }
+        #channels-table .actions .edit-button-js { background-color: #007bff; }
+        #channels-table .actions .delete-button { background-color: #dc3545; }
+        #channels-table .actions .delete-form { display: inline-block; margin: 0; padding: 0; vertical-align: middle; }
+
+        /* --- Other Styles --- */
+        .error-message {
+            color: #721c24;
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 8px 10px;
+            border-radius: 3px;
+            margin-bottom: 10px;
+            font-size: 0.9em;
         }
         input[readonly] {
-            background-color: #e9ecef; /* Readonly background */
+            background-color: #e9ecef;
             cursor: not-allowed;
         }
 
-        /* --- Responsive Styles --- */
+        /* --- Responsive Styles (Adjusted for smaller table font) --- */
         @media (max-width: 768px) {
-             body { font-size: 0.9em; } /* ছোট স্ক্রিনে ফন্ট আরও ছোট */
-             h1 { font-size: 1.3em; }
-             h2 { font-size: 1.1em; }
-             table { font-size: 0.8em; } /* টেবিল ফন্ট আরও ছোট */
-             th, td { padding: 3px 4px; } /* টেবিল প্যাডিং আরও কম */
-             .actions button { padding: 3px 6px; font-size: 0.85em; }
+             /* Form font size remains larger */
+             .table-container table { font-size: 0.75em; } /* টেবিল ফন্ট আরও ছোট */
+             #channels-table th, #channels-table td { padding: 2px 4px; }
+             #channels-table .actions button { padding: 2px 5px; font-size: 0.8em; }
         }
-
         @media (max-width: 600px) {
-            .actions {
-                /* বাটনগুলো নিচে নিচে দেখানোর প্রয়োজন নাও হতে পারে যদি আইকন ছোট হয় */
-                 /* display: flex; */
-                 /* flex-direction: column; */
-            }
-            .actions button {
-                 /* width: 100%; Ensure enough width */
-                 /* margin: 2px 0; */
-            }
-            /* Optional: Hide less important columns on very small screens */
-            /* th:nth-child(3), td:nth-child(3) { display: none; } /* Hide Logo */
-            /* th:nth-child(4), td:nth-child(4) { display: none; } /* Hide Group */
+             /* Optional: Hide less important columns */
+             /*
+             #channels-table th:nth-child(3), #channels-table td:nth-child(3) { display: none; } // Hide Logo
+             #channels-table th:nth-child(4), #channels-table td:nth-child(4) { display: none; } // Hide Group
+             */
         }
     </style>
 </head>
 <body>
     <h1>M3U Playlist Admin</h1>
 
-    <div class="m3u-link">Playlist URL: <a href="{{ url_for('generate_m3u_playlist', _external=True) }}" target="_blank">Copy Link</a></div>
+    <div class="m3u-link">
+        Your M3U Playlist URL: <a href="{{ url_for('generate_m3u_playlist', _external=True) }}" target="_blank">{{ url_for('generate_m3u_playlist', _external=True) }}</a>
+    </div>
 
     {% if error %}
         <div class="error-message"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</div>
@@ -241,12 +238,12 @@
             <i class="fa-solid fa-ban"></i> <span class="button-text">Cancel</span>
         </button>
 
-        <p style="font-size: 0.85em; margin-top: 10px;"><em>Use the form to add. Click <i class="fa-solid fa-pencil"></i> in the table to edit.</em></p>
+        <p style="font-size: 0.85em; margin-top: 10px;"><em>Use the form to add. Click <i class="fa-solid fa-pencil fa-xs"></i> in the table to edit.</em></p>
     </form>
 
     <h2>Existing Channels</h2>
     {% if channels %}
-        <div style="overflow-x: auto; width: 100%;">
+        <div class="table-container">
             <table id="channels-table">
                 <thead>
                     <tr>
@@ -273,16 +270,13 @@
                                 {% endif %}
                             </td>
                             <td>{{ channel.group_title }}</td>
-                            <td title="{{ channel.stream_link }}">{{ (channel.stream_link[:25] + '...') if channel.stream_link|length > 25 else channel.stream_link }}</td>
+                            <td title="{{ channel.stream_link }}">{{ (channel.stream_link[:20] + '...') if channel.stream_link|length > 20 else channel.stream_link }}</td>
                             <td class="actions">
                                 <button type="button" class="edit-button-js" title="Edit Channel '{{ channel.name | escape }}'">
-                                    <i class="fa-solid fa-pencil"></i>
-                                </button>
-
+                                    <i class="fa-solid fa-pencil fa-xs"></i> </button>
                                 <form class="delete-form" method="POST" action="{{ url_for('delete_m3u_channel', channel_id=channel.channel_id) }}" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel.name | escape }}\' ({{ channel.channel_id }})?');">
                                     <button type="submit" class="delete-button" title="Delete Channel '{{ channel.name | escape }}'">
-                                        <i class="fa-solid fa-trash-can"></i>
-                                    </button>
+                                        <i class="fa-solid fa-trash-can fa-xs"></i> </button>
                                 </form>
                             </td>
                         </tr>
@@ -296,6 +290,7 @@
 
     <script>
         // --- আগের জাভাস্ক্রিপ্ট কোড এখানে থাকবে ---
+        // (No changes needed in JS for these specific requests)
         const channelForm = document.getElementById('channel-form');
         const formTitle = document.getElementById('form-title');
         const channelIdInput = document.getElementById('channel_id');
@@ -307,17 +302,16 @@
         const submitButton = document.getElementById('submit-button');
         const cancelEditButton = document.getElementById('cancel-edit-button');
         const channelsTable = document.getElementById('channels-table');
-        const submitButtonTextSpan = submitButton.querySelector('.button-text'); // টেক্সট পরিবর্তনের জন্য স্প্যান ধরা
-        const submitButtonIcon = submitButton.querySelector('i'); // আইকন পরিবর্তনের জন্য আইকন ধরা
+        const submitButtonTextSpan = submitButton.querySelector('.button-text');
+        const submitButtonIcon = submitButton.querySelector('i');
 
         function resetFormToAddMode() {
             channelForm.reset();
             channelIdInput.readOnly = false;
             isEditInput.value = 'false';
-            // বাটনের টেক্সট, আইকন ও টাইটেল অ্যাড মোডে পরিবর্তন
             if (submitButtonTextSpan) submitButtonTextSpan.textContent = 'Add Channel';
             submitButton.title = 'Add New Channel';
-            if (submitButtonIcon) submitButtonIcon.className = 'fa-solid fa-plus'; // অ্যাড আইকন
+            if (submitButtonIcon) submitButtonIcon.className = 'fa-solid fa-plus';
             submitButton.classList.remove('update-mode');
             formTitle.textContent = 'Add New Channel';
             cancelEditButton.style.display = 'none';
@@ -330,7 +324,7 @@
 
         if (channelsTable) {
             channelsTable.addEventListener('click', function(event) {
-                const editButton = event.target.closest('.edit-button-js'); // বাটন বা তার আইকনে ক্লিক ধরবে
+                const editButton = event.target.closest('.edit-button-js');
 
                 if (editButton) {
                     const row = editButton.closest('tr');
@@ -339,7 +333,7 @@
                      if (currentlyEditingRow && currentlyEditingRow !== row) {
                          currentlyEditingRow.classList.remove('editing');
                      }
-                     row.classList.add('editing'); // হাইলাইট
+                     row.classList.add('editing');
 
                     const id = row.dataset.id;
                     const name = row.dataset.name;
@@ -356,24 +350,20 @@
                     channelIdInput.readOnly = true;
                     isEditInput.value = 'true';
 
-                    // বাটনের টেক্সট, আইকন ও টাইটেল আপডেট মোডে পরিবর্তন
                     if (submitButtonTextSpan) submitButtonTextSpan.textContent = 'Update Channel';
                     submitButton.title = 'Update Channel';
-                     if (submitButtonIcon) submitButtonIcon.className = 'fa-solid fa-save'; // আপডেট/সেভ আইকন
+                     if (submitButtonIcon) submitButtonIcon.className = 'fa-solid fa-save';
                     submitButton.classList.add('update-mode');
 
                     formTitle.textContent = 'Edit Channel';
                     cancelEditButton.style.display = 'inline-block';
 
-                    channelForm.scrollIntoView({ behavior: 'smooth', block: 'start' }); // ফর্মের শুরুতে স্ক্রল
+                    channelForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         }
 
         cancelEditButton.addEventListener('click', resetFormToAddMode);
-
-        // Initialize form in add mode on page load
-        // resetFormToAddMode(); // uncomment if needed, e.g., after server-side validation failure retains old state
 
     </script>
 
