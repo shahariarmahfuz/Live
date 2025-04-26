@@ -7,198 +7,226 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
         body {
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             margin: 10px;
             line-height: 1.5;
-            font-size: 0.95em; /* Base font size for form area */
+            font-size: 0.95em;
             max-width: 100%;
             overflow-x: hidden;
-            background-color: #f4f4f4;
+            background-color: #f8f9fa;
+            color: #343a40;
         }
         h1, h2 {
-            color: #333;
+            color: #212529;
             margin-top: 15px;
             margin-bottom: 10px;
             font-size: 1.5em;
+            font-weight: 500;
         }
         h2 {
             font-size: 1.3em;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 5px;
+            margin-bottom: 12px;
         }
 
-        /* --- Form Styles (Mostly Unchanged) --- */
         form#channel-form {
-            margin-bottom: 15px;
-            padding: 12px;
-            border: 1px solid #ddd;
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #dee2e6;
             border-radius: 5px;
-            background-color: #fff;
+            background-color: #ffffff;
             box-sizing: border-box;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
         }
         form#channel-form label {
             display: block;
-            margin-bottom: 4px;
-            font-weight: bold;
-            color: #555;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #495057;
             font-size: 0.9em;
         }
         form#channel-form input[type="text"] {
             width: 100%;
-            padding: 6px 8px;
-            margin-bottom: 8px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
+            padding: 7px 9px;
+            margin-bottom: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
             font-size: 0.95em;
             box-sizing: border-box;
+            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
         }
         form#channel-form input[type="text"]:focus {
-            border-color: #007bff;
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
         form#channel-form button {
-            padding: 5px 10px;
+            padding: 6px 12px;
             color: white;
             border: none;
-            border-radius: 3px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 0.9em;
-            margin-right: 5px;
+            font-weight: 500;
+            margin-right: 6px;
             margin-bottom: 5px;
             vertical-align: middle;
-            transition: background-color 0.2s ease;
+            transition: background-color 0.2s ease, opacity 0.2s ease;
         }
         form#channel-form button i {
-            margin-right: 4px;
+            margin-right: 5px;
+            font-size: 0.95em;
         }
         form#channel-form button:hover {
-            opacity: 0.85;
+            opacity: 0.9;
         }
         #submit-button { background-color: #28a745; }
         #submit-button.update-mode { background-color: #007bff; }
-        #cancel-edit-button { background-color: #ffc107; color: #333; display: none; }
-        #cancel-edit-button:hover { background-color: #e0a800; }
+        #cancel-edit-button { background-color: #ffc107; color: #212529; display: none; }
+        #cancel-edit-button:hover { background-color: #e0a800; opacity: 1; }
 
-        /* --- M3U Link Style --- */
         .m3u-link {
             margin-top: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             font-size: 0.9em;
             background-color: #e9f2f7;
-            padding: 8px 10px;
+            padding: 10px 12px;
             border-left: 4px solid #007bff;
-            word-break: break-all; /* URL যেন ভেঙ্গে পরের লাইনে যায় */
-            line-height: 1.4; /* URL লম্বা হলে লাইন হাইট ঠিক রাখা */
+            word-break: break-all;
+            line-height: 1.4;
+            border-radius: 0 4px 4px 0;
         }
         .m3u-link a {
             color: #0056b3;
             text-decoration: none;
-            /* font-weight: bold; */ /* বোল্ড বাদ দেওয়া হলো */
+            font-weight: 500;
         }
         .m3u-link a:hover {
             text-decoration: underline;
         }
 
-        /* --- Table Styles (Made More Compact) --- */
-        .table-container { /* Wrapper div for overflow */
+        .table-container {
              overflow-x: auto;
              width: 100%;
-             margin-top: 15px;
+             margin-top: 5px;
+             border: 1px solid #dee2e6;
+             border-radius: 5px;
+             background-color: #ffffff;
         }
         table#channels-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.80em; /* টেবিলের ফন্ট সাইজ আরও কমানো হলো */
-            line-height: 1.3; /* টেবিলের লাইন হাইট কমানো হলো */
-            background-color: #fff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            font-size: 0.77em;
+            line-height: 1.25;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            table-layout: auto;
         }
         #channels-table th,
         #channels-table td {
-            border: 1px solid #ddd;
-            padding: 2px 5px; /* সেলের প্যাডিং আরও কমানো হলো */
+            border-bottom: 1px solid #dee2e6;
+            padding: 3px 5px;
             text-align: left;
-            word-break: break-word;
             vertical-align: middle;
+            word-break: break-word;
         }
+         #channels-table tr:last-child td {
+             border-bottom: none;
+         }
         #channels-table th {
             background-color: #e9ecef;
             font-weight: 600;
-            white-space: nowrap; /* হেডার যেন এক লাইনে থাকে */
-            padding: 3px 5px; /* হেডারের প্যাডিং সামান্য বেশি */
+            white-space: nowrap;
+            padding: 4px 5px;
+            border-top: none; /* Remove top border for headers */
+            border-bottom-width: 2px; /* Thicker bottom border for header */
         }
         #channels-table tr:nth-child(even) {
-            background-color: #f8f9fa;
+             /* Optional: Subtle striping */
+            /* background-color: #f8f9fa; */
         }
          #channels-table tr.editing {
-             background-color: #cfe2ff;
+             background-color: #cfe2ff !important;
+         }
+         #channels-table tr:hover:not(.editing) {
+             background-color: #f1f3f5;
          }
          #channels-table img {
-            max-height: 20px; /* Logo height আরও কমানো হলো */
-            max-width: 40px; /* Max width for logo */
+            max-height: 16px;
+            max-width: 32px;
             vertical-align: middle;
             background-color: #eee;
             border-radius: 2px;
+            display: block;
          }
-         /* Stream Link Column Width (Optional) */
-         /*
+
+         #channels-table th:nth-child(1),
+         #channels-table td:nth-child(1) {
+             white-space: nowrap;
+             text-align: center;
+             width: 1%;
+             padding-left: 8px;
+             padding-right: 8px;
+         }
+
          #channels-table th:nth-child(5),
          #channels-table td:nth-child(5) {
-             min-width: 150px; // or some other value
-             max-width: 250px;
+             white-space: nowrap;
              overflow: hidden;
              text-overflow: ellipsis;
-             white-space: nowrap;
+             max-width: 180px;
+             cursor: help;
          }
-         #channels-table td:nth-child(5) {
-             cursor: help; // Indicate full link is in title
-         }
-         */
 
-        /* --- Action Buttons in Table (Made More Compact) --- */
-        #channels-table .actions {
+         #channels-table th:nth-child(6),
+         #channels-table td:nth-child(6) {
             white-space: nowrap;
             text-align: center;
-        }
+            width: 1%;
+            padding-left: 8px;
+            padding-right: 8px;
+         }
+
         #channels-table .actions button {
-            padding: 2px 6px; /* অ্যাকশন বাটনের প্যাডিং আরও কমানো */
-            font-size: 0.85em; /* অ্যাকশন বাটনের আইকন সাইজ আরও কমানো */
-            margin: 1px; /* Margin কমানো */
+            padding: 2px 5px;
+            font-size: 0.85em;
+            margin: 1px;
             display: inline-block;
+            vertical-align: middle;
+            line-height: 1; /* Ensure button height is consistent */
         }
-        #channels-table .actions .edit-button-js { background-color: #007bff; }
-        #channels-table .actions .delete-button { background-color: #dc3545; }
+        #channels-table .actions button i {
+            vertical-align: middle; /* Align icon better */
+        }
+        #channels-table .actions .edit-button-js { background-color: #007bff; color: white; }
+        #channels-table .actions .delete-button { background-color: #dc3545; color: white; }
         #channels-table .actions .delete-form { display: inline-block; margin: 0; padding: 0; vertical-align: middle; }
 
-        /* --- Other Styles --- */
         .error-message {
             color: #721c24;
             background-color: #f8d7da;
             border: 1px solid #f5c6cb;
-            padding: 8px 10px;
-            border-radius: 3px;
-            margin-bottom: 10px;
+            padding: 10px 12px;
+            border-radius: 4px;
+            margin-bottom: 15px;
             font-size: 0.9em;
         }
         input[readonly] {
             background-color: #e9ecef;
             cursor: not-allowed;
+            opacity: 0.7;
         }
 
-        /* --- Responsive Styles (Adjusted for smaller table font) --- */
         @media (max-width: 768px) {
-             /* Form font size remains larger */
-             .table-container table { font-size: 0.75em; } /* টেবিল ফন্ট আরও ছোট */
+             body { font-size: 0.92em; }
+             .table-container table { font-size: 0.75em; }
              #channels-table th, #channels-table td { padding: 2px 4px; }
-             #channels-table .actions button { padding: 2px 5px; font-size: 0.8em; }
+             #channels-table th { padding: 3px 4px; }
+             #channels-table .actions button { padding: 2px 4px; font-size: 0.8em; }
+             #channels-table td:nth-child(5) { max-width: 110px; }
+             #channels-table img { max-height: 15px; max-width: 30px; }
         }
-        @media (max-width: 600px) {
-             /* Optional: Hide less important columns */
-             /*
-             #channels-table th:nth-child(3), #channels-table td:nth-child(3) { display: none; } // Hide Logo
-             #channels-table th:nth-child(4), #channels-table td:nth-child(4) { display: none; } // Hide Group
-             */
-        }
+
     </style>
 </head>
 <body>
@@ -209,7 +237,7 @@
     </div>
 
     {% if error %}
-        <div class="error-message"><i class="fa-solid fa-circle-exclamation"></i> {{ error }}</div>
+        <div class="error-message"><i class="fa-solid fa-circle-exclamation" style="margin-right: 5px;"></i> {{ error }}</div>
     {% endif %}
 
     <form id="channel-form" method="POST" action="{{ url_for('add_or_update_channel_m3u') }}">
@@ -223,13 +251,13 @@
         <input type="text" id="name" name="name" required>
 
         <label for="logo_link">Logo Link (URL):</label>
-        <input type="text" id="logo_link" name="logo_link">
+        <input type="text" id="logo_link" name="logo_link" placeholder="https://...">
 
         <label for="group_title">Group Title:</label>
-        <input type="text" id="group_title" name="group_title">
+        <input type="text" id="group_title" name="group_title" placeholder="e.g., News, Entertainment">
 
         <label for="stream_link">Stream Link (URL):</label>
-        <input type="text" id="stream_link" name="stream_link" required>
+        <input type="text" id="stream_link" name="stream_link" required placeholder="http://... or https://...">
 
         <button type="submit" id="submit-button" title="Add New Channel">
             <i class="fa-solid fa-plus"></i> <span class="button-text">Add Channel</span>
@@ -238,7 +266,7 @@
             <i class="fa-solid fa-ban"></i> <span class="button-text">Cancel</span>
         </button>
 
-        <p style="font-size: 0.85em; margin-top: 10px;"><em>Use the form to add. Click <i class="fa-solid fa-pencil fa-xs"></i> in the table to edit.</em></p>
+        <p style="font-size: 0.85em; margin-top: 10px; color: #6c757d;"><em>Use the form to add. Click <i class="fa-solid fa-pencil fa-xs"></i> in the table to edit.</em></p>
     </form>
 
     <h2>Existing Channels</h2>
@@ -251,7 +279,7 @@
                         <th>Name</th>
                         <th>Logo</th>
                         <th>Group</th>
-                        <th>Stream Link</th>
+                        <th>Stream Path</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -266,11 +294,13 @@
                             <td>{{ channel.name }}</td>
                             <td>
                                 {% if channel.logo_link %}
-                                    <img src="{{ channel.logo_link }}" alt="Logo" onerror="this.style.display='none'">
+                                    <img src="{{ channel.logo_link }}" alt="" onerror="this.style.display='none'">
                                 {% endif %}
                             </td>
                             <td>{{ channel.group_title }}</td>
-                            <td title="{{ channel.stream_link }}">{{ (channel.stream_link[:20] + '...') if channel.stream_link|length > 20 else channel.stream_link }}</td>
+                            <td title="{{ channel.stream_link }}">
+                               {{ channel.stream_path | default(channel.stream_link[-30:] if channel.stream_link else '', true) }}
+                            </td>
                             <td class="actions">
                                 <button type="button" class="edit-button-js" title="Edit Channel '{{ channel.name | escape }}'">
                                     <i class="fa-solid fa-pencil fa-xs"></i> </button>
@@ -289,8 +319,6 @@
     {% endif %}
 
     <script>
-        // --- আগের জাভাস্ক্রিপ্ট কোড এখানে থাকবে ---
-        // (No changes needed in JS for these specific requests)
         const channelForm = document.getElementById('channel-form');
         const formTitle = document.getElementById('form-title');
         const channelIdInput = document.getElementById('channel_id');
@@ -320,6 +348,7 @@
             if (currentlyEditingRow) {
                 currentlyEditingRow.classList.remove('editing');
             }
+             channelIdInput.focus(); // Focus on the first field
         }
 
         if (channelsTable) {
@@ -358,12 +387,25 @@
                     formTitle.textContent = 'Edit Channel';
                     cancelEditButton.style.display = 'inline-block';
 
+                    // Scroll smoothly and focus on the name input for editing
                     channelForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    nameInput.focus();
+                    nameInput.select(); // Select the text for easy replacement
                 }
             });
         }
 
         cancelEditButton.addEventListener('click', resetFormToAddMode);
+
+        // Optional: Reset form if user presses Escape key while editing
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && isEditInput.value === 'true') {
+                resetFormToAddMode();
+            }
+        });
+
+        // Set initial focus
+        // channelIdInput.focus(); // Focus on ID field on page load
 
     </script>
 
