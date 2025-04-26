@@ -5,30 +5,148 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>M3U Playlist Admin</title>
     <style>
-        body { font-family: sans-serif; margin: 20px; line-height: 1.6; }
+        body { 
+            font-family: sans-serif; 
+            margin: 15px; 
+            line-height: 1.6; 
+            max-width: 100%;
+            overflow-x: hidden;
+        }
         h1, h2 { color: #333; }
-        form { margin-bottom: 40px; padding: 20px; border: 1px solid #ddd; border-radius: 5px; background-color: #f9f9f9; }
-        label { display: block; margin-bottom: 5px; font-weight: bold; color: #555;}
-        input[type="text"] { width: calc(100% - 22px); padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; font-size: 1em;}
-        input[type="text"]:focus { border-color: #007bff; outline: none; }
-        button { padding: 10px 15px; background-color: #5cb85c; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 1em; margin-right: 5px;}
-        button:hover { background-color: #4cae4c; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ddd; padding: 12px; text-align: left; }
-        th { background-color: #e9e9e9; font-weight: bold;}
-        tr:nth-child(even) { background-color: #f9f9f9; }
-        .actions button { padding: 5px 10px; font-size: 0.9em;}
-        .edit-button { background-color: #0275d8; }
-        .edit-button:hover { background-color: #025aa5; }
-        .delete-form { display: inline-block; margin: 0; padding: 0;}
-        .delete-button { background-color: #d9534f; }
-        .delete-button:hover { background-color: #c9302c; }
-        .error-message { color: red; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
-        .m3u-link { margin-top: 20px; font-size: 1.1em; background-color: #e9f2f7; padding: 10px; border-left: 5px solid #007bff; }
-         .m3u-link a { color: #0056b3; text-decoration: none; }
-         .m3u-link a:hover { text-decoration: underline; }
-         img { max-height: 30px; vertical-align: middle; }
-         input[readonly] { background-color: #eee; cursor: not-allowed; }
+        form { 
+            margin-bottom: 20px; 
+            padding: 15px; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+            background-color: #f9f9f9; 
+            box-sizing: border-box;
+        }
+        label { 
+            display: block; 
+            margin-bottom: 5px; 
+            font-weight: bold; 
+            color: #555;
+        }
+        input[type="text"] { 
+            width: 100%; 
+            padding: 8px; 
+            margin-bottom: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px; 
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        input[type="text"]:focus { 
+            border-color: #007bff; 
+            outline: none; 
+        }
+        button { 
+            padding: 8px 12px; 
+            background-color: #5cb85c; 
+            color: white; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-size: 1em; 
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        button:hover { 
+            background-color: #4cae4c; 
+        }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin-top: 20px; 
+            font-size: 0.9em;
+        }
+        th, td { 
+            border: 1px solid #ddd; 
+            padding: 8px; 
+            text-align: left; 
+            word-break: break-word;
+        }
+        th { 
+            background-color: #e9e9e9; 
+            font-weight: bold;
+        }
+        tr:nth-child(even) { 
+            background-color: #f9f9f9; 
+        }
+        .actions { 
+            white-space: nowrap;
+        }
+        .actions button { 
+            padding: 5px 8px; 
+            font-size: 0.85em;
+            margin: 2px;
+        }
+        .edit-button { 
+            background-color: #0275d8; 
+        }
+        .edit-button:hover { 
+            background-color: #025aa5; 
+        }
+        .delete-form { 
+            display: inline-block; 
+            margin: 0; 
+            padding: 0;
+        }
+        .delete-button { 
+            background-color: #d9534f; 
+        }
+        .delete-button:hover { 
+            background-color: #c9302c; 
+        }
+        .error-message { 
+            color: red; 
+            background-color: #f8d7da; 
+            border: 1px solid #f5c6cb; 
+            padding: 10px; 
+            border-radius: 5px; 
+            margin-bottom: 15px; 
+        }
+        .m3u-link { 
+            margin-top: 15px; 
+            font-size: 1em; 
+            background-color: #e9f2f7; 
+            padding: 8px; 
+            border-left: 5px solid #007bff; 
+            word-break: break-all;
+        }
+        .m3u-link a { 
+            color: #0056b3; 
+            text-decoration: none; 
+        }
+        .m3u-link a:hover { 
+            text-decoration: underline; 
+        }
+        img { 
+            max-height: 30px; 
+            max-width: 100%;
+            vertical-align: middle; 
+        }
+        input[readonly] { 
+            background-color: #eee; 
+            cursor: not-allowed; 
+        }
+        
+        @media (max-width: 600px) {
+            table {
+                font-size: 0.8em;
+            }
+            th, td {
+                padding: 6px 4px;
+            }
+            .actions {
+                display: flex;
+                flex-direction: column;
+            }
+            .actions button {
+                width: 100%;
+                margin: 2px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -41,7 +159,9 @@
     {% endif %}
 
     <h2>{% if edit_channel_data %}Edit Channel{% else %}Add New Channel{% endif %}</h2>
-    <form method="POST" action="{{ url_for('add_or_update_channel_m3u') }}"> {# <-- CHANGED ENDPOINT HERE #}
+    <form method="POST" action="{{ url_for('add_or_update_channel_m3u') }}">
+        <input type="hidden" name="is_edit" value="{{ 'true' if edit_channel_data else 'false' }}">
+        
         <label for="channel_id">Channel ID (Unique, alphanumeric, -, _ allowed):</label>
         <input type="text" id="channel_id" name="channel_id"
                value="{{ edit_channel_data.channel_id if edit_channel_data else '' }}"
@@ -68,8 +188,7 @@
 
         <button type="submit">{% if edit_channel_data %}Update Channel{% else %}Add Channel{% endif %}</button>
         {% if edit_channel_data %}
-            {# <-- CHANGED ENDPOINT HERE to point to the admin1 page #}
-            <button type="button" onclick="window.location.href='{{ url_for('admin1_panel') }}';">Cancel Edit</button>
+            <a href="{{ url_for('admin1_panel') }}"><button type="button">Cancel Edit</button></a>
         {% endif %}
 
         <p><em>To update a channel, click 'Edit' in the table below. The form will fill automatically. Make changes and click 'Update Channel'. To add a new channel, clear the form and fill in a unique Channel ID.</em></p>
@@ -77,49 +196,49 @@
 
     <h2>Existing Channels</h2>
     {% if channels %}
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Logo</th>
-                    <th>Group</th>
-                    <th>Stream Link</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for channel in channels %}
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
                     <tr>
-                        <td>{{ channel.channel_id }}</td>
-                        <td>{{ channel.name }}</td>
-                        <td>
-                            {% if channel.logo_link %}
-                                <img src="{{ channel.logo_link }}" alt="{{ channel.name }} Logo">
-                            {% else %}
-                                No Logo
-                            {% endif %}
-                        </td>
-                        <td>{{ channel.group_title }}</td>
-                        <td>{{ channel.stream_link }}</td>
-                        <td class="actions">
-                            {# <-- CHANGED ENDPOINT HERE to point to the admin1 page #}
-                            <a href="{{ url_for('admin1_panel', edit_id=channel.channel_id) }}">
-                                <button type="button" class="edit-button">Edit</button>
-                            </a>
-
-                            <form class="delete-form" method="POST" action="{{ url_for('delete_m3u_channel', channel_id=channel.channel_id) }}" onsubmit="return confirm('Are you sure you want to delete channel \\'{{ channel.name | escape }} \\' ({{ channel.channel_id }})?');">
-                                <button type="submit" class="delete-button">Delete</button>
-                            </form>
-                        </td>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Logo</th>
+                        <th>Group</th>
+                        <th>Stream Link</th>
+                        <th>Actions</th>
                     </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% for channel in channels %}
+                        <tr>
+                            <td>{{ channel.channel_id }}</td>
+                            <td>{{ channel.name }}</td>
+                            <td>
+                                {% if channel.logo_link %}
+                                    <img src="{{ channel.logo_link }}" alt="{{ channel.name }} Logo" onerror="this.style.display='none'">
+                                {% else %}
+                                    No Logo
+                                {% endif %}
+                            </td>
+                            <td>{{ channel.group_title }}</td>
+                            <td>{{ (channel.stream_link[:30] + '...') if channel.stream_link|length > 30 else channel.stream_link }}</td>
+                            <td class="actions">
+                                <a href="{{ url_for('admin1_panel', edit_id=channel.channel_id) }}">
+                                    <button type="button" class="edit-button">Edit</button>
+                                </a>
+
+                                <form class="delete-form" method="POST" action="{{ url_for('delete_m3u_channel', channel_id=channel.channel_id) }}" onsubmit="return confirm('Are you sure you want to delete channel \'{{ channel.name | escape }}\' ({{ channel.channel_id }})?');">
+                                    <button type="submit" class="delete-button">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     {% else %}
         <p>No channels found.</p>
     {% endif %}
 
 </body>
-            </html>
-                
+</html>
