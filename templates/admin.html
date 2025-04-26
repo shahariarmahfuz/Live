@@ -128,7 +128,7 @@
             padding: 3px 5px;
             text-align: left;
             vertical-align: middle;
-            word-break: break-word;
+            word-break: break-word; /* Allows long links to wrap if needed, but ellipsis might still apply */
         }
          #channels-table tr:last-child td {
              border-bottom: none;
@@ -160,6 +160,7 @@
             display: block;
          }
 
+         /* ID Column */
          #channels-table th:nth-child(1),
          #channels-table td:nth-child(1) {
              white-space: nowrap;
@@ -169,15 +170,17 @@
              padding-right: 8px;
          }
 
+         /* Stream Link Column Styling */
          #channels-table th:nth-child(5),
          #channels-table td:nth-child(5) {
-             white-space: nowrap;
+             /* white-space: nowrap; -- Removed nowrap to allow wrapping if needed */
              overflow: hidden;
-             text-overflow: ellipsis;
-             max-width: 180px;
-             cursor: help;
+             text-overflow: ellipsis; /* Still useful if content exceeds width */
+             max-width: 180px; /* Keep max-width or adjust as needed */
+             /* cursor: help; -- Removed as tooltip is less critical now */
          }
 
+         /* Actions Column */
          #channels-table th:nth-child(6),
          #channels-table td:nth-child(6) {
             white-space: nowrap;
@@ -223,7 +226,7 @@
              #channels-table th, #channels-table td { padding: 2px 4px; }
              #channels-table th { padding: 3px 4px; }
              #channels-table .actions button { padding: 2px 4px; font-size: 0.8em; }
-             #channels-table td:nth-child(5) { max-width: 110px; }
+             #channels-table td:nth-child(5) { max-width: 110px; } /* Adjusted max-width for smaller screens */
              #channels-table img { max-height: 15px; max-width: 30px; }
         }
 
@@ -279,8 +282,7 @@
                         <th>Name</th>
                         <th>Logo</th>
                         <th>Group</th>
-                        <th>Stream Path</th>
-                        <th>Actions</th>
+                        <th>Stream Link</th> <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -289,8 +291,7 @@
                             data-name="{{ channel.name }}"
                             data-logo="{{ channel.logo_link | default('', true) }}"
                             data-group="{{ channel.group_title | default('', true) }}"
-                            data-stream="{{ channel.stream_link }}">
-                            <td>{{ channel.channel_id }}</td>
+                            data-stream="{{ channel.stream_link }}"> <td>{{ channel.channel_id }}</td>
                             <td>{{ channel.name }}</td>
                             <td>
                                 {% if channel.logo_link %}
@@ -298,8 +299,7 @@
                                 {% endif %}
                             </td>
                             <td>{{ channel.group_title }}</td>
-                            <td title="{{ channel.stream_link }}">
-                               {{ channel.stream_path | default(channel.stream_link[-30:] if channel.stream_link else '', true) }}
+                            <td title="{{ channel.stream_link }}"> {{ channel.stream_link }}
                             </td>
                             <td class="actions">
                                 <button type="button" class="edit-button-js" title="Edit Channel '{{ channel.name | escape }}'">
@@ -368,13 +368,13 @@
                     const name = row.dataset.name;
                     const logo = row.dataset.logo;
                     const group = row.dataset.group;
-                    const stream = row.dataset.stream;
+                    const stream = row.dataset.stream; // data-stream থেকে সম্পূর্ণ লিঙ্ক লোড হবে
 
                     channelIdInput.value = id;
                     nameInput.value = name;
                     logoLinkInput.value = logo || '';
                     groupTitleInput.value = group || '';
-                    streamLinkInput.value = stream;
+                    streamLinkInput.value = stream; // ফর্মের ফিল্ডে লিঙ্ক বসানো হচ্ছে
 
                     channelIdInput.readOnly = true;
                     isEditInput.value = 'true';
